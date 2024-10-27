@@ -15,12 +15,13 @@ return new class extends Migration
             $table->id('id_karyawan');
             $table->string('nama');
             $table->string('email')->unique();
-            $table->string('password');
             $table->string('alamat');
+            $table->string('jenis_kelamin');
             $table->string('no_hp');
             $table->string('foto');
-            $table->string('role');
             $table->timestamps();
+            $table->foreignId('id_users')->references('id')->on('users');
+
         });
     }
 
