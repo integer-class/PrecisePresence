@@ -124,10 +124,17 @@
                                 </div>
 
                                 <!-- Nomor Hp -->
-                                <div class="col-md-4">
+                                <div class="col-md-2">
                                     <div class="form-group">
                                         <label>Nomor Hp</label>
                                         <input type="tel" class="form-control" name="no_hp" required>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-2">
+                                    <div class="form-group">
+                                        <label>Tanggal Lahir</label>
+                                        <input type="date" class="form-control" name="ttl" required>
                                     </div>
                                 </div>
 

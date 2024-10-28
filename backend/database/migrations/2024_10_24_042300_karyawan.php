@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('alamat');
             $table->string('jenis_kelamin');
             $table->string('no_hp');
+            $table->string('ttl');
             $table->string('foto');
             $table->timestamps();
             $table->foreignId('id_users')->references('id')->on('users');

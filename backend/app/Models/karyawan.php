@@ -18,6 +18,7 @@ class karyawan extends Model
         'email',
         'alamat',
         'jenis_kelamin',
+        'ttl',
         'no_hp',
         'id_users',
         'foto',

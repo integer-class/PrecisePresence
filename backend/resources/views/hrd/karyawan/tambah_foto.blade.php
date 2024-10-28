@@ -91,12 +91,40 @@
         });
 
         myDropzone.on("success", function(file, response) {
-            // Display success message using SweetAlert
-            Swal.fire({
-                icon: 'success',
-                title: 'Success',
-                text: response.message
-            });
+    // Cek apakah response adalah objek dan memiliki properti 'responses'
+    if (Array.isArray(response.responses)) {
+        response.responses.forEach(function(item) {
+            // Tampilkan setiap pesan menggunakan SweetAlert
+            if (item.message === "Embedding saved successfully") {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Success',
+                    text: `File: ${item.filename} - ${item.message}`
+                });
+            } else if (item.message === "No face detected with sufficient confidence.") {
+                Swal.fire({
+                    icon: 'warning', // Gunakan ikon peringatan
+                    title: 'Warning',
+                    text: `File: ${item.filename} - ${item.message}`
+                });
+            } else {
+                // Tampilkan pesan umum jika ada pesan lain
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: `File: ${item.filename} - ${item.message}`
+                });
+            }
         });
+    } else {
+        // Jika response tidak memiliki format yang diharapkan
+        Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: 'Unexpected response format.'
+        });
+    }
+});
+
     </script>
 @endpush

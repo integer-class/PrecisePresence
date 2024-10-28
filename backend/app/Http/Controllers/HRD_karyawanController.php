@@ -4,9 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use RealRashid\SweetAlert\Facades\Alert;
-
-
-//model
+use App\Models\User;
+// Model
 use App\Models\karyawan;
 
 class HRD_karyawanController extends Controller
@@ -17,9 +16,7 @@ class HRD_karyawanController extends Controller
     public function index()
     {
         $type_menu = 'karyawan';
-
         $karyawan = karyawan::all();
-
 
         return view('hrd.karyawan.index', compact('karyawan', 'type_menu'));
     }
@@ -31,7 +28,7 @@ class HRD_karyawanController extends Controller
     {
         $type_menu = 'karyawan-create';
 
-        return view('hrd.karyawan.tes', compact('type_menu'));
+        return view('hrd.karyawan.tambah', compact('type_menu'));
     }
 
     /**
@@ -46,15 +43,36 @@ class HRD_karyawanController extends Controller
             $request->foto->move(public_path('images'), $fotoName);
         }
 
-        // Menyimpan data ke database dan menangkap instance yang baru dibuat
+        // Mendapatkan nama depan
+        $nama = explode(' ', $request->nama)[0]; // Mengambil nama depan
+        $ttl = explode(' ', $request->ttl)[0];   // Mengambil tanggal lahir (harus diubah formatnya)
+
+        $date = \DateTime::createFromFormat('Y-m-d', $ttl); // Menambahkan backslash untuk mengakses kelas global
+        if ($date) {
+            $formattedDate = $date->format('dmy'); // Format menjadi ddmmyyyy
+            $result = $nama . $formattedDate; // Gabungkan nama dan tanggal lahir
+        } else {
+            return back()->withErrors(['ttl' => 'Format tanggal tidak valid']);
+        }
+
+        // Menyimpan data ke tabel users dengan password yang diformat
+        $user = User::create([
+            'name' => $request->nama,
+            'email' => $request->email,
+            'password' => bcrypt($result), // Menggunakan password yang telah diformat
+            'role' => 'karyawan',
+        ]);
+
+        // Menyimpan data ke tabel karyawan dan menangkap instance yang baru dibuat
         $karyawan = karyawan::create([
             'nama' => $request->nama,
             'email' => $request->email,
             'alamat' => $request->alamat,
+            'ttl' => $request->ttl,
             'jenis_kelamin' => $request->jenis_kelamin,
             'no_hp' => $request->no_hp,
             'foto' => $fotoName,
-            'id_users' => auth()->user()->id,
+            'id_users' => $user->id, // Menghubungkan dengan id user yang baru dibuat
         ]);
 
         Alert::success('Berhasil', 'Data Karyawan Berhasil Ditambahkan');
@@ -67,7 +85,6 @@ class HRD_karyawanController extends Controller
     public function show(string $id)
     {
         $type_menu = 'karyawan';
-
         $karyawan = karyawan::find($id);
 
         return view('hrd.karyawan.tambah_foto', compact('karyawan', 'type_menu'));
