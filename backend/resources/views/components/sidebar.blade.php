@@ -23,25 +23,23 @@
                 </ul>
             </li>
             <li class="menu-header">Data</li>
-            <li class="nav-item dropdown ">
-                <a href="#"
-                    class="nav-link has-dropdown"
-                    data-toggle="dropdown"><i class="fas fa-columns"></i> <span>Karyawan</span></a>
+            <li class="nav-item dropdown {{ $type_menu === 'karyawan' ||  $type_menu === 'karyawan-create' ? 'active' : '' }}">
+                <a href="#" class="nav-link has-dropdown" data-toggle="dropdown">
+                    <i class="fas fa-columns"></i> <span>Karyawan</span>
+                </a>
                 <ul class="dropdown-menu">
-                    <li class="{{ Request::is('layout-default-layout') ? 'active' : '' }}">
-                        <a class="nav-link"
-                            href="{{ route('hrd_karyawan.index') }}">List Karyawan</a>
+                    <li class="{{ $type_menu === 'karyawan' ? 'active' : '' }}">
+                        <a class="nav-link" href="{{ route('hrd_karyawan.index') }}">List Karyawan</a>
                     </li>
-                    <li class="{{ Request::is('transparent-sidebar') ? 'active' : '' }}">
-                        <a class="nav-link"
-                            href="{{ url('transparent-sidebar') }}">Tambah Karyawan</a>
+                    <li class="{{ $type_menu === 'karyawan-create' ? 'active' : '' }}">
+                        <a class="nav-link" href="{{ route('hrd_karyawan.create') }}">Tambah Karyawan</a>
                     </li>
                     <li class="{{ Request::is('layout-top-navigation') ? 'active' : '' }}">
-                        <a class="nav-link"
-                            href="{{ url('layout-top-navigation') }}">Top Navigation</a>
+                        <a class="nav-link" href="{{ url('layout-top-navigation') }}">Top Navigation</a>
                     </li>
                 </ul>
             </li>
+
             <li class="{{ Request::is('blank-page') ? 'active' : '' }}">
                 <a class="nav-link"
                     href="{{ url('blank-page') }}"><i class="far fa-square"></i> <span>Blank Page</span></a>
@@ -133,7 +131,7 @@
                 </ul>
             </li>
             <li class="menu-header">Stisla</li>
-            <li class="nav-item dropdown ">
+            {{-- <li class="nav-item dropdown ">
                 <a href="#"
                     class="nav-link has-dropdown"><i class="fas fa-th-large"></i>
                     <span>Components</span></a>
@@ -209,7 +207,7 @@
                             href="{{ url('forms-validation') }}">Validation</a>
                     </li>
                 </ul>
-            </li>
+            </li> --}}
             {{-- <li class="nav-item dropdown">
                 <a href="#"
                     class="nav-link has-dropdown"><i class="fas fa-map-marker-alt"></i> <span>Google
@@ -225,7 +223,7 @@
                     <li><a href="gmaps-simple.html">Simple</a></li>
                 </ul>
             </li> --}}
-            <li class="nav-item dropdown ">
+            {{-- <li class="nav-item dropdown ">
                 <a href="#"
                     class="nav-link has-dropdown"><i class="fas fa-plug"></i> <span>Modules</span></a>
                 <ul class="dropdown-menu">
@@ -381,7 +379,7 @@
                     href="{{ url('credits') }}"><i class="fas fa-pencil-ruler">
                     </i> <span>Credits</span>
                 </a>
-            </li>
+            </li> --}}
         </ul>
 
         <div class="hide-sidebar-mini mt-4 mb-4 p-3">

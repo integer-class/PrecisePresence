@@ -6,6 +6,9 @@
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no"
         name="viewport">
     <title>@yield('title') &mdash; Stisla</title>
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    @include('sweetalert::alert')
+
 
     <!-- General CSS Files -->
     <link rel="stylesheet"

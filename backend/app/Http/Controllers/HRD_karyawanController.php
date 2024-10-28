@@ -3,6 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use RealRashid\SweetAlert\Facades\Alert;
+
+
 //model
 use App\Models\karyawan;
 
@@ -26,7 +29,9 @@ class HRD_karyawanController extends Controller
      */
     public function create()
     {
-        //
+        $type_menu = 'karyawan-create';
+
+        return view('hrd.karyawan.tes', compact('type_menu'));
     }
 
     /**
@@ -34,7 +39,26 @@ class HRD_karyawanController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        // Menyimpan file foto jika ada
+        $fotoName = null;
+        if ($request->hasFile('foto')) {
+            $fotoName = time() . '_' . $request->foto->getClientOriginalName();
+            $request->foto->move(public_path('images'), $fotoName);
+        }
+
+        // Menyimpan data ke database dan menangkap instance yang baru dibuat
+        $karyawan = karyawan::create([
+            'nama' => $request->nama,
+            'email' => $request->email,
+            'alamat' => $request->alamat,
+            'jenis_kelamin' => $request->jenis_kelamin,
+            'no_hp' => $request->no_hp,
+            'foto' => $fotoName,
+            'id_users' => auth()->user()->id,
+        ]);
+
+        Alert::success('Berhasil', 'Data Karyawan Berhasil Ditambahkan');
+        return redirect()->route('hrd_karyawan.show', $karyawan->id_karyawan);
     }
 
     /**
@@ -42,7 +66,11 @@ class HRD_karyawanController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $type_menu = 'karyawan';
+
+        $karyawan = karyawan::find($id);
+
+        return view('hrd.karyawan.tambah_foto', compact('karyawan', 'type_menu'));
     }
 
     /**
