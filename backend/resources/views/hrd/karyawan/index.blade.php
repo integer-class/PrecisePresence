@@ -29,9 +29,8 @@
                     <div class="col-12 col-sm-6 col-md-6 col-lg-2">
                         <article class="article article-style-b">
                             <div style="height: 250px" class="article-header">
-                                <div class="article-image"
-                                    data-background="https://ameltrias.com/wp-content/uploads/2021/07/p-Jasa-Pas-Foto-Malang-Ameltrias-P-Ameltrias.jpg">
-                                </div>
+                                <div class="article-image" data-background="{{ asset('images/'.$k->foto) }}"></div>
+
                                 <div class="article-badge">
                                     <div class="article-badge-item bg-danger">
                                         {{-- <i class="fas fa-fire"></i>  --}}
@@ -41,7 +40,7 @@
                             </div>
                             <div class="article-details">
                                 <div class="article-title">
-                                    <h2><a href="#">Andi stutisno suyilno subandi</a></h2>
+                                    <h2><a href="#">{{$k->nama}} </a></h2>
                                 </div>
                                 {{-- <p>Duis aute irure dolor in reprehenderit in voluptate velit esse
                                     cillum dolore eu fugiat nulla pariatur. </p> --}}

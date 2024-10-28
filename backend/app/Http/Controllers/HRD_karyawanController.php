@@ -70,6 +70,7 @@ class HRD_karyawanController extends Controller
             'email' => $request->email,
             'alamat' => $request->alamat,
             'jenis_kelamin' => $request->jenis_kelamin,
+            'divisi' => $request->kategori,
             'ttl' => $request->ttl,
             'no_hp' => $request->no_hp,
             'foto' => $fotoName,
