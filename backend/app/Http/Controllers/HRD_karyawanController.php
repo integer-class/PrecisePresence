@@ -44,13 +44,13 @@ class HRD_karyawanController extends Controller
         }
 
         // Mendapatkan nama depan
-        $nama = explode(' ', $request->nama)[0]; // Mengambil nama depan
-        $ttl = explode(' ', $request->ttl)[0];   // Mengambil tanggal lahir (harus diubah formatnya)
+        $nama = explode(' ', $request->nama)[0];
+        $ttl = explode(' ', $request->ttl)[0];
 
-        $date = \DateTime::createFromFormat('Y-m-d', $ttl); // Menambahkan backslash untuk mengakses kelas global
+        $date = \DateTime::createFromFormat('Y-m-d', $ttl);
         if ($date) {
-            $formattedDate = $date->format('dmy'); // Format menjadi ddmmyyyy
-            $result = $nama . $formattedDate; // Gabungkan nama dan tanggal lahir
+            $formattedDate = $date->format('dmy');
+            $result = $nama . $formattedDate;
         } else {
             return back()->withErrors(['ttl' => 'Format tanggal tidak valid']);
         }
@@ -59,7 +59,8 @@ class HRD_karyawanController extends Controller
         $user = User::create([
             'name' => $request->nama,
             'email' => $request->email,
-            'password' => bcrypt($result), // Menggunakan password yang telah diformat
+            'ttl' => $request->ttl,
+            'password' => bcrypt($result),
             'role' => 'karyawan',
         ]);
 
@@ -68,24 +69,30 @@ class HRD_karyawanController extends Controller
             'nama' => $request->nama,
             'email' => $request->email,
             'alamat' => $request->alamat,
-            'ttl' => $request->ttl,
             'jenis_kelamin' => $request->jenis_kelamin,
+            'ttl' => $request->ttl,
             'no_hp' => $request->no_hp,
             'foto' => $fotoName,
-            'id_users' => $user->id, // Menghubungkan dengan id user yang baru dibuat
+            'id_users' => $user->id,
         ]);
 
         Alert::success('Berhasil', 'Data Karyawan Berhasil Ditambahkan');
         return redirect()->route('hrd_karyawan.show', $karyawan->id_karyawan);
     }
 
+
     /**
      * Display the specified resource.
      */
     public function show(string $id)
     {
-        $type_menu = 'karyawan';
         $karyawan = karyawan::find($id);
+        $type_menu = 'karyawan';
+
+        if (!$karyawan) {
+            // Jika karyawan tidak ditemukan, kembalikan error atau redirect
+            return redirect()->back()->withErrors(['message' => 'Karyawan tidak ditemukan']);
+        }
 
         return view('hrd.karyawan.tambah_foto', compact('karyawan', 'type_menu'));
     }
