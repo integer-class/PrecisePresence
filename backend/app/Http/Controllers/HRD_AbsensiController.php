@@ -35,10 +35,13 @@ class HRD_AbsensiController extends Controller
             // Cek hasil respons
             if ($response->ok() && $data['status'] === 'success') {
                 // Jika cocok, simpan absensi ke database
-                Absensi::create([
+                $absensi = Absensi::create([
                     'id_karyawan' => $data['id_karyawan'],
                     'waktu' => now(),
                 ]);
+
+                // Kirim data ke FastAPI
+                $this->sendToFastAPI($data['id_karyawan'], $file);
 
                 return response()->json(['message' => 'Absensi berhasil!', 'distance' => $data['distance']]);
             } else {
@@ -49,8 +52,23 @@ class HRD_AbsensiController extends Controller
         } catch (\Exception $e) {
             return response()->json(['message' => 'Terjadi kesalahan saat menghubungi FastAPI'], 500);
         }
+    }
+
+    protected function sendToFastAPI($user_id, $file)
+    {
+        try {
+
+            $response = Http::attach(
+                'file', file_get_contents($file), $file->getClientOriginalName()
+            )->post("http://127.0.0.1:8000/register_face_personal/?user_id={$user_id}");
 
 
+            if ($response->failed()) {
+                \Log::error('Gagal mengirim data ke FastAPI: ' . $response->body());
+            }
+        } catch (\Exception $e) {
 
+            \Log::error('Gagal mengirim data ke FastAPI: ' . $e->getMessage());
+        }
     }
 }
