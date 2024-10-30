@@ -75,7 +75,7 @@
             autoProcessQueue: false,
             paramName: "files",
             uploadMultiple: true,
-            maxFilesize: 5,
+            maxFilesize: 10,
             acceptedFiles: ".jpeg,.jpg,.png,.gif",
             addRemoveLinks: false
         });
