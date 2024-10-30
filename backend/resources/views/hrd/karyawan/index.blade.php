@@ -19,8 +19,7 @@
             </div>
 
             <div class="section-body">
-                <h2 class="section-title">Articles</h2>
-                <p class="section-lead">This article component is based on card and flexbox.</p>
+
 
 
                 <div class="row">
@@ -35,7 +34,11 @@
                                     <div class="article-badge-item bg-danger">
                                         {{-- <i class="fas fa-fire"></i>  --}}
 
-                                        Akuntan</div>
+                                        {{
+                                            $k->divisi
+                                        }}
+
+                                        </div>
                                 </div>
                             </div>
                             <div class="article-details">

@@ -14,9 +14,10 @@ class FaceController extends Controller
 
     public function uploadFiles(Request $request)
     {
-        // $request->validate([
-        //     'files.*' => 'image|mimes:jpeg,png,jpg|max:5048', // Max size 2MB
-        // ]);
+        // Validasi input
+        $request->validate([
+            'files.*' => 'image|mimes:jpeg,png,jpg|max:5048', // Max size 5MB
+        ]);
 
         $files = $request->file('files');
         $userId = $request->user_id;
@@ -41,14 +42,14 @@ class FaceController extends Controller
 
         try {
             // Kirim permintaan POST ke FastAPI
-            $response = $client->post('http://20.211.74.84/register_face', [
+            $response = $client->post('http://20.211.74.84/register_face/', [
                 'query' => $query,
                 'multipart' => $multipart,
             ]);
 
             return response()->json(json_decode($response->getBody()->getContents()));
         } catch (GuzzleException $e) {
-            return response()->json(['error' => $e->getMessage()], 500);
+            return response()->json(['error' => 'Guzzle error: ' . $e->getMessage()], 500);
         }
     }
 }
