@@ -50,7 +50,7 @@
                 <ul class="dropdown-menu">
                     <li class="{{ Request::is('bootstrap-alert') ? 'active' : '' }}">
                         <a class="nav-link"
-                            href="{{ url('bootstrap-alert') }}">Alert</a>
+                            href="{{ route('hrd_absensi.index') }}">Data Absensi</a>
                     </li>
 
                 </ul>

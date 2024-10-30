@@ -42,7 +42,8 @@ class FaceController extends Controller
 
         try {
             // Kirim permintaan POST ke FastAPI
-            $response = $client->post('http://20.211.74.84/register_face/', [
+            // $response = $client->post('http://20.211.74.84/register_face/', [
+              $response = $client->post('http://127.0.0.1:8000/register_face/', [
                 'query' => $query,
                 'multipart' => $multipart,
             ]);
