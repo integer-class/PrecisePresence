@@ -13,7 +13,8 @@ return Application::configure(basePath: dirname(__DIR__))
     )
     ->withMiddleware(function (Middleware $middleware) {
         $middleware->validateCsrfTokens(except: [
-            'validate-face', // Your route
+            'check-in',
+            'check-out',
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {

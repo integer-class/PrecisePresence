@@ -26,7 +26,10 @@ Route::resource('hrd_absensi', \App\Http\Controllers\HRD_AbsensiController::clas
 
 });
 
-Route::post('/validate-face', [HRD_AbsensiController::class, 'validateFace']);
+
+Route::post('/check-in', [HRD_AbsensiController::class, 'checkIn']);
+Route::post('/check-out', [HRD_AbsensiController::class, 'checkOut']);
+
 
 
 Route::get('/dashboard', function () {
