@@ -49,10 +49,16 @@ class HRD_AbsensiController extends Controller
 
         $data = $response->json();
 
+        // return response()->json(['message' => 'Absensi berhasil!', 'id_karyawan' => $data['id_karyawan'], 'user_id' => $user_id]);
 
-        if ($response->ok() && $data['status'] === 'success') {
 
+
+        if ($response->ok() && $data['id_karyawan'] == $user_id) {
+
+            // Simpan foto check-in
             $path = $file->store('checkin_photos');
+
+            // Buat entri absensi baru
             Absensi::create([
                 'id_karyawan' => $user_id,
                 'lon' => $validated['lon'],
@@ -61,12 +67,79 @@ class HRD_AbsensiController extends Controller
                 'check_in_time' => Carbon::now(),
                 'status' => 'checkin'
             ]);
+
+            // Kirim data ke FastAPI
             $this->sendToFastAPI($user_id, $file);
 
+            // Respons berhasil
             return response()->json(['message' => 'Absensi berhasil!', 'distance' => $data['distance']]);
         } else {
-            return response()->json(['message' => $data['message']], 400);
+            // Data wajah tidak cocok
+            return response()->json(['message' => 'Wajah tidak cocok.'], 400);
         }
+
+
+        // if ($response->ok() && $data['id_karyawan'] === $user_id) {
+
+        //     // Simpan foto check-in
+        //     $path = $file->store('checkin_photos');
+
+        //     // Buat entri absensi baru
+        //     Absensi::create([
+        //         'id_karyawan' => $user_id,
+        //         'lon' => $validated['lon'],
+        //         'lat' => $validated['lat'],
+        //         'foto_checkin' => $path,
+        //         'check_in_time' => Carbon::now(),
+        //         'status' => 'checkin'
+        //     ]);
+
+        //     // Kirim data ke FastAPI
+        //     $this->sendToFastAPI($user_id, $file);
+
+        //     // Respons berhasil
+        //     return response()->json(['message' => 'Absensi berhasil!', 'distance' => $data['distance']]);
+        // } else {
+        //     // Data wajah tidak cocok
+        //     return response()->json(['message' => 'Wajah tidak cocok.'], 400);
+        // }
+
+    }
+
+
+    public function checkOut(Request $request)
+    {
+        // Validasi input
+        $validated = $request->validate([
+            'id_karyawan' => 'required|integer',
+            'lon' => 'required|string',
+            'lat' => 'required|string',
+            'foto' => 'required|file|mimes:jpg,png,jpeg',
+        ]);
+
+        $user_id = $validated['id_karyawan'];
+        $file = $request->file('foto');
+        $today = Carbon::today();
+
+        $absensi = Absensi::where('id_karyawan', $user_id)
+                          ->whereDate('check_in_time', $today)
+                          ->first();
+
+        if (!$absensi) {
+            return response()->json(['message' => 'No check-in record found for today.'], 400);
+        }
+
+        // Simpan foto check-out
+        $path = $file->store('checkout_photos');
+
+        // Simpan check-out di database
+        $absensi->update([
+            'foto_checkout' => $path, // Simpan di kolom foto_checkout
+            'check_out_time' => Carbon::now(),
+            'status' => 'checkout'
+        ]);
+
+        return response()->json(['message' => 'Check-out successful!']);
     }
 
     protected function sendToFastAPI($user_id, $file)
