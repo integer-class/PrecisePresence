@@ -53,7 +53,7 @@ class HRD_AbsensiController extends Controller
 
 
 
-        if ($response->ok() && $data['id_karyawan'] == $user_id) {
+        if ($response->ok() && $data['status']=='success' && $data['id_karyawan'] == $user_id) {
 
             // Simpan foto check-in
             $path = $file->store('checkin_photos');
@@ -74,7 +74,7 @@ class HRD_AbsensiController extends Controller
             // Respons berhasil
             return response()->json(['message' => 'Absensi berhasil!', 'distance' => $data['distance']]);
         } else {
-            // Data wajah tidak cocok
+
             return response()->json(['message' => 'Wajah tidak cocok.'], 400);
         }
     }
