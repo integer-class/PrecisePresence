@@ -80,7 +80,7 @@ class HRD_AbsensiController extends Controller
             // Respons berhasil
             return response()->json(['message' => 'Absensi berhasil!', 'distance' => $imageName]);
         } else {
-            // Data wajah tidak cocok
+
             return response()->json(['message' => 'Wajah tidak cocok.'], 400);
         }
     }
