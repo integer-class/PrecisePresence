@@ -11,10 +11,14 @@ class HRD_AbsensiController extends Controller
 {
     public function index()
     {
-        $karyawan = Absensi::all();
+
+        $absensi = Absensi::whereDate('check_in_time', Carbon::today())
+        ->join('karyawan', 'absensi.id_karyawan', '=', 'karyawan.id_karyawan')
+        ->get();
+
         $type_menu = 'absensi';
 
-        return view('hrd.index', compact('type_menu'));
+        return view('hrd.absensi.index', compact('type_menu', 'absensi'));
     }
 
     public function checkIn(Request $request)
@@ -53,26 +57,28 @@ class HRD_AbsensiController extends Controller
 
 
 
-        if ($response->ok() && $data['id_karyawan'] == $user_id) {
+        if ($response->ok() && $data['status']=='success' && $data['id_karyawan'] == $user_id) {
 
-            // Simpan foto check-in
-            $path = $file->store('checkin_photos');
+
+
+            $imageName = $file->getClientOriginalName();
+            $thumbnailPath = $file->move(public_path('checkin_photos'), $imageName);
 
             // Buat entri absensi baru
             Absensi::create([
                 'id_karyawan' => $user_id,
                 'lon' => $validated['lon'],
                 'lat' => $validated['lat'],
-                'foto_checkin' => $path,
+                'foto_checkin' => $imageName,
                 'check_in_time' => Carbon::now(),
                 'status' => 'checkin'
             ]);
 
             // Kirim data ke FastAPI
-            $this->sendToFastAPI($user_id, $file);
+            // $this->sendToFastAPI($user_id, $file);
 
             // Respons berhasil
-            return response()->json(['message' => 'Absensi berhasil!', 'distance' => $data['distance']]);
+            return response()->json(['message' => 'Absensi berhasil!', 'distance' => $imageName]);
         } else {
             // Data wajah tidak cocok
             return response()->json(['message' => 'Wajah tidak cocok.'], 400);
@@ -116,14 +122,15 @@ class HRD_AbsensiController extends Controller
         // return response()->json(['message' => 'Absensi berhasil!', 'id_karyawan' => $data['id_karyawan'], 'user_id' => $user_id]);
 
 
-        if ($response->ok() && $data['id_karyawan'] == $user_id) {
+        if ($response->ok() && $data['status']=='success' && $data['id_karyawan'] == $user_id) {
 
-            // Simpan foto check-in
-            $path = $file->store('checkin_photos');
+            $imageName = $file->getClientOriginalName();
+            $thumbnailPath = $file->move(public_path('checkin_photos'), $imageName);
+
 
             // Buat entri absensi baru
             $absensi->update([
-                'foto_checkout' => $path,
+                'foto_checkout' => $imageName,
                 'check_out_time' => Carbon::now(),
                 'status' => 'checkout'
             ]);

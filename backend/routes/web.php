@@ -8,6 +8,8 @@ use App\Http\Controllers\HRD_karyawanController;
 use App\Http\Controllers\FaceController;
 use App\Http\Controllers\FileCheckController;
 use App\Http\Controllers\HRD_AbsensiController;
+//pengaturan
+use App\Http\Controllers\PengaturanController;
 
 
 Route::middleware('auth')->group(function () {
@@ -18,7 +20,10 @@ Route::middleware('auth')->group(function () {
 Route::post('/upload', [FaceController::class, 'uploadFiles'])->name('upload.files');
 Route::post('/cek-extensi', [FileCheckController::class, 'checkExtensi'])->name('cek.extensi');
 Route::resource('hrd_absensi', \App\Http\Controllers\HRD_AbsensiController::class);
-// Route::post('/validate-face', [HRD_AbsensiController::class, 'validateFace']);
+
+Route::resource('pengaturan', \App\Http\Controllers\PengaturanController::class);
+
+
 
 
 

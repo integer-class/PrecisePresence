@@ -308,9 +308,15 @@
         </ul>
 
         <div class="hide-sidebar-mini mt-4 mb-4 p-3">
-            <a href="https://getstisla.com/docs"
+            <a href="
+            {{
+                route('pengaturan.index')
+            }}
+            "
                 class="btn btn-primary btn-lg btn-block btn-icon-split">
-                <i class="fas fa-rocket"></i> Documentation
+                <i class="fas fa-gear"></i>
+
+                Pengaturan
             </a>
         </div>
     </aside>
