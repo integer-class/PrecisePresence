@@ -8,7 +8,7 @@ use App\Http\Controllers\HRD_karyawanController;
 use App\Http\Controllers\FaceController;
 use App\Http\Controllers\FileCheckController;
 use App\Http\Controllers\HRD_AbsensiController;
-//pengaturan
+
 use App\Http\Controllers\PengaturanController;
 
 
@@ -24,9 +24,7 @@ Route::resource('hrd_absensi', \App\Http\Controllers\HRD_AbsensiController::clas
 Route::resource('pengaturan', \App\Http\Controllers\PengaturanController::class);
 
 
-
-
-
+Route::post('/settings', [PengaturanController::class, 'store']);
 
 
 });

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Setting;
 
 class PengaturanController extends Controller
 {
@@ -29,7 +30,23 @@ class PengaturanController extends Controller
      */
     public function store(Request $request)
     {
-        //
+         // Validasi data input
+        $validatedData = $request->validate([
+            'latitude' => 'required|numeric|between:-90,90',
+            'longitude' => 'required|numeric|between:-180,180',
+            'radius' => 'required|integer|min:1',
+            'jam_masuk' => 'required|date_format:H:i',
+            'jam_keluar' => 'required|date_format:H:i',
+        ]);
+
+        // Simpan data ke database dengan metode create
+        $setting = Setting::create($validatedData);
+
+        // Kirim respon
+        return response()->json([
+            'message' => 'Pengaturan berhasil disimpan!',
+            'data' => $setting
+        ], 201);
     }
 
     /**
@@ -63,4 +80,6 @@ class PengaturanController extends Controller
     {
         //
     }
+
+
 }

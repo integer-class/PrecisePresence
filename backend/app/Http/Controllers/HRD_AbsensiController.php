@@ -6,6 +6,7 @@ use App\Models\Absensi;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Carbon;
+use App\Models\Setting;
 
 class HRD_AbsensiController extends Controller
 {
@@ -23,20 +24,18 @@ class HRD_AbsensiController extends Controller
 
     public function checkIn(Request $request)
     {
-
         $validated = $request->validate([
             'id_karyawan' => 'required|integer',
-            'lon' => 'required|string',
-            'lat' => 'required|string',
+            'lon' => 'required|numeric',
+            'lat' => 'required|numeric',
             'foto' => 'required|file|mimes:jpg,png,jpeg',
         ]);
-
 
         $user_id = $validated['id_karyawan'];
         $file = $request->file('foto');
         $today = Carbon::today();
 
-
+        // Cek apakah karyawan sudah melakukan check-in hari ini
         $absensi = Absensi::where('id_karyawan', $user_id)
                           ->whereDate('check_in_time', $today)
                           ->first();
@@ -45,6 +44,21 @@ class HRD_AbsensiController extends Controller
             return response()->json(['message' => 'Already checked in today.'], 400);
         }
 
+        // Ambil data pengaturan (lokasi dan radius) dari tabel settings
+        $setting = Setting::first();
+
+        if (!$setting) {
+            return response()->json(['message' => 'Pengaturan lokasi belum dikonfigurasi.'], 500);
+        }
+
+        // Hitung jarak antara lokasi karyawan dan lokasi kantor
+        $distance = $this->calculateDistance($setting->latitude, $setting->longitude, $validated['lat'], $validated['lon']);
+
+        if ($distance > $setting->radius) {
+            return response()->json(['message' => 'Anda berada di luar radius yang diizinkan untuk absensi.'], 400);
+        }
+
+        // Panggil API untuk verifikasi wajah
         $response = Http::attach(
             'file', file_get_contents($file), $file->getClientOriginalName()
         )->post('http://127.0.0.1:8000/face_match/', [
@@ -53,14 +67,7 @@ class HRD_AbsensiController extends Controller
 
         $data = $response->json();
 
-        // return response()->json(['message' => 'Absensi berhasil!', 'id_karyawan' => $data['id_karyawan'], 'user_id' => $user_id]);
-
-
-
-        if ($response->ok() && $data['status']=='success' && $data['id_karyawan'] == $user_id) {
-
-
-
+        if ($response->ok() && $data['status'] == 'success' && $data['id_karyawan'] == $user_id) {
             $imageName = $file->getClientOriginalName();
             $thumbnailPath = $file->move(public_path('checkin_photos'), $imageName);
 
@@ -74,16 +81,42 @@ class HRD_AbsensiController extends Controller
                 'status' => 'checkin'
             ]);
 
-            // Kirim data ke FastAPI
-            // $this->sendToFastAPI($user_id, $file);
-
-            // Respons berhasil
-            return response()->json(['message' => 'Absensi berhasil!', 'distance' => $imageName]);
+            return response()->json(['message' => 'Absensi berhasil!', 'distance' => $distance]);
         } else {
-
             return response()->json(['message' => 'Wajah tidak cocok.'], 400);
         }
     }
+
+    /**
+     * Menghitung jarak antara dua titik koordinat menggunakan Haversine formula
+     *
+     * @param float $lat1
+     * @param float $lon1
+     * @param float $lat2
+     * @param float $lon2
+     * @return float Jarak dalam meter
+     */
+    private function calculateDistance($lat1, $lon1, $lat2, $lon2)
+    {
+        $earthRadius = 6371000; // Radius bumi dalam meter
+
+        $latFrom = deg2rad($lat1);
+        $lonFrom = deg2rad($lon1);
+        $latTo = deg2rad($lat2);
+        $lonTo = deg2rad($lon2);
+
+        $latDelta = $latTo - $latFrom;
+        $lonDelta = $lonTo - $lonFrom;
+
+        $a = sin($latDelta / 2) * sin($latDelta / 2) +
+             cos($latFrom) * cos($latTo) *
+             sin($lonDelta / 2) * sin($lonDelta / 2);
+        $c = 2 * atan2(sqrt($a), sqrt(1 - $a));
+
+        $distance = $earthRadius * $c;
+        return $distance;
+    }
+
 
 
 

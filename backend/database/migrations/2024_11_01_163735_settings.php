@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->decimal('latitude', 10, 8); // Latitude
             $table->decimal('longitude', 11, 8); // Longitude
+            $table->integer('radius'); // Radius
             $table->time('jam_masuk'); // Jam masuk
             $table->time('jam_keluar'); // Jam keluar
             $table->timestamps();
