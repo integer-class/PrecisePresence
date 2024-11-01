@@ -71,6 +71,9 @@ class HRD_AbsensiController extends Controller
             $imageName = $file->getClientOriginalName();
             $thumbnailPath = $file->move(public_path('checkin_photos'), $imageName);
 
+            $current_time = Carbon::now();
+            $status = $current_time->lte(Carbon::parse($setting->jam_masuk)) ? 'Tepat Waktu' : 'Terlambat';
+
             // Buat entri absensi baru
             Absensi::create([
                 'id_karyawan' => $user_id,
@@ -78,7 +81,7 @@ class HRD_AbsensiController extends Controller
                 'lat' => $validated['lat'],
                 'foto_checkin' => $imageName,
                 'check_in_time' => Carbon::now(),
-                'status' => 'checkin'
+                'keterangan' => $status
             ]);
 
             return response()->json(['message' => 'Absensi berhasil!', 'distance' => $distance]);
@@ -144,6 +147,23 @@ class HRD_AbsensiController extends Controller
             return response()->json(['message' => 'No check-in record found for today.'], 400);
         }
 
+        $setting = Setting::first();
+
+        if (!$setting) {
+            return response()->json(['message' => 'Pengaturan lokasi belum dikonfigurasi.'], 500);
+        }
+
+        // Hitung jarak antara lokasi karyawan dan lokasi kantor
+        $distance = $this->calculateDistance($setting->latitude, $setting->longitude, $validated['lat'], $validated['lon']);
+
+        if ($distance > $setting->radius) {
+            return response()->json(['message' => 'Anda berada di luar radius yang diizinkan untuk absensi.'], 400);
+        }
+
+
+
+
+
         $response = Http::attach(
             'file', file_get_contents($file), $file->getClientOriginalName()
         )->post('http://127.0.0.1:8000/face_match/', [
@@ -159,6 +179,9 @@ class HRD_AbsensiController extends Controller
 
             $imageName = $file->getClientOriginalName();
             $thumbnailPath = $file->move(public_path('checkin_photos'), $imageName);
+
+
+
 
 
             // Buat entri absensi baru

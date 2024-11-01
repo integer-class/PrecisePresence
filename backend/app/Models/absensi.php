@@ -20,7 +20,8 @@ class Absensi extends Model
         'check_in_time',
         'check_out_time',
         'status',
-        'durasi_lembur'
+        'durasi_lembur',
+        'keterangan'
     ];
 
     public function karyawan()

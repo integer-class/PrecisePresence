@@ -73,11 +73,13 @@
                                 <div class="article-image"
                                 data-background="{{ asset('checkin_photos/'.$item->foto_checkin) }}">
                                 <div class="article-badge">
-                                    <div class="article-badge-item bg-danger">
-                                        {{-- <i class="fas fa-fire"></i>  --}}
+                                    @if ($item->keterangan == 'Terlambat')
+                                    <span class="badge badge-danger">Terlambat</span>
 
-                                        Terlambat
-                                        </div>
+                                @elseif ($item->keterangan == 'Tepat Waktu')
+                                    <span class="badge badge-success">Tepat Waktu</span>
+
+                                @endif
                                 </div>
                             </div>
 
