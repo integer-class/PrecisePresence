@@ -8,6 +8,7 @@ use App\Http\Controllers\HRD_karyawanController;
 use App\Http\Controllers\FaceController;
 use App\Http\Controllers\FileCheckController;
 use App\Http\Controllers\HRD_AbsensiController;
+use App\Http\Controllers\PerizinanController;
 
 use App\Http\Controllers\PengaturanController;
 
@@ -23,12 +24,17 @@ Route::resource('hrd_absensi', \App\Http\Controllers\HRD_AbsensiController::clas
 
 Route::resource('pengaturan', \App\Http\Controllers\PengaturanController::class);
 
+Route::resource('perizinan', \App\Http\Controllers\PerizinanController::class);
+
 
 Route::post('/settings', [PengaturanController::class, 'store']);
 
 
+
+
 });
 
+Route::post('/perizinan', [PerizinanController::class, 'store']);
 
 Route::post('/check-in', [HRD_AbsensiController::class, 'checkIn']);
 Route::post('/check-out', [HRD_AbsensiController::class, 'checkOut']);

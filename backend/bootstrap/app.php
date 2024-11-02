@@ -15,6 +15,7 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->validateCsrfTokens(except: [
             'check-in',
             'check-out',
+            'perizinan',
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {

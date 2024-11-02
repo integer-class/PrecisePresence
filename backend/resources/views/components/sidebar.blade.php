@@ -40,15 +40,20 @@
                 </ul>
             </li>
 
-            <li class="{{ Request::is('blank-page') ? 'active' : '' }}">
-                <a class="nav-link"
-                    href="{{ url('blank-page') }}"><i class="far fa-square"></i> <span>Blank Page</span></a>
+            <li class="{{ $type_menu === 'perizinan' ? 'active' : '' }}">
+                <a class="nav-link "
+                    href="
+
+                    {{
+                        route('perizinan.index')
+                    }}
+                    "><i class="far fa-square"></i> <span>Perzinan</span></a>
             </li>
-            <li class="nav-item dropdown">
+            <li class="nav-item dropdown  {{ $type_menu === 'absensi' ? 'active' : '' }}">
                 <a href="#"
                     class="nav-link has-dropdown"><i class="fas fa-th"></i> <span>Absensi</span></a>
                 <ul class="dropdown-menu">
-                    <li class="{{ Request::is('bootstrap-alert') ? 'active' : '' }}">
+                    <li class="{{ $type_menu === 'absensi' ? 'active' : '' }}">
                         <a class="nav-link"
                             href="{{ route('hrd_absensi.index') }}">Data Absensi</a>
                     </li>
