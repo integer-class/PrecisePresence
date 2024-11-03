@@ -63,70 +63,69 @@
 
 
 
-                @foreach ($absensi as $item)
+               @foreach ($absensi as $item)
 
+               <div class="col-12 col-md-2  col-lg-2">
+                <article class="article article-style-c">
+                    <div class="article-header">
+                        <div class="article-image"
+                            data-background="{{ asset('checkin_photos/'.$item->foto_checkin) }}">
+                        </div>
+                    </div>
+                    <div class="article-details">
+                        <div class="article-category"><a href="#">
 
-                <div class="col-12 col-md-2 col-lg-2">
-                    <article class="article article-style-c">
-                        <div class="article-header">
-                            <a href="#">
-                                <div class="article-image"
-                                data-background="{{ asset('checkin_photos/'.$item->foto_checkin) }}">
-                                <div class="article-badge">
-                                    @if ($item->keterangan == 'Terlambat')
-                                    <span class="badge badge-danger">Terlambat</span>
-
-                                @elseif ($item->keterangan == 'Tepat Waktu')
-                                    <span class="badge badge-success">Tepat Waktu</span>
-
-                                @endif
-                                </div>
-                            </div>
-
+                            <div class="bullet"></div> <a href="#">
+                                {{ \Carbon\Carbon::parse($item->check_in_time)->format('H:i:s') }}
                             </a>
 
+                        @if ($item->keterangan == 'Terlambat')
+                            <span class="badge badge-danger"  data-toggle="tooltip">
+                                Terlambat
+                            </span>
+                            @elseif ($item->keterangan == 'Tepat Waktu')
+                                <span class="badge badge-succes"  data-toggle="tooltip"
+                            >
+                            Tepat Waktu
+                            </span>
+                        @endif
+
+
+
+                        </a>
+
                         </div>
-                        <div class="article-details">
-                            <div class="article-category"><a href="#">
-
-                               {{-- @if ($item->status == 'checkin')
-                                   <span class="badge badge-success">Masuk</span>
-                               @elseif ($item->status == 'checkout')
-                                <span class="badge badge-danger">Pulang</span>
-                                @endif --}}
 
 
-                                <div class="bullet"></div> <a href="#">
-                                    {{ $item->created_at->format('d M Y') }}
+                        <div class="article-user">
+                            <img
+                            alt="Foto Karyawan"
+                            src="{{ asset('images/'.$item->karyawan->foto) }}"
+                            class="rounded-circle"
+                            width="40"
+                            height="40"
+                            style="object-fit: cover;"
+                            title="Foto Karyawan">
+                            <div class="article-user-details">
+                                <div class="user-detail-name">
+                                    <a href="#">
 
+                                        {{ $item->karyawan->nama }}
+                                    </a>
+                                </div>
+                                <div class="text-job">
 
-                            </div>
-
-
-                            <div class="article-user">
-                                <img alt="image"
-                                    src="{{ asset('img/avatar/avatar-3.png') }}">
-                                <div class="article-user-details">
-                                    <div class="user-detail-name">
-                                        <a href="#">
-
-                                            {{ $item->karyawan->nama }}
-
-
-
-                                        </a>
-                                    </div>
-                                    <div class="text-job">
-                                        <a href="#">{{ $item->karyawan->divisi }}</a>
-                                    </div>
+                                    {{ $item->karyawan->divisi }}
                                 </div>
                             </div>
                         </div>
-                    </article>
-                </div>
+                    </div>
+                </article>
+            </div>
 
-                @endforeach
 
+
+               @endforeach
             </div>
         </section>
     </div>

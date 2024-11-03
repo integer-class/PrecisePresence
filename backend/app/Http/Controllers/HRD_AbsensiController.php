@@ -14,8 +14,15 @@ class HRD_AbsensiController extends Controller
     public function index()
     {
 
+        // $absensi = Absensi::whereDate('check_in_time', Carbon::today())
+        // ->join('karyawan', 'absensi.id_karyawan', '=', 'karyawan.id_karyawan');
+
+
         $absensi = Absensi::whereDate('check_in_time', Carbon::today())
-        ->join('karyawan', 'absensi.id_karyawan', '=', 'karyawan.id_karyawan');
+        ->join('karyawan', 'absensi.id_karyawan', '=', 'karyawan.id_karyawan')
+        ->select('absensi.*', 'karyawan.nama')
+        ->get();
+
         $type_menu = 'absensi';
 
         return view('hrd.absensi.index', compact('type_menu', 'absensi'));
