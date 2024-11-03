@@ -107,7 +107,7 @@
                                             <th>
                                                 Tanggal mulai - Tanggal selesai
                                             </th>
-                                            <th>Status</th>
+                                            <th>Status Perizinan</th>
                                         </tr>
                                         @foreach ($perizinan as $p)
                                         <tr>
@@ -174,6 +174,19 @@
                                                             $p->status
                                                         }}
                                                     </span>
+                                                @endif
+
+                                                @if ($p->is_active == '1' && $p->status == 'approved')
+                                                    <span class="badge badge-success"  data-toggle="tooltip"
+                                                    data-title="karyawan belum mulai bekerja (perizinan masih aktif) ">
+                                                        Aktif
+                                                    </span>
+                                                @elseif ($p->is_active == '0' && $p->status == 'approved')
+                                                    <span class="badge badge-danger"  data-toggle="tooltip"
+                                                    data-title="karyawan sudah mulai bekerja (perizinan sudah tidak aktif) ">
+                                                        Tidak Aktif
+
+                                                </span>
                                                 @endif
 
 

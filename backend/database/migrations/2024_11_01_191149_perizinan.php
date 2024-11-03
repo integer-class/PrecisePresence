@@ -20,6 +20,7 @@ return new class extends Migration
             $table->enum('status', ['pending', 'approved', 'rejected'])->default('pending');
             $table->timestamps();
             $table->foreignId('id_karyawan')->constrained('karyawan', 'id_karyawan')->onDelete('cascade');
+            $table->boolean('is_active')->default(true);
             $table->string('dokumen_pendukung')->nullable();
         });
     }

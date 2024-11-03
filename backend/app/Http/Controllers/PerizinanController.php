@@ -52,6 +52,18 @@ class PerizinanController extends Controller
             return response()->json($validator->errors(), 422);
         }
 
+        //cek apakah karyawan sudah pernah mengajukan izin pada tanggal yang sama
+        $izin = Perizinan::where('id_karyawan', $request->id_karyawan)
+            ->where('tanggal_mulai', '<=', $request->tanggal_selesai)
+            ->where('tanggal_selesai', '>=', $request->tanggal_mulai)
+            ->first();
+
+        if ($izin) {
+            return response()->json([
+                'message' => 'Karyawan sudah pernah mengajukan izin pada tanggal tersebut.',
+            ], 422);
+        }
+
         $data = $request->only([
             'jenis_izin', 'tanggal_mulai', 'tanggal_selesai',
             'keterangan', 'id_karyawan'
@@ -62,10 +74,11 @@ class PerizinanController extends Controller
 
         // Upload file jika ada dokumen pendukung
         if ($request->hasFile('dokumen_pendukung')) {
-            $path = $request->file('dokumen_pendukung')->store('dokumen_pendukung');
-            $data['dokumen_pendukung'] = $path;
+            $file = $request->file('dokumen_pendukung');
+            $imageName = $file->getClientOriginalName();
+            $thumbnailPath = $file->move(public_path('dokumen_pendukung'), $imageName);
+            $data['dokumen_pendukung'] = 'dokumen_pendukung/' . $imageName;
         }
-
         $perizinan = Perizinan::create($data);
 
         return response()->json([

@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Carbon;
 use App\Models\Setting;
+use App\Models\Perizinan;
 
 class HRD_AbsensiController extends Controller
 {
@@ -14,9 +15,7 @@ class HRD_AbsensiController extends Controller
     {
 
         $absensi = Absensi::whereDate('check_in_time', Carbon::today())
-        ->join('karyawan', 'absensi.id_karyawan', '=', 'karyawan.id_karyawan')
-        ->get();
-
+        ->join('karyawan', 'absensi.id_karyawan', '=', 'karyawan.id_karyawan');
         $type_menu = 'absensi';
 
         return view('hrd.absensi.index', compact('type_menu', 'absensi'));
@@ -35,10 +34,40 @@ class HRD_AbsensiController extends Controller
         $file = $request->file('foto');
         $today = Carbon::today();
 
+        $activePermits = Perizinan::where('id_karyawan', $user_id)
+        ->where('status', 'approved')
+        ->where('is_active', true)
+        ->where(function ($query) {
+            $query->whereDate('tanggal_mulai', '<=', Carbon::now())
+                  ->whereDate('tanggal_selesai', '>=', Carbon::now());
+        })
+        ->exists();
+
+        if ($activePermits && !$request->input('force_checkin')) {
+            return response()->json(['message' => 'Anda memiliki izin aktif. Apakah Anda ingin menghentikan perizinan dan melanjutkan check-in?', 'require_confirmation' => true], 400);
+        }
+
+
+          // Jika force_checkin diaktifkan, update status perizinan menjadi "cancelled"
+          if ($activePermits && $request->input('force_checkin')) {
+            Perizinan::where('id_karyawan', $user_id)
+                ->where('status', 'approved')
+                ->where('is_active', 1)
+                ->where(function ($query) {
+                    $query->whereDate('tanggal_mulai', '<=', Carbon::now())
+                          ->whereDate('tanggal_selesai', '>=', Carbon::now());
+                })
+                ->update(['is_active' => 0]);
+        }
+
         // Cek apakah karyawan sudah melakukan check-in hari ini
         $absensi = Absensi::where('id_karyawan', $user_id)
                           ->whereDate('check_in_time', $today)
                           ->first();
+
+
+
+
 
         if ($absensi) {
             return response()->json(['message' => 'Already checked in today.'], 400);

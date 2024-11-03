@@ -34,9 +34,6 @@
                     <li class="{{ $type_menu === 'karyawan-create' ? 'active' : '' }}">
                         <a class="nav-link" href="{{ route('hrd_karyawan.create') }}">Tambah Karyawan</a>
                     </li>
-                    <li class="{{ Request::is('layout-top-navigation') ? 'active' : '' }}">
-                        <a class="nav-link" href="{{ url('layout-top-navigation') }}">Top Navigation</a>
-                    </li>
                 </ul>
             </li>
 
