@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:precisepresence/core/router/app_router.dart';
+import 'package:precisepresence/presentation/auth/bloc/login_bloc.dart';
 
 import 'core/constants/colors.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -34,9 +35,7 @@ class MyApp extends StatelessWidget {
         // BlocProvider(
         //   create: (context) => CheckoutBloc(),
         // ),
-        // BlocProvider(
-        //   create: (context) => LoginBloc(AuthRemoteDatasource()),
-        // ),
+        BlocProvider(create: (context) => LoginBloc(AuthRemoteDatasource())),
         // BlocProvider(
         //   create: (context) => LogoutBloc(AuthRemoteDatasource()),
         // ),
