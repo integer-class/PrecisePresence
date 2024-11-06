@@ -28,6 +28,16 @@ class HRD_AbsensiController extends Controller
         return view('hrd.absensi.index', compact('type_menu', 'absensi'));
     }
 
+    public function show($id)
+    {
+        $type_menu = 'absensi';
+        $absensi = Absensi::where('id_karyawan', $id)
+        ->whereDate('check_in_time', Carbon::today())
+        ->first();
+
+        return view('hrd.absensi.show', compact('absensi', 'type_menu'));
+    }
+
     public function checkIn(Request $request)
     {
         $validated = $request->validate([

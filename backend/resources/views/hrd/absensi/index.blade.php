@@ -17,7 +17,7 @@
                 </h1>
                 <div class="section-header-breadcrumb">
                     <div class="breadcrumb-item active"><a href="#">Dashboard</a></div>
-                    <div class="breadcrumb-item"><a href="#">Components</a></div>
+                    <div class="breadcrumb-item"><a href="#">Components</a></div>k
                     <div class="breadcrumb-item">Article</div>
                 </div>
             </div>
@@ -68,9 +68,11 @@
                <div class="col-12 col-md-2  col-lg-2">
                 <article class="article article-style-c">
                     <div class="article-header">
-                        <div class="article-image"
+                        <a href="{{ route('hrd_absensi.show', $item->id) }}">
+                            <div class="article-image"
                             data-background="{{ asset('checkin_photos/'.$item->foto_checkin) }}">
                         </div>
+                    </a>
                     </div>
                     <div class="article-details">
                         <div class="article-category"><a href="#">
