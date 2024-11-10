@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use RealRashid\SweetAlert\Facades\Alert;
 use App\Models\User;
 // Model
-use App\Models\karyawan;
+use App\Models\Karyawan;
 
 class HRD_karyawanController extends Controller
 {
