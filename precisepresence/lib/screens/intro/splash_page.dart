@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:precisepresence/router/app_router.dart';
 import 'package:precisepresence/router/models/path_parameters.dart';
+import 'package:precisepresence/data/datasource/auth_local_datasource.dart'; // Import untuk memeriksa status login
 
 import '../../constants/colors.dart';
-import '../../router/app_router.dart';
 
 class SplashPage extends StatefulWidget {
   const SplashPage({super.key});
@@ -15,20 +15,41 @@ class SplashPage extends StatefulWidget {
 
 class _SplashPageState extends State<SplashPage> {
   @override
-  Widget build(BuildContext context) {
-    Future.delayed(
-      const Duration(seconds: 1),
-      () => context.goNamed(
-        RouteConstants.root,
-        pathParameters: PathParameters().toMap(),
-      ),
-    );
+  void initState() {
+    super.initState();
+    _checkAuthStatus();
+  }
 
+  Future<void> _checkAuthStatus() async {
+    // Cek status autentikasi pengguna
+    final isAuth = await AuthLocalDatasource().isAuth();
+
+    // Tunggu sebentar dan arahkan ke halaman yang tepat
+    await Future.delayed(const Duration(seconds: 1));
+
+    // Jika sudah login, arahkan ke halaman utama; jika belum login, arahkan ke halaman login
+    if (!isAuth) {
+      context.pushNamed(
+        RouteConstants.login,
+      );
+    } else {
+      context.goNamed(
+        RouteConstants.root,
+        pathParameters: PathParameters(
+          rootTab: RootTab.order,
+        ).toMap(),
+      );
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    // Splash screen hanya menampilkan logo atau teks sementara
     return const Scaffold(
       bottomNavigationBar: Padding(
         padding: EdgeInsets.all(30.0),
         child: Text(
-          'Code with Bahri',
+          'Precise Presence',
           style: TextStyle(
             color: AppColors.grey,
             fontWeight: FontWeight.w600,

@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:precisepresence/screens/home/home.dart';
 import 'package:precisepresence/screens/intro/splash_page.dart';
+//login
+import 'package:precisepresence/screens/auth/login.dart';
 part 'enums/root_tab.dart';
 part 'route_constants.dart';
 
@@ -13,6 +15,11 @@ class AppRouter {
         name: RouteConstants.splash,
         path: RouteConstants.splashPath,
         builder: (context, state) => const SplashPage(),
+      ),
+      GoRoute(
+        name: RouteConstants.login,
+        path: RouteConstants.loginPath,
+        builder: (context, state) => const LoginPage(),
       ),
       GoRoute(
         name: RouteConstants.root,
