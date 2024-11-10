@@ -27,6 +27,7 @@ class AuthController extends Controller
             );
         }
         $user = User::where("email", $request["email"])->firstOrFail();
+        $karyawan = $user->karyawan;
         $token = $user->createToken("auth_token")->plainTextToken;
 
         $user_loggedin=[
@@ -36,7 +37,18 @@ class AuthController extends Controller
             'user_token' => $token,
             'token_type' => 'Bearer',
             'verified' => true,
-            'status'=>'loggedin'
+            'status'=>'loggedin',
+            'name' => $karyawan->nama,
+            'divisi' => $karyawan->divisi,
+            'alamat' => $karyawan->alamat,
+            'ttl' => $karyawan->ttl,
+            'jenis_kelamin' => $karyawan->jenis_kelamin,
+            'no_hp' => $karyawan->no_hp,
+            'foto' => $karyawan->foto,
+
+
+
+        
         ];
         return response()->json(
             $user_loggedin,
