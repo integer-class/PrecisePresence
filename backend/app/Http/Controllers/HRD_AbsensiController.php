@@ -107,7 +107,7 @@ class HRD_AbsensiController extends Controller
         // Panggil API untuk verifikasi wajah
         $response = Http::attach(
             'file', file_get_contents($file), $file->getClientOriginalName()
-        )->post('http://127.0.0.1:8000/face_match/', [
+        )->post('http://20.211.74.84/face_match/', [
             'threshold' => 0.7,
         ]);
 
@@ -212,7 +212,7 @@ class HRD_AbsensiController extends Controller
 
         $response = Http::attach(
             'file', file_get_contents($file), $file->getClientOriginalName()
-        )->post('http://127.0.0.1:8000/face_match/', [
+        )->post('http://20.211.74.84/face_match/', [
             'threshold' => 0.7,
         ]);
 
@@ -251,6 +251,6 @@ class HRD_AbsensiController extends Controller
     {
         $response = Http::attach(
             'file', file_get_contents($file), $file->getClientOriginalName()
-        )->post("http://127.0.0.1:8000/register_face_personal/?user_id={$user_id}");
+        )->post("http://20.211.74.84/register_face_personal/?user_id={$user_id}");
     }
 }
