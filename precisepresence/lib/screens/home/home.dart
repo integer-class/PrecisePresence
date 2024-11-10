@@ -25,7 +25,8 @@ class _HomepageState extends State<Homepage> {
             //image rouded
             const CircleAvatar(
               radius: 20,
-              backgroundImage: AssetImage('assets/images/logo.png'),
+              backgroundImage:
+                  NetworkImage("https://i.ibb.co.com/D7gHvc2/Group-1862.png"),
             ),
             const SizedBox(width: 10),
 
