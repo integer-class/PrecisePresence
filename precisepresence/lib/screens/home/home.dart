@@ -5,6 +5,7 @@ import 'package:precisepresence/data/datasource/auth_local_datasource.dart';
 import 'package:precisepresence/screens/components/TodayAttandance.dart';
 import 'package:precisepresence/screens/components/activity.dart';
 import 'package:precisepresence/screens/components/date.dart';
+import 'package:precisepresence/screens/components/custom_floating_action_button.dart'; // Import the new file
 import 'package:precisepresence/data/responses/auth_response_model.dart';
 
 class Homepage extends StatefulWidget {
@@ -46,35 +47,8 @@ class _HomepageState extends State<Homepage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Row(
-          children: [
-            // Image rounded with fallback if imageUrl is empty
-            CircleAvatar(
-              radius: 20,
-              backgroundImage: imageUrl.isNotEmpty
-                  ? NetworkImage('$baseImg$imageUrl')
-                  : const AssetImage('assets/images/default_profile.png')
-                      as ImageProvider,
-            ),
-            const SizedBox(width: 10),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(userName, style: const TextStyle(fontSize: 15)),
-                Text(divisi, style: const TextStyle(fontSize: 12)),
-              ],
-            ),
-            // Icon button notification round
-            const Spacer(),
-            IconButton(
-              onPressed: () {},
-              icon: const Icon(Icons.notifications_none),
-            ),
-          ],
-        ),
-        centerTitle: false,
-      ),
+      extendBody: true,
+      appBar: buildAppBar(),
       body: SafeArea(
         child: SingleChildScrollView(
           child: Column(
@@ -85,6 +59,90 @@ class _HomepageState extends State<Homepage> {
             ],
           ),
         ),
+      ),
+      floatingActionButton: CustomFloatingActionButton(
+        onPressed: () {},
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      bottomNavigationBar: CustomBottomAppBar(),
+    );
+  }
+
+  AppBar buildAppBar() {
+    return AppBar(
+      title: Row(
+        children: [
+          CircleAvatar(
+            radius: 20,
+            backgroundImage: imageUrl.isNotEmpty
+                ? NetworkImage('$baseImg$imageUrl')
+                : const AssetImage('assets/images/default_profile.png')
+                    as ImageProvider,
+          ),
+          const SizedBox(width: 10),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(userName, style: const TextStyle(fontSize: 15)),
+              Text(divisi, style: const TextStyle(fontSize: 12)),
+            ],
+          ),
+          const Spacer(),
+          IconButton(
+            onPressed: () {},
+            icon: const Icon(Icons.notifications_none),
+          ),
+        ],
+      ),
+      centerTitle: false,
+    );
+  }
+}
+
+class CustomBottomAppBar extends StatelessWidget {
+  const CustomBottomAppBar({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return BottomAppBar(
+      padding: const EdgeInsets.symmetric(horizontal: 10),
+      height: 60,
+      color: Colors.blue[100], // Warna latar belakang biru muda
+      shape: const CircularNotchedRectangle(),
+      notchMargin: 8,
+      child: Row(
+        mainAxisSize: MainAxisSize.max,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: <Widget>[
+          IconButton(
+            icon: const Icon(
+              Icons.menu,
+              color: AppColors.primary,
+            ),
+            onPressed: () {},
+          ),
+          IconButton(
+            icon: const Icon(
+              Icons.search,
+              color: AppColors.primary,
+            ),
+            onPressed: () {},
+          ),
+          IconButton(
+            icon: const Icon(
+              Icons.print,
+              color: AppColors.primary,
+            ),
+            onPressed: () {},
+          ),
+          IconButton(
+            icon: const Icon(
+              Icons.people,
+              color: AppColors.primary,
+            ),
+            onPressed: () {},
+          ),
+        ],
       ),
     );
   }
