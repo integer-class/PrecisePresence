@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:precisepresence/screens/home/home.dart';
 import 'package:precisepresence/screens/intro/splash_page.dart';
-//login
 import 'package:precisepresence/screens/auth/login.dart';
 part 'enums/root_tab.dart';
 part 'route_constants.dart';
@@ -25,7 +24,10 @@ class AppRouter {
         name: RouteConstants.root,
         path: RouteConstants.rootPath,
         builder: (context, state) {
-          final tab = int.tryParse(state.pathParameters['root_tab'] ?? '') ?? 0;
+          final tabIndex =
+              int.tryParse(state.pathParameters['root_tab'] ?? '') ?? 0;
+          final tab = RootTab.fromIndex(tabIndex);
+
           return Homepage(
             key: state.pageKey,
             currentTab: tab,

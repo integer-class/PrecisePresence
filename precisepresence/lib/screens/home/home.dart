@@ -1,15 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:precisepresence/constants/colors.dart';
 import 'package:precisepresence/constants/variables.dart';
 import 'package:precisepresence/data/datasource/auth_local_datasource.dart';
+import 'package:precisepresence/router/app_router.dart';
 import 'package:precisepresence/screens/components/TodayAttandance.dart';
 import 'package:precisepresence/screens/components/activity.dart';
 import 'package:precisepresence/screens/components/date.dart';
 import 'package:precisepresence/screens/components/custom_floating_action_button.dart'; // Import the new file
 import 'package:precisepresence/data/responses/auth_response_model.dart';
+import 'package:precisepresence/screens/home/home.dart';
 
 class Homepage extends StatefulWidget {
-  final int currentTab;
+  final RootTab currentTab; // Updated to RootTab enum
   const Homepage({
     Key? key,
     required this.currentTab,
@@ -64,7 +67,7 @@ class _HomepageState extends State<Homepage> {
         onPressed: () {},
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      bottomNavigationBar: CustomBottomAppBar(),
+      bottomNavigationBar: CustomBottomAppBar(currentTab: widget.currentTab),
     );
   }
 
@@ -100,14 +103,18 @@ class _HomepageState extends State<Homepage> {
 }
 
 class CustomBottomAppBar extends StatelessWidget {
-  const CustomBottomAppBar({Key? key}) : super(key: key);
+  final RootTab currentTab; // Accept the RootTab enum
+  const CustomBottomAppBar({
+    Key? key,
+    required this.currentTab,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return BottomAppBar(
       padding: const EdgeInsets.symmetric(horizontal: 10),
       height: 60,
-      color: Colors.blue[100], // Warna latar belakang biru muda
+      color: Colors.blue[100],
       shape: const CircularNotchedRectangle(),
       notchMargin: 8,
       child: Row(
@@ -115,32 +122,50 @@ class CustomBottomAppBar extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
           IconButton(
-            icon: const Icon(
-              Icons.menu,
-              color: AppColors.primary,
+            icon: Icon(
+              Icons.home,
+              color:
+                  currentTab == RootTab.home ? AppColors.primary : Colors.grey,
             ),
-            onPressed: () {},
+            onPressed: () {
+              // Navigate to the home tab
+              context.go('/${RootTab.home.value}');
+            },
           ),
           IconButton(
-            icon: const Icon(
-              Icons.search,
-              color: AppColors.primary,
+            icon: Icon(
+              Icons.explore,
+              color: currentTab == RootTab.explore
+                  ? AppColors.primary
+                  : Colors.grey,
             ),
-            onPressed: () {},
+            onPressed: () {
+              // Navigate to the explore tab
+              context.go('/${RootTab.explore.value}');
+            },
           ),
           IconButton(
-            icon: const Icon(
+            icon: Icon(
               Icons.print,
-              color: AppColors.primary,
+              color:
+                  currentTab == RootTab.order ? AppColors.primary : Colors.grey,
             ),
-            onPressed: () {},
+            onPressed: () {
+              // Navigate to the order tab
+              context.go('/${RootTab.order.value}');
+            },
           ),
           IconButton(
-            icon: const Icon(
-              Icons.people,
-              color: AppColors.primary,
+            icon: Icon(
+              Icons.account_circle,
+              color: currentTab == RootTab.account
+                  ? AppColors.primary
+                  : Colors.grey,
             ),
-            onPressed: () {},
+            onPressed: () {
+              // Navigate to the account tab
+              context.go('/${RootTab.account.value}');
+            },
           ),
         ],
       ),
