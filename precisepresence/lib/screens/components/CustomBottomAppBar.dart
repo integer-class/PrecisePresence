@@ -59,12 +59,12 @@ class CustomBottomAppBar extends StatelessWidget {
           IconButton(
             icon: Icon(
               Icons.account_circle,
-              color: currentTab == RootTab.profil
+              color: currentTab == RootTab.profile
                   ? AppColors.primary
                   : Colors.grey,
             ),
             onPressed: () {
-              context.go('/${RootTab.profil.value}');
+              context.go('/${RootTab.profile.value}');
             },
           ),
         ],

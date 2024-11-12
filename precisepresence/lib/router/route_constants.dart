@@ -11,4 +11,5 @@ class RouteConstants {
   static const String rootPath = '/:root_tab';
 
   static const String history = 'history';
+  static const String profile = 'profile';
 }
