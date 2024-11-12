@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:precisepresence/screens/history/history.dart';
 import 'package:precisepresence/screens/home/home.dart';
 import 'package:precisepresence/screens/intro/splash_page.dart';
 import 'package:precisepresence/screens/auth/login.dart';
@@ -27,6 +28,10 @@ class AppRouter {
           final tabIndex =
               int.tryParse(state.pathParameters['root_tab'] ?? '') ?? 0;
           final tab = RootTab.fromIndex(tabIndex);
+
+          if (tab == RootTab.history) {
+            return const HistoryPage();
+          }
 
           return Homepage(
             key: state.pageKey,

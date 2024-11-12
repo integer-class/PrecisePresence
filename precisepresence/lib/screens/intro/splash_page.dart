@@ -36,7 +36,7 @@ class _SplashPageState extends State<SplashPage> {
       context.goNamed(
         RouteConstants.root,
         pathParameters: PathParameters(
-          rootTab: RootTab.order,
+          rootTab: RootTab.home,
         ).toMap(),
       );
     }
@@ -44,7 +44,6 @@ class _SplashPageState extends State<SplashPage> {
 
   @override
   Widget build(BuildContext context) {
-    // Splash screen hanya menampilkan logo atau teks sementara
     return const Scaffold(
       bottomNavigationBar: Padding(
         padding: EdgeInsets.all(30.0),

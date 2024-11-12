@@ -2,9 +2,9 @@ part of '../app_router.dart';
 
 enum RootTab {
   home('0'),
-  explore('1'),
-  order('2'),
-  account('3');
+  history('1'),
+  perizinan('2'),
+  profil('3');
 
   final String value;
   const RootTab(this.value);

@@ -134,37 +134,38 @@ class CustomBottomAppBar extends StatelessWidget {
           ),
           IconButton(
             icon: Icon(
-              Icons.explore,
-              color: currentTab == RootTab.explore
+              Icons.history,
+              color: currentTab == RootTab.history
                   ? AppColors.primary
                   : Colors.grey,
             ),
             onPressed: () {
-              // Navigate to the explore tab
-              context.go('/${RootTab.explore.value}');
+              // Navigate to the history tab
+              context.go('/${RootTab.history.value}');
             },
           ),
           IconButton(
             icon: Icon(
               Icons.print,
-              color:
-                  currentTab == RootTab.order ? AppColors.primary : Colors.grey,
+              color: currentTab == RootTab.perizinan
+                  ? AppColors.primary
+                  : Colors.grey,
             ),
             onPressed: () {
               // Navigate to the order tab
-              context.go('/${RootTab.order.value}');
+              context.go('/${RootTab.perizinan.value}');
             },
           ),
           IconButton(
             icon: Icon(
               Icons.account_circle,
-              color: currentTab == RootTab.account
+              color: currentTab == RootTab.profil
                   ? AppColors.primary
                   : Colors.grey,
             ),
             onPressed: () {
               // Navigate to the account tab
-              context.go('/${RootTab.account.value}');
+              context.go('/${RootTab.profil.value}');
             },
           ),
         ],
