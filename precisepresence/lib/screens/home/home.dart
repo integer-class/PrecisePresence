@@ -128,7 +128,6 @@ class CustomBottomAppBar extends StatelessWidget {
                   currentTab == RootTab.home ? AppColors.primary : Colors.grey,
             ),
             onPressed: () {
-              // Navigate to the home tab
               context.go('/${RootTab.home.value}');
             },
           ),
@@ -140,7 +139,6 @@ class CustomBottomAppBar extends StatelessWidget {
                   : Colors.grey,
             ),
             onPressed: () {
-              // Navigate to the history tab
               context.go('/${RootTab.history.value}');
             },
           ),
@@ -152,7 +150,6 @@ class CustomBottomAppBar extends StatelessWidget {
                   : Colors.grey,
             ),
             onPressed: () {
-              // Navigate to the order tab
               context.go('/${RootTab.perizinan.value}');
             },
           ),
@@ -164,7 +161,6 @@ class CustomBottomAppBar extends StatelessWidget {
                   : Colors.grey,
             ),
             onPressed: () {
-              // Navigate to the account tab
               context.go('/${RootTab.profil.value}');
             },
           ),
