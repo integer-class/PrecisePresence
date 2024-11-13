@@ -3,7 +3,7 @@ import 'package:precisepresence/constants/colors.dart';
 import 'package:precisepresence/router/app_router.dart';
 import 'package:precisepresence/screens/components/CustomBottomAppBar.dart';
 import 'package:precisepresence/screens/components/custom_floating_action_button.dart';
-
+import 'package:google_fonts/google_fonts.dart';
 import '../../constants/colors.dart';
 
 class Profile extends StatefulWidget {
@@ -71,12 +71,15 @@ class _ProfileState extends State<Profile> {
                         SizedBox(height: 10),
                         Text('Shofwah Kanaka',
                             style: TextStyle(
-                                fontSize: 20,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.white)),
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
+                              color: AppColors.primary,
+                            )),
                         Text('Lead UI/UX Designer',
-                            style:
-                                TextStyle(fontSize: 15, color: Colors.white)),
+                            style: TextStyle(
+                              fontSize: 15,
+                              color: const Color.fromARGB(255, 14, 50, 100),
+                            )),
                       ],
                     ),
                   ),
@@ -96,11 +99,13 @@ class _ProfileState extends State<Profile> {
                         children: [
                           Icon(Icons.person_2_outlined, size: 20),
                           SizedBox(width: 10),
-                          Text('shofwah kanaka',
-                              style: TextStyle(
-                                fontSize: 20,
-                                color: AppColors.primary,
-                              )),
+                          Text(
+                            'shofwah kanaka',
+                            style: TextStyle(
+                              fontSize: 20,
+                              color: AppColors.primary,
+                            ),
+                          ),
                         ],
                       ),
                     ),
