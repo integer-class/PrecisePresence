@@ -12,7 +12,7 @@ class CustomFloatingActionButton extends StatelessWidget {
     return FloatingActionButton(
       onPressed: onPressed,
       child: const Icon(
-        Icons.add,
+        Icons.contacts_sharp,
         color: Colors.white, // Warna icon FAB
       ),
       backgroundColor: AppColors.primary, // Warna latar belakang FAB

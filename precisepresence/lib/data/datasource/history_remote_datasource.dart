@@ -1,15 +1,31 @@
+import 'dart:convert';
 import 'package:dartz/dartz.dart';
 import 'package:http/http.dart' as http;
 import 'package:precisepresence/constants/variables.dart';
+import 'package:precisepresence/data/datasource/auth_local_datasource.dart';
 import 'package:precisepresence/data/responses/history_response_model.dart';
+import 'package:precisepresence/data/responses/auth_response_model.dart';
 
 class HistoryRemoteDatasource {
   Future<Either<String, HistoryResponseModel>> getHistory() async {
-    final url = Uri.parse('$baseUrl/history');
+    // Load user data to get id_karyawan
+    AuthLocalDatasource authLocalDatasource = AuthLocalDatasource();
+    AuthResponseModel? authData = await authLocalDatasource.getAuthData();
+
+    if (authData == null) {
+      return Left('User data not found');
+    }
+
+    String idKaryawan = authData.idKaryawan ?? '1';
+
+    final url =
+        Uri.parse('http://20.211.46.189/api/history?id_karyawan=$idKaryawan');
     final response = await http.get(url);
 
     if (response.statusCode == 200) {
-      return Right(HistoryResponseModel.fromJson(response.body));
+      // Parse the response body
+      final Map<String, dynamic> data = json.decode(response.body);
+      return Right(HistoryResponseModel.fromJson(data));
     } else {
       return Left('Failed to get history: ${response.body}');
     }
