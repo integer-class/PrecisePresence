@@ -31,7 +31,7 @@ class AuthController extends Controller
         $token = $user->createToken("auth_token")->plainTextToken;
 
         $user_loggedin=[
-
+            'id_karyawan' => (string)$karyawan->id_karyawan, // Cast to string            
             'email' => $user->email,
             'role' => $user->role,
             'user_token' => $token,
