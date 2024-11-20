@@ -8,7 +8,7 @@ import 'package:precisepresence/data/responses/auth_response_model.dart';
 
 class HistoryRemoteDatasource {
   Future<Either<String, HistoryResponseModel>> getHistory() async {
-    // Load user data to get id_karyawan
+    // Load user data to get id_karyawan and token
     AuthLocalDatasource authLocalDatasource = AuthLocalDatasource();
     AuthResponseModel? authData = await authLocalDatasource.getAuthData();
 
@@ -17,10 +17,16 @@ class HistoryRemoteDatasource {
     }
 
     String idKaryawan = authData.idKaryawan ?? '1';
+    String userToken = authData.userToken;
 
-    final url =
-        Uri.parse('http://20.211.46.189/api/history?id_karyawan=$idKaryawan');
-    final response = await http.get(url);
+    final headers = {
+      'Authorization': 'Bearer $userToken',
+    };
+
+    final url = Uri.parse(
+        'http://20.211.46.189/api/user/history?id_karyawan=$idKaryawan');
+
+    final response = await http.get(url, headers: headers); // Include headers
 
     if (response.statusCode == 200) {
       // Parse the response body
