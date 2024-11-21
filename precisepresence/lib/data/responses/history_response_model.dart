@@ -75,6 +75,6 @@ class HistoryData {
 // Fungsi untuk memformat tanggal
 String formatDate(String dateString) {
   final DateTime dateTime = DateTime.parse(dateString);
-  final DateFormat formatter = DateFormat('dd MMM yyyy, HH:mm');
+  final DateFormat formatter = DateFormat('dd MMM yyyy');
   return formatter.format(dateTime);
 }

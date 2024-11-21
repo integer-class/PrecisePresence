@@ -34,8 +34,8 @@ class _HistoryPageState extends State<HistoryPage> {
       return "Belum Absen"; // Mengembalikan "Belum Absen" jika waktu null
     }
     final DateTime dateTime = DateTime.parse(timeString);
-    final DateFormat formatter = DateFormat('HH:mm'); // Format jam
-    return formatter.format(dateTime); // Mengembalikan jam dalam format HH:mm
+    final DateFormat formatter = DateFormat('HH:mm');
+    return formatter.format(dateTime);
   }
 
   @override
@@ -70,7 +70,7 @@ class _HistoryPageState extends State<HistoryPage> {
                   child: Column(
                     children: [
                       Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
                             item.createdAt,
@@ -79,19 +79,30 @@ class _HistoryPageState extends State<HistoryPage> {
                               fontSize: 16.0,
                             ),
                           ),
+                          if (item.keterangan == 'Terlambat')
+                            Text(
+                              item.keterangan,
+                              style: TextStyle(
+                                color: Color.fromARGB(143, 255, 0, 0),
+                                fontWeight: FontWeight.bold,
+                                fontSize: 16.0,
+                              ),
+                            ),
                         ],
                       ),
-                      const SizedBox(height: 10),
+                      const SizedBox(height: 15),
                       Row(
                         children: [
                           Text(
-                            item.keterangan,
+                            'Successfully took attendance ',
                             style: TextStyle(
                               color: Color(0xFFED7D2B),
                               fontWeight: FontWeight.bold,
-                              fontSize: 16.0,
+                              fontSize: 20.0,
                             ),
                           ),
+
+                          //percabangan untuk menampilkan status lembur
                         ],
                       ),
                       const SizedBox(height: 10),
