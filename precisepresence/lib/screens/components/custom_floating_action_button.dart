@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:precisepresence/constants/colors.dart';
+import 'package:precisepresence/router/app_router.dart';
 
 class CustomFloatingActionButton extends StatelessWidget {
   final VoidCallback onPressed;
@@ -10,7 +12,9 @@ class CustomFloatingActionButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FloatingActionButton(
-      onPressed: onPressed,
+      onPressed: () {
+        context.go('/${RootTab.presensi.value}');
+      },
       child: const Icon(
         Icons.contacts_sharp,
         color: Colors.white, // Warna icon FAB

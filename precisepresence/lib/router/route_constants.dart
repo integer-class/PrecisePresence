@@ -12,4 +12,5 @@ class RouteConstants {
 
   static const String history = 'history';
   static const String profile = 'profile';
+  static const String presensi = 'presensi';
 }
