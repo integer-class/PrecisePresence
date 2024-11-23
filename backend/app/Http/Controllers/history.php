@@ -29,29 +29,28 @@ class history extends Controller
     }
 
     public function cek(Request $request)
-    {
-        $today = Carbon::today();
-        $absensi = Absensi::where('id_karyawan', $request->id_karyawan)
+{
+    $today = Carbon::today();
+    $absensi = Absensi::where('id_karyawan', $request->id_karyawan)
         ->whereDate('check_in_time', $today)
         ->first();
 
-
-        if ($absensi) {
-            return response()->json([
-                'message' => 'success',
-
-                'data' => 'terdapat data absensi pada hari ini'
-            ]);
-        } else {
-            return response()->json([
-                'message' => 'no data found',
-
-                'data' => 'tidak terdapat data absensi pada hari ini'
-            ]);
-        }
-
-
+    if (!$absensi) {
+        return response()->json([
+            'message' => 'belum check-in',
+        ]);
     }
+    if ($absensi->status == 'checkin') {
+        return response()->json([
+            'message' => 'sudah check-in, belum checkout',
+        ]);
+    } elseif ($absensi->status == 'checkout') {
+        return response()->json([
+            'message' => 'sudah checkout.',
+        ]);
+    }
+}
+
 
     /**
      * Show the form for creating a new resource.

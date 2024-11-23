@@ -41,10 +41,14 @@ class CustomFloatingActionButton extends StatelessWidget {
       if (response.statusCode == 200) {
         final data = json.decode(response.body);
 
-        if (data['message'] == 'success') {
+        if (data['message'] == 'sudah check-in, belum checkout') {
           context.go('/${RootTab.checkout.value}');
-        } else if (data['message'] == 'no data found') {
+        } else if (data['message'] == 'belum check-in') {
           context.go('/${RootTab.presensi.value}');
+        } else if (data['message'] == 'checkout') {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Anda sudah check-in dan check-out')),
+          );
         } else {
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(content: Text('Unexpected response from server')),
