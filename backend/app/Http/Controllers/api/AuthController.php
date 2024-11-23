@@ -31,7 +31,11 @@ class AuthController extends Controller
         $token = $user->createToken("auth_token")->plainTextToken;
 
         $user_loggedin=[
+<<<<<<< HEAD
             'id_karyawan' => (string)$karyawan->id_karyawan, // Cast to string            
+=======
+            'id_karyawan' => (string)$karyawan->id_karyawan, // Cast to string
+>>>>>>> b74b0566d792cae06ddbcc47381c2fbe7969a427
             'email' => $user->email,
             'role' => $user->role,
             'user_token' => $token,
@@ -48,7 +52,7 @@ class AuthController extends Controller
 
 
 
-        
+
         ];
         return response()->json(
             $user_loggedin,
