@@ -45,9 +45,10 @@ class CustomFloatingActionButton extends StatelessWidget {
           context.go('/${RootTab.checkout.value}');
         } else if (data['message'] == 'belum check-in') {
           context.go('/${RootTab.presensi.value}');
-        } else if (data['message'] == 'checkout') {
+        } else if (data['message'] == 'sudah checkout.') {
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('Anda sudah check-in dan check-out')),
+            const SnackBar(
+                content: Text('Anda sudah absen masuk dan pulang hari ini')),
           );
         } else {
           ScaffoldMessenger.of(context).showSnackBar(
