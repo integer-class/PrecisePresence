@@ -4,6 +4,7 @@ import 'package:precisepresence/screens/history/history.dart';
 import 'package:precisepresence/screens/home/home.dart';
 import 'package:precisepresence/screens/intro/splash_page.dart';
 import 'package:precisepresence/screens/auth/login.dart';
+import 'package:precisepresence/screens/presensi/presensi.dart';
 import 'package:precisepresence/screens/profile/profile.dart';
 part 'enums/root_tab.dart';
 part 'route_constants.dart';
@@ -30,12 +31,17 @@ class AppRouter {
               int.tryParse(state.pathParameters['root_tab'] ?? '') ?? 0;
           final tab = RootTab.fromIndex(tabIndex);
 
+          if (tab == RootTab.presensi) {
+            return const Presensi();
+          }
+
           if (tab == RootTab.history) {
             return const HistoryPage();
           }
           if (tab == RootTab.profile) {
             return const Profile();
           }
+
           return Homepage(
             key: state.pageKey,
             currentTab: tab,

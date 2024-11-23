@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 use App\Models\Absensi;
-
+use Illuminate\Support\Carbon;
 
 use Illuminate\Http\Request;
 
@@ -26,6 +26,31 @@ class history extends Controller
                 'data' => $absensi
             ]);
         }
+    }
+
+    public function cek(Request $request)
+    {
+        $today = Carbon::today();
+        $absensi = Absensi::where('id_karyawan', $request->id_karyawan)
+        ->whereDate('check_in_time', $today)
+        ->first();
+
+
+        if ($absensi) {
+            return response()->json([
+                'message' => 'success',
+
+                'data' => 'terdapat data absensi pada hari ini'
+            ]);
+        } else {
+            return response()->json([
+                'message' => 'no data found',
+
+                'data' => 'tidak terdapat data absensi pada hari ini'
+            ]);
+        }
+
+
     }
 
     /**
