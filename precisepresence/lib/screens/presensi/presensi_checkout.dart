@@ -1,16 +1,16 @@
 import 'dart:io';
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
-import 'package:precisepresence/data/datasource/checkin_remote_datasource.dart';
+import 'package:precisepresence/data/datasource/CheckOutRemoteDatasource.dart';
 
-class Presensi extends StatefulWidget {
-  const Presensi({super.key});
+class Checkout extends StatefulWidget {
+  const Checkout({super.key});
 
   @override
-  State<Presensi> createState() => _PresensiState();
+  State<Checkout> createState() => _CheckoutState();
 }
 
-class _PresensiState extends State<Presensi> {
+class _CheckoutState extends State<Checkout> {
   late CameraController _cameraController;
   late List<CameraDescription> _cameras;
   bool _isCameraInitialized = false;
@@ -26,7 +26,6 @@ class _PresensiState extends State<Presensi> {
   Future<void> _initializeCamera() async {
     _cameras = await availableCameras();
 
-    // Mencari kamera depan
     final frontCamera = _cameras.firstWhere(
       (camera) => camera.lensDirection == CameraLensDirection.front,
       orElse: () => _cameras[0],
@@ -76,16 +75,14 @@ class _PresensiState extends State<Presensi> {
     try {
       final foto = File(_imagePath!);
 
-      // Instansiasi CheckInRemoteDatasource
-      final datasource = CheckInRemoteDatasource();
+      final datasource = CheckOutRemoteDatasource();
 
-      final result = await datasource.postCheckIn(
+      final result = await datasource.postCheckOut(
         foto: foto,
       );
 
       result.fold(
         (error) {
-          // Menampilkan pesan error yang diterima dari server
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(content: Text('Gagal: $error')),
           );
@@ -110,7 +107,7 @@ class _PresensiState extends State<Presensi> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Presensi - Kamera Depan (Mirror)"),
+        title: const Text("Checkout - Kamera Depan (Mirror)"),
         centerTitle: true,
       ),
       body: _isCameraInitialized
@@ -141,7 +138,7 @@ class _PresensiState extends State<Presensi> {
                             ),
                           ),
                         ),
-                      )
+                      ),
                     ],
                   ),
                 ),

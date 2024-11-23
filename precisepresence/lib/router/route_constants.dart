@@ -13,4 +13,8 @@ class RouteConstants {
   static const String history = 'history';
   static const String profile = 'profile';
   static const String presensi = 'presensi';
+  static const String presensiPath = '/presensi';
+
+  static const String checkout = 'checkout';
+  static const String checkoutPath = '/checkout';
 }
