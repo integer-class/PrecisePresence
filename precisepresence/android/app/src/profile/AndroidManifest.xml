@@ -10,5 +10,15 @@
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 
+    <application
+        android:label="your_app_name"
+        android:icon="@mipmap/ic_launcher">
 
+        <!-- Add this line with your Mapbox token -->
+        <meta-data
+            android:name="com.mapbox.maps.token"
+            android:value="pk.eyJ1IjoibWF5bGkwNyIsImEiOiJjbTN1b2xudGUwaGx3MmpwY3F1bWEzOTlvIn0.y68FBwQRTTs-C77Ce7ypAw" />
+
+        ...
+    </application>
 </manifest>

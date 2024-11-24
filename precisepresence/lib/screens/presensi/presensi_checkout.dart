@@ -1,7 +1,10 @@
 import 'dart:io';
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:precisepresence/data/datasource/CheckOutRemoteDatasource.dart';
+import 'package:precisepresence/router/app_router.dart';
+import 'package:precisepresence/router/models/path_parameters.dart';
 
 class Checkout extends StatefulWidget {
   const Checkout({super.key});
@@ -26,6 +29,7 @@ class _CheckoutState extends State<Checkout> {
   Future<void> _initializeCamera() async {
     _cameras = await availableCameras();
 
+    // Memilih kamera depan
     final frontCamera = _cameras.firstWhere(
       (camera) => camera.lensDirection == CameraLensDirection.front,
       orElse: () => _cameras[0],
@@ -55,18 +59,16 @@ class _CheckoutState extends State<Checkout> {
         _imagePath = image.path;
       });
       debugPrint("Foto diambil: ${image.path}");
+
+      // Langsung unggah foto setelah diambil
+      await _uploadPicture();
     } catch (e) {
       debugPrint("Gagal mengambil gambar: $e");
     }
   }
 
   Future<void> _uploadPicture() async {
-    if (_imagePath == null) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Ambil foto terlebih dahulu')),
-      );
-      return;
-    }
+    if (_imagePath == null) return;
 
     setState(() {
       _isUploading = true;
@@ -87,9 +89,32 @@ class _CheckoutState extends State<Checkout> {
             SnackBar(content: Text('Gagal: $error')),
           );
         },
-        (success) => ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Foto berhasil diunggah')),
-        ),
+        (success) {
+          showDialog(
+            context: context,
+            barrierDismissible: false,
+            builder: (BuildContext context) {
+              return AlertDialog(
+                title: const Text('Berhasil'),
+                content: const Text('Berhasil Checkout'),
+                actions: [
+                  TextButton(
+                    onPressed: () {
+                      Navigator.pop(context);
+                      context.goNamed(
+                        RouteConstants.root,
+                        pathParameters: PathParameters(
+                          rootTab: RootTab.home,
+                        ).toMap(),
+                      );
+                    },
+                    child: const Text('OK'),
+                  ),
+                ],
+              );
+            },
+          );
+        },
       );
     } catch (e) {
       debugPrint('Error saat mengunggah: $e');
@@ -107,64 +132,48 @@ class _CheckoutState extends State<Checkout> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Checkout - Kamera Depan (Mirror)"),
+        title: const Text("Absen Pulang"),
         centerTitle: true,
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () {
+            context.goNamed(
+              RouteConstants.root,
+              pathParameters: PathParameters(
+                rootTab: RootTab.home,
+              ).toMap(),
+            );
+          },
+        ),
       ),
       body: _isCameraInitialized
-          ? Column(
+          ? Stack(
               children: [
-                Expanded(
-                  child: Stack(
-                    children: [
-                      Transform(
-                        alignment: Alignment.center,
-                        transform: Matrix4.rotationY(3.14159),
-                        child: CameraPreview(_cameraController),
+                Transform(
+                  alignment: Alignment.center,
+                  transform: Matrix4.rotationY(3.14159),
+                  child: CameraPreview(_cameraController),
+                ),
+                Positioned(
+                  bottom: 20,
+                  left: 0,
+                  right: 0,
+                  child: Center(
+                    child: ElevatedButton(
+                      onPressed: _isUploading ? null : _takePicture,
+                      style: ElevatedButton.styleFrom(
+                        shape: const CircleBorder(),
+                        padding: const EdgeInsets.all(15),
                       ),
-                      Positioned(
-                        bottom: 20,
-                        left: 0,
-                        right: 0,
-                        child: Center(
-                          child: ElevatedButton(
-                            onPressed: _takePicture,
-                            style: ElevatedButton.styleFrom(
-                              shape: const CircleBorder(),
-                              padding: const EdgeInsets.all(15),
-                            ),
-                            child: const Icon(
+                      child: _isUploading
+                          ? const CircularProgressIndicator(color: Colors.white)
+                          : const Icon(
                               Icons.camera_alt,
                               size: 30,
                             ),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                if (_imagePath != null)
-                  Padding(
-                    padding: const EdgeInsets.all(16.0),
-                    child: Column(
-                      children: [
-                        Image.file(
-                          File(_imagePath!),
-                          height: 200,
-                          width: double.infinity,
-                          fit: BoxFit.cover,
-                        ),
-                        const SizedBox(height: 10),
-                        ElevatedButton.icon(
-                          onPressed: _isUploading ? null : _uploadPicture,
-                          icon: _isUploading
-                              ? const CircularProgressIndicator(
-                                  color: Colors.white)
-                              : const Icon(Icons.upload),
-                          label: const Text('Unggah Foto'),
-                        ),
-                      ],
                     ),
                   ),
+                ),
               ],
             )
           : const Center(
