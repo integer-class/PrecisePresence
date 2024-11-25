@@ -8,7 +8,6 @@ import 'package:precisepresence/router/app_router.dart';
 import 'package:precisepresence/screens/components/CustomBottomAppBar.dart';
 import 'package:precisepresence/screens/components/custom_floating_action_button.dart';
 import 'package:google_fonts/google_fonts.dart';
-import '../../constants/colors.dart';
 import 'package:intl/intl.dart';
 
 class Profile extends StatefulWidget {
@@ -57,34 +56,21 @@ class _ProfileState extends State<Profile> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        //button back
-        // leading: IconButton(
-        //   icon: const Icon(Icons.arrow_back),
-        //   onPressed: () {
-        //     Navigator.of(context).pop();
-        //   },
-        // ),
         title: const Text('Profile'),
-
         actions: [
           IconButton(
             onPressed: () async {
               final authDatasource = AuthLocalDatasource();
-
               await authDatasource.removeAuthData();
-
-              // Menggunakan goNamed untuk menggantikan stack halaman
               context.goNamed(RouteConstants.login);
             },
             icon: const Icon(Icons.exit_to_app, color: Colors.red),
           ),
         ],
-
         backgroundColor: Colors.blue[100],
       ),
       body: SafeArea(
-          child: SingleChildScrollView(
-        child: Container(
+        child: SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -109,167 +95,87 @@ class _ProfileState extends State<Profile> {
                           ),
                         ),
                         SizedBox(height: 10),
-                        Text(userName,
-                            style: TextStyle(
-                              fontSize: 20,
-                              fontWeight: FontWeight.bold,
-                              color: AppColors.primary,
-                            )),
-                        Text(divisi,
-                            style: TextStyle(
-                              fontSize: 15,
-                              color: const Color.fromARGB(255, 14, 50, 100),
-                            )),
+                        Text(
+                          userName,
+                          style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                            color: AppColors.primary,
+                          ),
+                        ),
+                        Text(
+                          divisi,
+                          style: TextStyle(
+                            fontSize: 15,
+                            color: const Color.fromARGB(255, 14, 50, 100),
+                          ),
+                        ),
                       ],
                     ),
                   ),
                 ),
               ),
               Container(
-                padding:
-                    EdgeInsets.only(left: 40, right: 20, top: 0, bottom: 20),
+                padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text('Name', style: TextStyle(fontSize: 15)),
-                    //icon person
-                    Container(
-                      padding: EdgeInsets.only(left: 10),
-                      child: Row(
-                        children: [
-                          Icon(Icons.person_2_outlined, size: 20),
-                          SizedBox(width: 10),
-                          Text(
-                            userName,
-                            style: TextStyle(
-                              fontSize: 20,
-                              color: AppColors.primary,
-                            ),
-                          ),
-                        ],
-                      ),
+                    infoRow(Icons.person_2_outlined, 'Name', userName),
+                    infoRow(Icons.badge_outlined, 'Role', 'karyawan'),
+                    infoRow(Icons.email_outlined, 'Email', email),
+                    infoRow(
+                      Icons.cake_outlined,
+                      'Date of birth',
+                      DateFormat('dd MMMM yyyy').format(ttl),
                     ),
-
-                    SizedBox(height: 15),
-                    Text('Role', style: TextStyle(fontSize: 15)),
-                    //icon
-                    Container(
-                      padding: EdgeInsets.only(left: 10),
-                      child: Row(
-                        children: [
-                          Icon(Icons.badge_outlined, size: 20),
-                          SizedBox(width: 10),
-                          Text('karyawan',
-                              style: TextStyle(
-                                fontSize: 20,
-                                color: AppColors.primary,
-                              )),
-                        ],
-                      ),
+                    infoRow(Icons.phone_outlined, 'Phone Number', noHp),
+                    infoRow(
+                      Icons.location_on_outlined,
+                      'Address',
+                      alamat,
+                      isExpandable: true,
                     ),
-
-                    SizedBox(height: 15),
-                    Text('Email', style: TextStyle(fontSize: 15)),
-                    //icon
-                    Container(
-                      padding: EdgeInsets.only(left: 10),
-                      child: Row(
-                        children: [
-                          Icon(Icons.email_outlined, size: 20),
-                          SizedBox(width: 10),
-                          Text(email,
-                              style: TextStyle(
-                                fontSize: 20,
-                                color: AppColors.primary,
-                              )),
-                        ],
-                      ),
-                    ),
-
-                    SizedBox(height: 15),
-                    Text('Date of birth', style: TextStyle(fontSize: 15)),
-                    //icon
-                    Container(
-                      padding: EdgeInsets.only(left: 10),
-                      child: Row(
-                        children: [
-                          Icon(Icons.cake_outlined, size: 20),
-                          SizedBox(width: 10),
-                          Text(
-                            DateFormat('dd MMMM yyyy').format(ttl),
-                            style: TextStyle(
-                              fontSize: 20,
-                              color: AppColors.primary,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-
-                    SizedBox(height: 15),
-                    Text('Phone Number', style: TextStyle(fontSize: 15)),
-                    Container(
-                      padding: EdgeInsets.only(left: 10),
-                      child: Row(
-                        children: [
-                          Icon(Icons.phone_outlined, size: 20),
-                          SizedBox(width: 10),
-                          Text(noHp,
-                              style: TextStyle(
-                                fontSize: 20,
-                                color: AppColors.primary,
-                              )),
-                        ],
-                      ),
-                    ),
-
-                    SizedBox(height: 15),
-                    Text('Address', style: TextStyle(fontSize: 15)),
-                    //icon
-                    Container(
-                      padding: EdgeInsets.only(left: 10),
-                      child: Row(
-                        children: [
-                          Icon(Icons.location_on_outlined, size: 20),
-                          SizedBox(width: 10),
-                          Text(alamat,
-                              style: TextStyle(
-                                fontSize: 20,
-                                color: AppColors.primary,
-                              )),
-                        ],
-                      ),
-                    ),
-
-                    SizedBox(height: 25),
-
-                    // Container(
-                    //     height: 40,
-                    //     width: double.infinity,
-                    //     decoration: BoxDecoration(
-                    //       //outline
-                    //       border: Border.all(color: AppColors.primary),
-                    //       borderRadius: BorderRadius.circular(50.0),
-                    //     ),
-                    //     child: Center(
-                    //       child: Text('Edit Profile',
-                    //           style: TextStyle(
-                    //             fontSize: 20,
-                    //             color: AppColors.primary,
-                    //           )),
-                    //     ))
                   ],
                 ),
               ),
             ],
           ),
         ),
-      )),
-      floatingActionButton: CustomFloatingActionButton(
-        onPressed: () {},
       ),
+      floatingActionButton: CustomFloatingActionButton(onPressed: () {}),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       bottomNavigationBar: CustomBottomAppBar(currentTab: RootTab.profile),
+    );
+  }
+
+  Widget infoRow(IconData icon, String label, String value,
+      {bool isExpandable = false}) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 8.0),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Icon(icon, size: 20),
+          SizedBox(width: 10),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  label,
+                  style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+                ),
+                Text(
+                  value,
+                  style: TextStyle(fontSize: 20, color: AppColors.primary),
+                  overflow: isExpandable ? TextOverflow.ellipsis : null,
+                  maxLines: isExpandable ? 1 : null,
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
