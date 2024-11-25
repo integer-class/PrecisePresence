@@ -68,6 +68,7 @@ class AuthResponseModel {
         "name": name,
         "divisi": divisi,
         "alamat": alamat,
+
         "ttl":
             "${ttl.year.toString().padLeft(4, '0')}-${ttl.month.toString().padLeft(2, '0')}-${ttl.day.toString().padLeft(2, '0')}",
         "jenis_kelamin": jenisKelamin,

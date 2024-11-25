@@ -1,33 +1,49 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:precisepresence/data/datasource/auth_local_datasource.dart';
 import 'package:precisepresence/screens/history/history.dart';
 import 'package:precisepresence/screens/home/home.dart';
 import 'package:precisepresence/screens/intro/splash_page.dart';
 import 'package:precisepresence/screens/auth/login.dart';
 import 'package:precisepresence/screens/lokasi/lokasi.dart';
 import 'package:precisepresence/screens/presensi/presensi.dart';
-import 'package:precisepresence/screens/presensi/presensi_checkout.dart'; // Halaman checkout presensi
+import 'package:precisepresence/screens/presensi/presensi_checkout.dart';
 import 'package:precisepresence/screens/profile/profile.dart';
 
 part 'enums/root_tab.dart';
 part 'route_constants.dart';
 
 class AppRouter {
-  final GoRouter router = GoRouter(
+  final AuthLocalDatasource _authLocalDatasource = AuthLocalDatasource();
+
+  late final GoRouter router = GoRouter(
     initialLocation: RouteConstants.splashPath,
+    redirect: (context, state) async {
+      // Periksa status autentikasi
+      final isAuth = await _authLocalDatasource.isAuth();
+
+      // Jangan arahkan jika pengguna berada di halaman yang tidak memerlukan autentikasi
+      if (!isAuth && state.uri.toString() != RouteConstants.loginPath) {
+        return RouteConstants
+            .loginPath; // Arahkan ke login jika belum autentikasi
+      }
+
+      return null; // Tetap di halaman saat ini
+    },
     routes: [
+      // Rute tanpa autentikasi
       GoRoute(
         name: RouteConstants.splash,
         path: RouteConstants.splashPath,
         builder: (context, state) => const SplashPage(),
       ),
-
       GoRoute(
         name: RouteConstants.login,
         path: RouteConstants.loginPath,
         builder: (context, state) => const LoginPage(),
       ),
 
+      // Rute dengan autentikasi
       GoRoute(
         name: RouteConstants.root,
         path: RouteConstants.rootPath,
@@ -58,15 +74,11 @@ class AppRouter {
           );
         },
       ),
-
-      // Presensi Route
       GoRoute(
         name: RouteConstants.presensi,
         path: RouteConstants.presensiPath,
         builder: (context, state) => const Presensi(),
       ),
-
-      // Checkout Route
       GoRoute(
         name: RouteConstants.checkout,
         path: RouteConstants.checkoutPath,

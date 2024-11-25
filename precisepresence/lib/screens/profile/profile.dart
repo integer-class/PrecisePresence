@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:precisepresence/constants/colors.dart';
 import 'package:precisepresence/constants/variables.dart';
 import 'package:precisepresence/data/datasource/auth_local_datasource.dart';
@@ -8,6 +9,7 @@ import 'package:precisepresence/screens/components/CustomBottomAppBar.dart';
 import 'package:precisepresence/screens/components/custom_floating_action_button.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../constants/colors.dart';
+import 'package:intl/intl.dart';
 
 class Profile extends StatefulWidget {
   const Profile({super.key});
@@ -22,6 +24,10 @@ class _ProfileState extends State<Profile> {
   String imageUrl = '';
   String email = '';
   String alamat = '';
+  DateTime ttl = DateTime.now();
+  String jenisKelamin = '';
+  String noHp = '';
+  String role = '';
 
   @override
   void initState() {
@@ -39,6 +45,10 @@ class _ProfileState extends State<Profile> {
         imageUrl = authData.foto ?? '';
         email = authData.email ?? '';
         alamat = authData.alamat ?? '';
+        ttl = authData.ttl ?? DateTime.now();
+        jenisKelamin = authData.jenisKelamin ?? '';
+        noHp = authData.noHp ?? '';
+        role = authData.role ?? '';
       });
     }
   }
@@ -48,32 +58,35 @@ class _ProfileState extends State<Profile> {
     return Scaffold(
       appBar: AppBar(
         //button back
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
-          onPressed: () {
-            Navigator.of(context).pop();
-          },
-        ),
+        // leading: IconButton(
+        //   icon: const Icon(Icons.arrow_back),
+        //   onPressed: () {
+        //     Navigator.of(context).pop();
+        //   },
+        // ),
         title: const Text('Profile'),
 
-        //button exit
         actions: [
           IconButton(
-            onPressed: () {
-              // AppRouter().pushAndPopUntil(context, AppRouter().login);
+            onPressed: () async {
+              final authDatasource = AuthLocalDatasource();
+
+              await authDatasource.removeAuthData();
+
+              // Menggunakan goNamed untuk menggantikan stack halaman
+              context.goNamed(RouteConstants.login);
             },
             icon: const Icon(Icons.exit_to_app, color: Colors.red),
           ),
         ],
-        backgroundColor: Colors.blue[100], // Change the color here
+
+        backgroundColor: Colors.blue[100],
       ),
       body: SafeArea(
           child: SingleChildScrollView(
         child: Container(
-          // alignment: Alignment.centerLeft, // Mengatur alignment utama ke kiri
           child: Column(
-            crossAxisAlignment:
-                CrossAxisAlignment.start, // Elemen-elemen Column diset ke kiri
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               ClipPath(
                 clipper: ProfileHeaderClipper(),
@@ -96,13 +109,13 @@ class _ProfileState extends State<Profile> {
                           ),
                         ),
                         SizedBox(height: 10),
-                        Text('Shofwah Kanaka',
+                        Text(userName,
                             style: TextStyle(
                               fontSize: 20,
                               fontWeight: FontWeight.bold,
                               color: AppColors.primary,
                             )),
-                        Text('Lead UI/UX Designer',
+                        Text(divisi,
                             style: TextStyle(
                               fontSize: 15,
                               color: const Color.fromARGB(255, 14, 50, 100),
@@ -146,7 +159,7 @@ class _ProfileState extends State<Profile> {
                         children: [
                           Icon(Icons.badge_outlined, size: 20),
                           SizedBox(width: 10),
-                          Text(divisi,
+                          Text('karyawan',
                               style: TextStyle(
                                 fontSize: 20,
                                 color: AppColors.primary,
@@ -164,7 +177,7 @@ class _ProfileState extends State<Profile> {
                         children: [
                           Icon(Icons.email_outlined, size: 20),
                           SizedBox(width: 10),
-                          Text('shofwah@gmail.com',
+                          Text(email,
                               style: TextStyle(
                                 fontSize: 20,
                                 color: AppColors.primary,
@@ -182,25 +195,26 @@ class _ProfileState extends State<Profile> {
                         children: [
                           Icon(Icons.cake_outlined, size: 20),
                           SizedBox(width: 10),
-                          Text('20 Oktober 2000',
-                              style: TextStyle(
-                                fontSize: 20,
-                                color: AppColors.primary,
-                              )),
+                          Text(
+                            DateFormat('dd MMMM yyyy').format(ttl),
+                            style: TextStyle(
+                              fontSize: 20,
+                              color: AppColors.primary,
+                            ),
+                          ),
                         ],
                       ),
                     ),
 
                     SizedBox(height: 15),
                     Text('Phone Number', style: TextStyle(fontSize: 15)),
-                    //icon
                     Container(
                       padding: EdgeInsets.only(left: 10),
                       child: Row(
                         children: [
                           Icon(Icons.phone_outlined, size: 20),
                           SizedBox(width: 10),
-                          Text('08123456789',
+                          Text(noHp,
                               style: TextStyle(
                                 fontSize: 20,
                                 color: AppColors.primary,
@@ -218,7 +232,7 @@ class _ProfileState extends State<Profile> {
                         children: [
                           Icon(Icons.location_on_outlined, size: 20),
                           SizedBox(width: 10),
-                          Text('Jl. Kaliurang KM 5, Yogyakarta',
+                          Text(alamat,
                               style: TextStyle(
                                 fontSize: 20,
                                 color: AppColors.primary,
@@ -229,21 +243,21 @@ class _ProfileState extends State<Profile> {
 
                     SizedBox(height: 25),
 
-                    Container(
-                        height: 40,
-                        width: double.infinity,
-                        decoration: BoxDecoration(
-                          //outline
-                          border: Border.all(color: AppColors.primary),
-                          borderRadius: BorderRadius.circular(50.0),
-                        ),
-                        child: Center(
-                          child: Text('Edit Profile',
-                              style: TextStyle(
-                                fontSize: 20,
-                                color: AppColors.primary,
-                              )),
-                        ))
+                    // Container(
+                    //     height: 40,
+                    //     width: double.infinity,
+                    //     decoration: BoxDecoration(
+                    //       //outline
+                    //       border: Border.all(color: AppColors.primary),
+                    //       borderRadius: BorderRadius.circular(50.0),
+                    //     ),
+                    //     child: Center(
+                    //       child: Text('Edit Profile',
+                    //           style: TextStyle(
+                    //             fontSize: 20,
+                    //             color: AppColors.primary,
+                    //           )),
+                    //     ))
                   ],
                 ),
               ),

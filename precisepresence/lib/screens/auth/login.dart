@@ -45,11 +45,9 @@ class _LoginPageState extends State<LoginPage> {
           _isLoading = false;
         });
         // Menyimpan data login (authResponse) ke local storage
-        AuthLocalDatasource()
-            .saveAuthData(authResponse); // Ganti 'data' dengan 'authResponse'
+        AuthLocalDatasource().saveAuthData(authResponse);
 
-        // Pindah ke halaman lain setelah login berhasil
-        context.goNamed(
+        context.pushReplacementNamed(
           RouteConstants.root,
           pathParameters: PathParameters().toMap(),
         );
