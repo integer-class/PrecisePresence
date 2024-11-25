@@ -25,7 +25,7 @@ class HistoryRemoteDatasource {
 
     final url = Uri.parse('http://20.211.46.189/api/user/history');
 
-    final response = await http.get(url, headers: headers);
+    final response = await http.get(url, headers: headers); // Include headers
 
     if (response.statusCode == 200) {
       // Parse the response body

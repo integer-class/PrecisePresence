@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:precisepresence/constants/colors.dart';
+import 'package:precisepresence/constants/variables.dart';
+import 'package:precisepresence/data/datasource/auth_local_datasource.dart';
+import 'package:precisepresence/data/responses/auth_response_model.dart';
 import 'package:precisepresence/router/app_router.dart';
 import 'package:precisepresence/screens/components/CustomBottomAppBar.dart';
 import 'package:precisepresence/screens/components/custom_floating_action_button.dart';
@@ -14,6 +17,32 @@ class Profile extends StatefulWidget {
 }
 
 class _ProfileState extends State<Profile> {
+  String userName = '';
+  String divisi = '';
+  String imageUrl = '';
+  String email = '';
+  String alamat = '';
+
+  @override
+  void initState() {
+    super.initState();
+    _loadUserData();
+  }
+
+  Future<void> _loadUserData() async {
+    AuthLocalDatasource authLocalDatasource = AuthLocalDatasource();
+    AuthResponseModel? authData = await authLocalDatasource.getAuthData();
+    if (authData != null) {
+      setState(() {
+        userName = authData.name ?? 'User';
+        divisi = authData.divisi ?? 'Divisi';
+        imageUrl = authData.foto ?? '';
+        email = authData.email ?? '';
+        alamat = authData.alamat ?? '';
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -61,9 +90,7 @@ class _ProfileState extends State<Profile> {
                           decoration: BoxDecoration(
                             shape: BoxShape.circle,
                             image: DecorationImage(
-                              image: NetworkImage(
-                                'https://www.pngkey.com/png/full/114-1149878_setting-user-avatar-in-specific-size-without-breaking.png',
-                              ),
+                              image: NetworkImage('$baseImg/$imageUrl'),
                               fit: BoxFit.cover,
                             ),
                           ),
@@ -100,7 +127,7 @@ class _ProfileState extends State<Profile> {
                           Icon(Icons.person_2_outlined, size: 20),
                           SizedBox(width: 10),
                           Text(
-                            'shofwah kanaka',
+                            userName,
                             style: TextStyle(
                               fontSize: 20,
                               color: AppColors.primary,
@@ -119,7 +146,7 @@ class _ProfileState extends State<Profile> {
                         children: [
                           Icon(Icons.badge_outlined, size: 20),
                           SizedBox(width: 10),
-                          Text('UI/UX Designer',
+                          Text(divisi,
                               style: TextStyle(
                                 fontSize: 20,
                                 color: AppColors.primary,
