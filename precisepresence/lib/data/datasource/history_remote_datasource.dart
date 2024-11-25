@@ -23,10 +23,9 @@ class HistoryRemoteDatasource {
       'Authorization': 'Bearer $userToken',
     };
 
-    final url = Uri.parse(
-        'http://20.211.46.189/api/user/history?id_karyawan=$idKaryawan');
+    final url = Uri.parse('http://20.211.46.189/api/user/history');
 
-    final response = await http.get(url, headers: headers); // Include headers
+    final response = await http.get(url, headers: headers);
 
     if (response.statusCode == 200) {
       // Parse the response body
