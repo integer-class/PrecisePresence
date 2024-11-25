@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 use App\Models\Absensi;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Auth;
 
 use Illuminate\Http\Request;
 
@@ -11,9 +12,11 @@ class history extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(Request $request)
+    public function index()
     {
-        $absensi = Absensi::where('id_karyawan', $request->id_karyawan)->get();
+        $absensi = Absensi::where('id_karyawan', auth()->user()->karyawan->id_karyawan)->get();
+
+
 
         if ($absensi->count() > 1) {
             return response()->json([
@@ -26,6 +29,7 @@ class history extends Controller
                 'data' => $absensi
             ]);
         }
+
     }
 
     public function cek(Request $request)

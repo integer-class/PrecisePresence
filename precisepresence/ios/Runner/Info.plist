@@ -45,5 +45,17 @@
 	<true/>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
+
+	<!-- Tambahan untuk deskripsi izin -->
+	<key>NSCameraUsageDescription</key>
+	<string>Kami memerlukan akses ke kamera untuk mengambil foto atau video.</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>Kami memerlukan akses ke mikrofon untuk merekam suara jika diperlukan.</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>Kami memerlukan akses ke lokasi Anda untuk fitur berbasis lokasi.</string>
+	<key>NSLocationAlwaysUsageDescription</key>
+	<string>Kami memerlukan akses ke lokasi Anda bahkan ketika aplikasi tidak digunakan.</string>
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	<string>Kami memerlukan akses lokasi untuk menyediakan layanan lokasi real-time.</string>
 </dict>
 </plist>
