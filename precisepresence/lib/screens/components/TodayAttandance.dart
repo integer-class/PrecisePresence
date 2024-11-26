@@ -58,6 +58,12 @@ class _TodayAttandanceState extends State<TodayAttendance> {
     bool hasAttendanceData = _attendanceData != null;
     var attendance = _attendanceData ?? {};
 
+    String formatTime(String? time) {
+      return time != null
+          ? DateFormat.jm().format(DateTime.parse(time))
+          : 'Belum Absen';
+    }
+
     return Container(
       padding: const EdgeInsets.all(20.0),
       child: Column(
@@ -118,10 +124,7 @@ class _TodayAttandanceState extends State<TodayAttendance> {
                       ),
                       const SizedBox(height: 10),
                       Text(
-                        hasAttendanceData
-                            ? DateFormat.jm().format(
-                                DateTime.parse(attendance['check_in_time']))
-                            : 'N/A',
+                        formatTime(attendance['check_in_time']),
                         style: TextStyle(
                           color: AppColors.primary,
                           fontSize: 20.0,
@@ -129,9 +132,7 @@ class _TodayAttandanceState extends State<TodayAttendance> {
                       ),
                       const SizedBox(height: 10),
                       Text(
-                        hasAttendanceData
-                            ? (attendance['keterangan'] ?? 'No comment')
-                            : 'No attendance data available',
+                        attendance['keterangan'] ?? 'No comment',
                         style: TextStyle(
                           color: AppColors.primary,
                           fontSize: 13.0,
@@ -182,10 +183,7 @@ class _TodayAttandanceState extends State<TodayAttendance> {
                       ),
                       const SizedBox(height: 10),
                       Text(
-                        hasAttendanceData
-                            ? DateFormat.jm().format(
-                                DateTime.parse(attendance['check_out_time']))
-                            : 'N/A',
+                        formatTime(attendance['check_out_time']),
                         style: TextStyle(
                           color: AppColors.primary,
                           fontSize: 20.0,
@@ -193,9 +191,7 @@ class _TodayAttandanceState extends State<TodayAttendance> {
                       ),
                       const SizedBox(height: 10),
                       Text(
-                        hasAttendanceData
-                            ? (attendance['keterangan'] ?? 'No comment')
-                            : 'No attendance data available',
+                        attendance['keterangan'] ?? 'No comment',
                         style: TextStyle(
                           color: AppColors.primary,
                           fontSize: 13.0,
@@ -250,11 +246,7 @@ class _TodayAttandanceState extends State<TodayAttendance> {
                       ),
                       const SizedBox(height: 10),
                       Text(
-                        hasAttendanceData &&
-                                attendance['lembur_start_time'] != null
-                            ? DateFormat.jm().format(
-                                DateTime.parse(attendance['lembur_start_time']))
-                            : 'N/A',
+                        formatTime(attendance['lembur_start_time']),
                         style: TextStyle(
                           color: AppColors.primary,
                           fontSize: 20.0,
@@ -306,11 +298,7 @@ class _TodayAttandanceState extends State<TodayAttendance> {
                       ),
                       const SizedBox(height: 10),
                       Text(
-                        hasAttendanceData &&
-                                attendance['lembur_end_time'] != null
-                            ? DateFormat.jm().format(
-                                DateTime.parse(attendance['lembur_end_time']))
-                            : 'N/A',
+                        formatTime(attendance['lembur_end_time']),
                         style: TextStyle(
                           color: AppColors.primary,
                           fontSize: 20.0,

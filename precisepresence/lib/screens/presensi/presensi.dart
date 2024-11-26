@@ -1,10 +1,15 @@
 import 'dart:io';
+import 'dart:typed_data';
+import 'package:image/image.dart' as img;
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart'
+    show TargetPlatform, defaultTargetPlatform;
 import 'package:go_router/go_router.dart';
 import 'package:precisepresence/data/datasource/checkin_remote_datasource.dart';
 import 'package:precisepresence/router/app_router.dart';
 import 'package:precisepresence/router/models/path_parameters.dart';
+import 'dart:math';
 
 class Presensi extends StatefulWidget {
   const Presensi({super.key});
@@ -75,46 +80,70 @@ class _PresensiState extends State<Presensi> {
     });
 
     try {
-      final foto = File(_imagePath!);
-      final datasource = CheckInRemoteDatasource();
+      // Membaca file gambar dari path
+      final file = File(_imagePath!);
+      final bytes = await file.readAsBytes();
 
-      final result = await datasource.postCheckIn(
-        foto: foto,
-      );
+      img.Image? image = img.decodeImage(Uint8List.fromList(bytes));
 
-      result.fold(
-        (error) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('Gagal: $error')),
-          );
-        },
-        (success) {
-          showDialog(
-            context: context,
-            barrierDismissible: false,
-            builder: (BuildContext context) {
-              return AlertDialog(
-                title: const Text('Berhasil'),
-                content: const Text('Berhasil Absen Masuk'),
-                actions: [
-                  TextButton(
-                    onPressed: () {
-                      Navigator.pop(context);
-                      context.goNamed(
-                        RouteConstants.root,
-                        pathParameters: PathParameters(
-                          rootTab: RootTab.home,
-                        ).toMap(),
-                      );
-                    },
-                    child: const Text('OK'),
-                  ),
-                ],
-              );
-            },
-          );
-        },
-      );
+      if (image != null) {
+        const maxWidth = 2000;
+        const maxHeight = 2000;
+
+        if (image.width > maxWidth || image.height > maxHeight) {
+          // Mengubah ukuran gambar
+          image = img.copyResize(image, width: maxWidth, height: maxHeight);
+        }
+
+        // Membuat nama file acak
+        final random = Random();
+        final fileName =
+            '${DateTime.now().millisecondsSinceEpoch}_${random.nextInt(10000)}.jpg';
+
+        // Simpan gambar yang sudah di-resize dengan nama acak
+        final resizedFile = File('${file.parent.path}/$fileName')
+          ..writeAsBytesSync(img.encodeJpg(image));
+
+        // Upload gambar yang sudah di-resize
+        final datasource = CheckInRemoteDatasource();
+        final result = await datasource.postCheckIn(foto: resizedFile);
+
+        result.fold(
+          (error) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(content: Text('Gagal: $error')),
+            );
+          },
+          (success) {
+            showDialog(
+              context: context,
+              barrierDismissible: false,
+              builder: (BuildContext context) {
+                return AlertDialog(
+                  title: const Text('Berhasil'),
+                  content: const Text('Berhasil Absen Masuk'),
+                  actions: [
+                    TextButton(
+                      onPressed: () {
+                        Navigator.pop(context);
+                        context.goNamed(
+                          RouteConstants.root,
+                          pathParameters: PathParameters(
+                            rootTab: RootTab.home,
+                          ).toMap(),
+                        );
+                      },
+                      child: const Text('OK'),
+                    ),
+                  ],
+                );
+              },
+            );
+          },
+        );
+      } else {
+        throw Exception("Gagal mendecode gambar");
+      }
     } catch (e) {
       debugPrint('Error saat mengunggah: $e');
       ScaffoldMessenger.of(context).showSnackBar(
@@ -148,11 +177,10 @@ class _PresensiState extends State<Presensi> {
       body: _isCameraInitialized
           ? Stack(
               children: [
-                Transform(
-                  alignment: Alignment.center,
-                  transform: Matrix4.rotationY(3.14159),
-                  child: CameraPreview(_cameraController),
-                ),
+                // Cek platform untuk mengatur apakah perlu rotasi atau tidak
+
+                CameraPreview(_cameraController),
+
                 Positioned(
                   bottom: 20,
                   left: 0,

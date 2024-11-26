@@ -1,4 +1,7 @@
 import 'dart:io';
+import 'dart:math';
+import 'dart:typed_data';
+import 'package:image/image.dart' as img;
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -75,47 +78,65 @@ class _CheckoutState extends State<Checkout> {
     });
 
     try {
-      final foto = File(_imagePath!);
+      final file = File(_imagePath!);
+      final bytes = await file.readAsBytes();
 
-      final datasource = CheckOutRemoteDatasource();
+      // Menggunakan package image untuk membaca gambar
+      img.Image? image = img.decodeImage(Uint8List.fromList(bytes));
 
-      final result = await datasource.postCheckOut(
-        foto: foto,
-      );
+      if (image != null) {
+        const maxWidth = 2000;
+        const maxHeight = 2000;
 
-      result.fold(
-        (error) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('Gagal: $error')),
-          );
-        },
-        (success) {
-          showDialog(
-            context: context,
-            barrierDismissible: false,
-            builder: (BuildContext context) {
-              return AlertDialog(
-                title: const Text('Berhasil'),
-                content: const Text('Berhasil Checkout'),
-                actions: [
-                  TextButton(
-                    onPressed: () {
-                      Navigator.pop(context);
-                      context.goNamed(
-                        RouteConstants.root,
-                        pathParameters: PathParameters(
-                          rootTab: RootTab.home,
-                        ).toMap(),
-                      );
-                    },
-                    child: const Text('OK'),
-                  ),
-                ],
-              );
-            },
-          );
-        },
-      );
+        if (image.width > maxWidth || image.height > maxHeight) {
+          image = img.copyResize(image, width: maxWidth, height: maxHeight);
+        }
+
+        // Membuat nama file acak
+        final randomFileName = '${_generateRandomString(10)}.jpg';
+        final resizedFile = File('${file.parent.path}/$randomFileName')
+          ..writeAsBytesSync(img.encodeJpg(image));
+
+        // Upload gambar yang sudah di-resize
+        final datasource = CheckOutRemoteDatasource();
+        final result = await datasource.postCheckOut(foto: resizedFile);
+
+        result.fold(
+          (error) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(content: Text('Gagal: $error')),
+            );
+          },
+          (success) {
+            showDialog(
+              context: context,
+              barrierDismissible: false,
+              builder: (BuildContext context) {
+                return AlertDialog(
+                  title: const Text('Berhasil'),
+                  content: const Text('Berhasil Checkout'),
+                  actions: [
+                    TextButton(
+                      onPressed: () {
+                        Navigator.pop(context);
+                        context.goNamed(
+                          RouteConstants.root,
+                          pathParameters: PathParameters(
+                            rootTab: RootTab.home,
+                          ).toMap(),
+                        );
+                      },
+                      child: const Text('OK'),
+                    ),
+                  ],
+                );
+              },
+            );
+          },
+        );
+      } else {
+        throw Exception("Gagal mendecode gambar");
+      }
     } catch (e) {
       debugPrint('Error saat mengunggah: $e');
       ScaffoldMessenger.of(context).showSnackBar(
@@ -126,6 +147,14 @@ class _CheckoutState extends State<Checkout> {
         _isUploading = false;
       });
     }
+  }
+
+  // Fungsi untuk menghasilkan string acak (misalnya untuk nama file)
+  String _generateRandomString(int length) {
+    const chars = 'abcdefghijklmnopqrstuvwxyz0123456789';
+    Random rnd = Random();
+    return List.generate(length, (index) => chars[rnd.nextInt(chars.length)])
+        .join();
   }
 
   @override
@@ -149,11 +178,7 @@ class _CheckoutState extends State<Checkout> {
       body: _isCameraInitialized
           ? Stack(
               children: [
-                Transform(
-                  alignment: Alignment.center,
-                  transform: Matrix4.rotationY(3.14159),
-                  child: CameraPreview(_cameraController),
-                ),
+                CameraPreview(_cameraController),
                 Positioned(
                   bottom: 20,
                   left: 0,
