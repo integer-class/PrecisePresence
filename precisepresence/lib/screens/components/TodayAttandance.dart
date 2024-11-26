@@ -1,17 +1,63 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:precisepresence/constants/colors.dart';
+import 'package:intl/intl.dart';
+import 'package:precisepresence/data/datasource/api_service.dart';
 
-class TodayAttandance extends StatefulWidget {
-  const TodayAttandance({super.key});
+class TodayAttendance extends StatefulWidget {
+  final String selectedDate;
+
+  const TodayAttendance({super.key, required this.selectedDate});
 
   @override
-  State<TodayAttandance> createState() => _TodayAttandanceState();
+  State<TodayAttendance> createState() => _TodayAttandanceState();
 }
 
-class _TodayAttandanceState extends State<TodayAttandance> {
+class _TodayAttandanceState extends State<TodayAttendance> {
+  final ApiService _apiService = ApiService();
+  bool _isLoading = false;
+  Map<String, dynamic>? _attendanceData;
+
+  Future<void> _fetchAttendance() async {
+    setState(() {
+      _isLoading = true;
+    });
+
+    try {
+      final data = await _apiService.fetchAttendanceByDate(widget.selectedDate);
+      setState(() {
+        _attendanceData = data['data'];
+      });
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text("Error fetching attendance: $e")),
+      );
+    } finally {
+      setState(() {
+        _isLoading = false;
+      });
+    }
+  }
+
+  @override
+  void didUpdateWidget(covariant TodayAttendance oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.selectedDate != widget.selectedDate) {
+      _fetchAttendance(); // Refresh data saat tanggal berubah
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _fetchAttendance();
+  }
+
   @override
   Widget build(BuildContext context) {
+    bool hasAttendanceData = _attendanceData != null;
+    var attendance = _attendanceData ?? {};
+
     return Container(
       padding: const EdgeInsets.all(20.0),
       child: Column(
@@ -51,8 +97,7 @@ class _TodayAttandanceState extends State<TodayAttandance> {
                               borderRadius: BorderRadius.circular(3.0),
                             ),
                             child: const Icon(
-                              CupertinoIcons
-                                  .square_arrow_right, // Ikon yang benar
+                              CupertinoIcons.square_arrow_right,
                               color: Colors.white,
                             ),
                           ),
@@ -72,16 +117,21 @@ class _TodayAttandanceState extends State<TodayAttandance> {
                         ],
                       ),
                       const SizedBox(height: 10),
-                      const Text(
-                        '08:00 AM',
+                      Text(
+                        hasAttendanceData
+                            ? DateFormat.jm().format(
+                                DateTime.parse(attendance['check_in_time']))
+                            : 'N/A',
                         style: TextStyle(
                           color: AppColors.primary,
                           fontSize: 20.0,
                         ),
                       ),
                       const SizedBox(height: 10),
-                      const Text(
-                        'You are on time',
+                      Text(
+                        hasAttendanceData
+                            ? (attendance['keterangan'] ?? 'No comment')
+                            : 'No attendance data available',
                         style: TextStyle(
                           color: AppColors.primary,
                           fontSize: 13.0,
@@ -111,8 +161,7 @@ class _TodayAttandanceState extends State<TodayAttandance> {
                               borderRadius: BorderRadius.circular(3.0),
                             ),
                             child: const Icon(
-                              CupertinoIcons
-                                  .square_arrow_left, // Ikon yang benar
+                              CupertinoIcons.square_arrow_left,
                               color: Colors.white,
                             ),
                           ),
@@ -132,16 +181,21 @@ class _TodayAttandanceState extends State<TodayAttandance> {
                         ],
                       ),
                       const SizedBox(height: 10),
-                      const Text(
-                        '16:00 PM',
+                      Text(
+                        hasAttendanceData
+                            ? DateFormat.jm().format(
+                                DateTime.parse(attendance['check_out_time']))
+                            : 'N/A',
                         style: TextStyle(
                           color: AppColors.primary,
                           fontSize: 20.0,
                         ),
                       ),
                       const SizedBox(height: 10),
-                      const Text(
-                        'You are on time',
+                      Text(
+                        hasAttendanceData
+                            ? (attendance['keterangan'] ?? 'No comment')
+                            : 'No attendance data available',
                         style: TextStyle(
                           color: AppColors.primary,
                           fontSize: 13.0,
@@ -175,8 +229,7 @@ class _TodayAttandanceState extends State<TodayAttandance> {
                               borderRadius: BorderRadius.circular(3.0),
                             ),
                             child: const Icon(
-                              CupertinoIcons
-                                  .square_arrow_right, // Ikon yang benar
+                              CupertinoIcons.square_arrow_right,
                               color: Colors.white,
                             ),
                           ),
@@ -185,7 +238,7 @@ class _TodayAttandanceState extends State<TodayAttandance> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                'Over time in',
+                                'Overtime In',
                                 style: const TextStyle(
                                   color: Colors.black,
                                   fontSize: 13.0,
@@ -196,8 +249,12 @@ class _TodayAttandanceState extends State<TodayAttandance> {
                         ],
                       ),
                       const SizedBox(height: 10),
-                      const Text(
-                        '08:00 AM',
+                      Text(
+                        hasAttendanceData &&
+                                attendance['lembur_start_time'] != null
+                            ? DateFormat.jm().format(
+                                DateTime.parse(attendance['lembur_start_time']))
+                            : 'N/A',
                         style: TextStyle(
                           color: AppColors.primary,
                           fontSize: 20.0,
@@ -228,8 +285,7 @@ class _TodayAttandanceState extends State<TodayAttandance> {
                               borderRadius: BorderRadius.circular(3.0),
                             ),
                             child: const Icon(
-                              CupertinoIcons
-                                  .square_arrow_right, // Ikon yang benar
+                              CupertinoIcons.square_arrow_right,
                               color: Colors.white,
                             ),
                           ),
@@ -238,7 +294,7 @@ class _TodayAttandanceState extends State<TodayAttandance> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                'Over time out',
+                                'Overtime Out',
                                 style: const TextStyle(
                                   color: Colors.black,
                                   fontSize: 13.0,
@@ -249,8 +305,12 @@ class _TodayAttandanceState extends State<TodayAttandance> {
                         ],
                       ),
                       const SizedBox(height: 10),
-                      const Text(
-                        '16:00 PM',
+                      Text(
+                        hasAttendanceData &&
+                                attendance['lembur_end_time'] != null
+                            ? DateFormat.jm().format(
+                                DateTime.parse(attendance['lembur_end_time']))
+                            : 'N/A',
                         style: TextStyle(
                           color: AppColors.primary,
                           fontSize: 20.0,

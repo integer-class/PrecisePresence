@@ -1,5 +1,7 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:intl/intl.dart';
 import 'package:precisepresence/constants/colors.dart';
 import 'package:precisepresence/constants/variables.dart';
 import 'package:precisepresence/data/datasource/auth_local_datasource.dart';
@@ -7,8 +9,6 @@ import 'package:precisepresence/data/responses/auth_response_model.dart';
 import 'package:precisepresence/router/app_router.dart';
 import 'package:precisepresence/screens/components/CustomBottomAppBar.dart';
 import 'package:precisepresence/screens/components/custom_floating_action_button.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:intl/intl.dart';
 
 class Profile extends StatefulWidget {
   const Profile({super.key});
@@ -52,6 +52,34 @@ class _ProfileState extends State<Profile> {
     }
   }
 
+  Future<void> _confirmLogout() async {
+    showCupertinoDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return CupertinoAlertDialog(
+          title: Text("Confirm Logout"),
+          content: Text("Are you sure you want to log out?"),
+          actions: [
+            CupertinoDialogAction(
+              child: Text("Cancel"),
+              onPressed: () {
+                Navigator.of(context).pop(); // Close the dialog
+              },
+            ),
+            CupertinoDialogAction(
+              child: Text("Logout"),
+              onPressed: () async {
+                final authDatasource = AuthLocalDatasource();
+                await authDatasource.removeAuthData();
+                context.goNamed(RouteConstants.login); // Navigate to login page
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -59,11 +87,7 @@ class _ProfileState extends State<Profile> {
         title: const Text('Profile'),
         actions: [
           IconButton(
-            onPressed: () async {
-              final authDatasource = AuthLocalDatasource();
-              await authDatasource.removeAuthData();
-              context.goNamed(RouteConstants.login);
-            },
+            onPressed: _confirmLogout,
             icon: const Icon(Icons.exit_to_app, color: Colors.red),
           ),
         ],
