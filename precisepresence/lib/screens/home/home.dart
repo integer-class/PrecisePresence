@@ -1,5 +1,5 @@
-// home.dart
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:precisepresence/constants/variables.dart';
 import 'package:precisepresence/data/datasource/auth_local_datasource.dart';
 import 'package:precisepresence/data/responses/auth_response_model.dart';
@@ -12,6 +12,7 @@ import 'package:precisepresence/screens/components/date.dart';
 
 class Homepage extends StatefulWidget {
   final RootTab currentTab;
+
   const Homepage({
     Key? key,
     required this.currentTab,
@@ -25,6 +26,8 @@ class _HomepageState extends State<Homepage> {
   String userName = 'User';
   String divisi = 'Divisi';
   String imageUrl = '';
+  String selectedDate = DateFormat('yyyy-MM-dd')
+      .format(DateTime.now()); // To hold the selected date
 
   @override
   void initState() {
@@ -74,6 +77,15 @@ class _HomepageState extends State<Homepage> {
     );
   }
 
+  // Callback function to handle the date selection
+  void onDateSelected(String selectedDate) {
+    setState(() {
+      this.selectedDate = selectedDate;
+    });
+    // You can use the selected date for other purposes, such as fetching data for that date
+    print("Selected Date: $selectedDate");
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -82,10 +94,11 @@ class _HomepageState extends State<Homepage> {
       body: SafeArea(
         child: SingleChildScrollView(
           child: Column(
-            children: const [
-              DateComponent(),
-              TodayAttandance(),
-              Activity(),
+            children: [
+              DateComponent(
+                  onDateSelected: onDateSelected), // Pass the callback here
+              const TodayAttandance(),
+              const Activity(),
             ],
           ),
         ),
