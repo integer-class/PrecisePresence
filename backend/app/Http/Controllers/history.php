@@ -56,6 +56,31 @@ class history extends Controller
 }
 
 
+public function cek_perhari(Request $request)
+{
+     // Validasi input
+     $validated = $request->validate([
+        'date' => 'required|date',
+    ]);
+
+
+
+    // Ubah tanggal menjadi instance Carbon
+    $carbonDate = Carbon::parse($validated['date']);
+
+    $absensi = Absensi::where('id_karyawan',auth()->user()->karyawan->id_karyawan)
+            ->whereDate('check_in_time', $carbonDate)
+            ->first();
+
+    return response()->json([
+        'message' => 'success',
+        'data' => $absensi
+    ]);
+
+
+}
+
+
     /**
      * Show the form for creating a new resource.
      */

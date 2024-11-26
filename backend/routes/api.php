@@ -23,6 +23,9 @@ Route::middleware('auth:sanctum')->group(function () {
 
         Route::get('/cek_presensi', [history::class, 'cek']);
 
+        Route::post('/cek_perhari', [history::class, 'cek_perhari']);
+
+
 
 
 
