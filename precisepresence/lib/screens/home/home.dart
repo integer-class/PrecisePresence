@@ -5,7 +5,7 @@ import 'package:precisepresence/data/datasource/auth_local_datasource.dart';
 import 'package:precisepresence/data/responses/auth_response_model.dart';
 import 'package:precisepresence/router/app_router.dart';
 import 'package:precisepresence/screens/components/CustomBottomAppBar.dart';
-import 'package:precisepresence/screens/components/TodayAttandance.dart';
+import 'package:precisepresence/screens/components/TodayAttandance.dart'; // Fixed class name typo
 import 'package:precisepresence/screens/components/activity.dart';
 import 'package:precisepresence/screens/components/custom_floating_action_button.dart';
 import 'package:precisepresence/screens/components/date.dart';
@@ -97,7 +97,9 @@ class _HomepageState extends State<Homepage> {
             children: [
               DateComponent(
                   onDateSelected: onDateSelected), // Pass the callback here
-              const TodayAttandance(),
+              TodayAttendance(
+                selectedDate: selectedDate,
+              ),
               const Activity(),
             ],
           ),
