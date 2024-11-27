@@ -16,8 +16,10 @@ class AuthRemoteDatasource {
 
       if (response.statusCode == 200) {
         return Right(AuthResponseModel.fromJson(json.decode(response.body)));
+      } else if (response.statusCode == 401) {
+        return Left('Invalid email or password');
       } else {
-        return Left('Login failed: ${response.body}');
+        return Left('An error occurred: ${response.body}');
       }
     } catch (e) {
       return Left('An error occurred: $e');
