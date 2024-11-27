@@ -25,7 +25,7 @@ class _SplashPageState extends State<SplashPage> {
     final isAuth = await AuthLocalDatasource().isAuth();
 
     // Tunggu sebentar dan arahkan ke halaman yang tepat
-    await Future.delayed(const Duration(seconds: 1));
+    await Future.delayed(const Duration(seconds: 2));
 
     // Jika sudah login, arahkan ke halaman utama; jika belum login, arahkan ke halaman login
     if (!isAuth) {
@@ -45,13 +45,13 @@ class _SplashPageState extends State<SplashPage> {
   @override
   Widget build(BuildContext context) {
     return const Scaffold(
-      bottomNavigationBar: Padding(
-        padding: EdgeInsets.all(30.0),
+      body: Center(
         child: Text(
-          'Precise Presence',
+          'PrecisePresence',
           style: TextStyle(
-            color: AppColors.grey,
-            fontWeight: FontWeight.w600,
+            color: AppColors.primary,
+            fontWeight: FontWeight.w900,
+            fontSize: 24,
           ),
           textAlign: TextAlign.center,
         ),

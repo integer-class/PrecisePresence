@@ -18,18 +18,6 @@ class AppRouter {
 
   late final GoRouter router = GoRouter(
     initialLocation: RouteConstants.splashPath,
-    redirect: (context, state) async {
-      // Periksa status autentikasi
-      final isAuth = await _authLocalDatasource.isAuth();
-
-      // Jangan arahkan jika pengguna berada di halaman yang tidak memerlukan autentikasi
-      if (!isAuth && state.uri.toString() != RouteConstants.loginPath) {
-        return RouteConstants
-            .loginPath; // Arahkan ke login jika belum autentikasi
-      }
-
-      return null; // Tetap di halaman saat ini
-    },
     routes: [
       // Rute tanpa autentikasi
       GoRoute(
