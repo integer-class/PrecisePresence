@@ -25,10 +25,10 @@
                                 <h4>Informasi Absensi</h4>
                             </div>
                             <div class="card-body">
-                                <p><strong>Nama Karyawan:</strong> {{ $absensi->karyawan->nama }}</p>
-                                <p><strong>Check-in Time:</strong> {{ $absensi->check_in_time ?? '-' }}</p>
+                                <p><strong>Nama Karyawan:</strong> {{ $karyawan->nama }}</p>
+                                <!-- <p><strong>Check-in Time:</strong> {{ $absensi->check_in_time ?? '-' }}</p>
                                 <p><strong>Check-out Time:</strong> {{ $absensi->check_out_time ?? '-' }}</p>
-                                <p><strong>Keterangan:</strong> {{ $absensi->keterangan ?? '-' }}</p>
+                                <p><strong>Keterangan:</strong> {{ $absensi->keterangan ?? '-' }}</p> -->
 
                                 @if ($absensi->lat && $absensi->lon)
                                     <div id="map"></div>
