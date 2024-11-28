@@ -33,7 +33,7 @@ class CustomFloatingActionButton extends StatelessWidget {
     };
 
     final url = Uri.parse(
-        'http://20.211.46.189/api/user/cek_presensi?id_karyawan=$idKaryawan');
+        'https://precisepresence.me/api/user/cek_presensi?id_karyawan=$idKaryawan');
 
     try {
       final response = await http.get(url, headers: headers);

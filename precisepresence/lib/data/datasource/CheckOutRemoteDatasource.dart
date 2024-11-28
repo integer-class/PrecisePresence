@@ -25,7 +25,7 @@ class CheckOutRemoteDatasource {
       double lon = position.longitude;
       double lat = position.latitude;
 
-      final url = Uri.parse('http://20.211.46.189/api/user/check-out');
+      final url = Uri.parse('https://precisepresence.me/api/user/check-out');
 
       var request = http.MultipartRequest('POST', url);
 

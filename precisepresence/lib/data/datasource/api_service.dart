@@ -5,7 +5,7 @@ import 'package:precisepresence/data/responses/history_response_model.dart';
 import 'package:precisepresence/data/responses/auth_response_model.dart';
 
 class ApiService {
-  static const String baseUrl = "http://20.211.46.189/api/user";
+  static const String baseUrl = "https://precisepresence.me/api/user";
 
   Future<Map<String, dynamic>> fetchAttendanceByDate(String date) async {
     // Load user data to get id_karyawan and token

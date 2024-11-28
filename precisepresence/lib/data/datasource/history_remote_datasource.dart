@@ -23,7 +23,7 @@ class HistoryRemoteDatasource {
       'Authorization': 'Bearer $userToken',
     };
 
-    final url = Uri.parse('http://20.211.46.189/api/user/history');
+    final url = Uri.parse('https://precisepresence.me/api/user/history');
 
     final response = await http.get(url, headers: headers); // Include headers
 

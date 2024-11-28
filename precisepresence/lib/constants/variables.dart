@@ -1,2 +1,2 @@
-const String baseUrl = 'http://20.211.46.189/api';
-const String baseImg = 'http://20.211.46.189/images/';
+const String baseUrl = 'https://precisepresence.me/api';
+const String baseImg = 'https://precisepresence.me/images/';
