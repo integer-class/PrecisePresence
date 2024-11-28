@@ -28,7 +28,9 @@
                     <div class="col-12 col-sm-6 col-md-6 col-lg-2">
                         <article class="article article-style-b">
                             <div style="height: 250px" class="article-header">
-                                <div class="article-image" data-background="{{ asset('images/'.$k->foto) }}"></div>
+                                <div class="article-image"
+                                style="background-image: url('{{ asset('images/'.$k->foto) }}');">
+                           </div>
 
                                 <div class="article-badge">
                                     <div class="article-badge-item bg-danger">
