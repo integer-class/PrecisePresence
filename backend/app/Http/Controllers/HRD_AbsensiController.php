@@ -35,14 +35,14 @@ class HRD_AbsensiController extends Controller
         ->whereDate('check_in_time', Carbon::today())
         ->first();
         $karyawan = Karyawan::where('id_karyawan', $absensi->id_karyawan)->first();
- 
- 
+
+
         return view('hrd.absensi.show', compact('absensi', 'type_menu', 'karyawan'));
- 
- 
-   
+
+
+
     }
- 
+
     public function checkIn(Request $request)
     {
         $validated = $request->validate([
@@ -112,7 +112,7 @@ class HRD_AbsensiController extends Controller
         // Panggil API untuk verifikasi wajah
         $response = Http::attach(
             'file', file_get_contents($file), $file->getClientOriginalName()
-        )->post('http://20.211.74.84/face_match/', [
+        )->post('http://20.11.20.43/face_match/', [
             'threshold' => 0.7,
         ]);
 
@@ -217,7 +217,7 @@ class HRD_AbsensiController extends Controller
 
         $response = Http::attach(
             'file', file_get_contents($file), $file->getClientOriginalName()
-        )->post('http://20.211.74.84/face_match/', [
+        )->post('http://20.11.20.43/face_match/', [
             'threshold' => 0.7,
         ]);
 
@@ -256,6 +256,6 @@ class HRD_AbsensiController extends Controller
     {
         $response = Http::attach(
             'file', file_get_contents($file), $file->getClientOriginalName()
-        )->post("http://20.211.74.84/register_face_personal/?user_id={$user_id}");
+        )->post("http://20.11.20.43/register_face_personal/?user_id={$user_id}");
     }
 }
