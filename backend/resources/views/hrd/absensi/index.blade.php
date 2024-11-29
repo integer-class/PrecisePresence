@@ -69,8 +69,10 @@
                 <article class="article article-style-c">
                     <div class="article-header">
                         <a href="{{ route('hrd_absensi.show', $item->id) }}">
+
                             <div class="article-image"
-                            data-background="{{ asset('checkin_photos/'.$item->foto_checkin) }}">
+                            style="background-image: url('{{ asset('checkin_photos/'.$item->foto_checkin) }}');">
+
                         </div>
                     </a>
                     </div>
