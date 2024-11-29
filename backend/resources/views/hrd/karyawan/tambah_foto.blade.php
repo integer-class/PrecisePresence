@@ -43,7 +43,7 @@
                     <div class="col-12">
                         <div class="card">
                             <div class="card-header">
-                                <h4>Maximal upload foto 1mb</h4>
+                                <h4>Maximal upload foto 50MB</h4>
                             </div>
                             <div class="card-body">
                                 <form style="margin-bottom: 20px" action="{{ route('upload.files') }}" method="post" enctype="multipart/form-data" class="dropzone">
@@ -75,13 +75,24 @@
             autoProcessQueue: false,
             paramName: "files",
             uploadMultiple: true,
-            maxFilesize: 10,
+            maxFilesize: 50, // Mengubah batas ukuran file menjadi 50MB
             acceptedFiles: ".jpeg,.jpg,.png,.gif",
-            addRemoveLinks: false
+            addRemoveLinks: false,
+            dictFileTooBig: "Ukuran file terlalu besar (maksimal 50MB).",
+            dictInvalidFileType: "Hanya file dengan ekstensi .jpeg, .jpg, .png, .gif yang diterima.",
         });
 
         $('#uploadFile').click(function() {
-            myDropzone.processQueue();
+            // Mengecek jika ada file yang melebihi batas ukuran
+            if (myDropzone.getAcceptedFiles().length === 0) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: 'Tidak ada file yang valid untuk diupload.'
+                });
+            } else {
+                myDropzone.processQueue();
+            }
         });
 
         myDropzone.on("success", function(file, response) {
