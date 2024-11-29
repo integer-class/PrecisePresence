@@ -16,7 +16,7 @@ class FaceController extends Controller
     {
         // Validasi input
         $request->validate([
-            'files.*' => 'image|mimes:jpeg,png,jpg|max:5048', // Max size 5MB
+        'files.*' => 'image|mimes:jpeg,png,jpg|max:51200'
         ]);
 
         $files = $request->file('files');
