@@ -25,6 +25,7 @@ Route::resource('pengaturan', \App\Http\Controllers\PengaturanController::class)
 
 Route::resource('perizinan', \App\Http\Controllers\PerizinanController::class);
 
+Route::resource('dashboard', \App\Http\Controllers\HRD_dashboardController::class);
 
 Route::post('/settings', [PengaturanController::class, 'store']);
 
@@ -37,9 +38,6 @@ Route::post('/settings', [PengaturanController::class, 'store']);
 
 
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

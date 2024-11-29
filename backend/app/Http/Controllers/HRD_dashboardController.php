@@ -11,7 +11,9 @@ class HRD_dashboardController extends Controller
      */
     public function index()
     {
-        return view('hrd.index');
+        $type_menu = 'dashboard';
+        return view('hrd.index', compact('type_menu'));
+
 
     }
 
