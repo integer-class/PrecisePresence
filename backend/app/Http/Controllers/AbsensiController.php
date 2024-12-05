@@ -93,7 +93,7 @@ class AbsensiController extends Controller
             $file = $request->file('foto');
             $response = Http::attach(
                 'file', file_get_contents($file), $file->getClientOriginalName()
-            )->post('http://127.0.0.1:8000/face_match/', [
+            )->post('http://20.11.20.43/face_match/', [
                 'threshold' => 0.7,
             ]);
 
