@@ -28,9 +28,6 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::post('/cek_perhari', [history::class, 'cek_perhari']);
 
 
-
-
-
     });
 
 

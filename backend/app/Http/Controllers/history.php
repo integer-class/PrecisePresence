@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 use App\Models\Absensi;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
+use App\Models\JadwalAbsensi;
+
 
 use Illuminate\Http\Request;
 
@@ -31,29 +33,43 @@ class history extends Controller
         }
 
     }
-
     public function cek(Request $request)
-{
-    $today = Carbon::today();
-    $absensi = Absensi::where('id_karyawan', $request->id_karyawan)
-        ->whereDate('check_in_time', $today)
-        ->first();
+    {
+        // Pastikan pengguna memiliki karyawan terkait
+        $karyawan = auth()->user()->karyawan;
 
-    if (!$absensi) {
+        if (!$karyawan) {
+            return response()->json([
+                'message' => 'Karyawan tidak ditemukan untuk pengguna ini.',
+                'data' => null,
+            ], 404);
+        }
+
+        // Cari jadwal berikutnya
+        $jadwalBerikutnya = JadwalAbsensi::where('id_divisi', $karyawan->id_divisi)
+            ->whereNotIn('id_jadwal_absensi', function ($query) use ($karyawan) {
+                $query->select('id_jadwal_absensi')
+                    ->from('absensi')
+                    ->where('id_karyawan', $karyawan->id_karyawan)
+                    ->whereDate('waktu_absensi', now()->toDateString());
+            })
+            ->orderBy('waktu', 'asc')
+            ->first();
+
+        // Kembalikan respons
+        if ($jadwalBerikutnya) {
+            return response()->json([
+                'message' => 'success',
+                'data' => $jadwalBerikutnya,
+            ]);
+        }
+
         return response()->json([
-            'message' => 'belum check-in',
+            'message' => 'no data found',
+            'data' => null,
         ]);
     }
-    if ($absensi->status == 'checkin') {
-        return response()->json([
-            'message' => 'sudah check-in, belum checkout',
-        ]);
-    } elseif ($absensi->status == 'checkout') {
-        return response()->json([
-            'message' => 'sudah checkout.',
-        ]);
-    }
-}
+
 
 
 public function cek_perhari(Request $request)
