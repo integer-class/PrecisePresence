@@ -79,15 +79,15 @@ class _HistoryPageState extends State<HistoryPage> {
                               fontSize: 16.0,
                             ),
                           ),
-                          if (item.keterangan == 'Terlambat')
-                            Text(
-                              item.keterangan,
-                              style: TextStyle(
-                                color: Color.fromARGB(143, 255, 0, 0),
-                                fontWeight: FontWeight.bold,
-                                fontSize: 16.0,
-                              ),
-                            ),
+                          // if (item.keterangan == 'Terlambat')
+                          //   Text(
+                          //     item.keterangan,
+                          //     style: TextStyle(
+                          //       color: Color.fromARGB(143, 255, 0, 0),
+                          //       fontWeight: FontWeight.bold,
+                          //       fontSize: 16.0,
+                          //     ),
+                          //   ),
                         ],
                       ),
                       const SizedBox(height: 15),
@@ -106,42 +106,42 @@ class _HistoryPageState extends State<HistoryPage> {
                         ],
                       ),
                       const SizedBox(height: 10),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                "Check-in : ${formatTime(item.checkInTime)}", // Menggunakan formatTime
-                                style: TextStyle(
-                                  color: Colors.black,
-                                  fontSize: 13.0,
-                                ),
-                              ),
-                              // Text(
-                              //   "Late : ${formatTime(item.lemburStartTime)}", // Menggunakan formatTime
-                              //   style: TextStyle(
-                              //     color: Colors.black,
-                              //     fontSize: 13.0,
-                              //   ),
-                              // ),
-                            ],
-                          ),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                "Check-out : ${formatTime(item.checkOutTime)}", // Menggunakan formatTime
-                                style: TextStyle(
-                                  color: Colors.black,
-                                  fontSize: 13.0,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ],
-                      )
+                      // Row(
+                      //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      //   children: [
+                      //     Column(
+                      //       crossAxisAlignment: CrossAxisAlignment.start,
+                      //       children: [
+                      //         Text(
+                      //           "Check-in : ${formatTime(item.checkInTime)}", // Menggunakan formatTime
+                      //           style: TextStyle(
+                      //             color: Colors.black,
+                      //             fontSize: 13.0,
+                      //           ),
+                      //         ),
+                      //         // Text(
+                      //         //   "Late : ${formatTime(item.lemburStartTime)}", // Menggunakan formatTime
+                      //         //   style: TextStyle(
+                      //         //     color: Colors.black,
+                      //         //     fontSize: 13.0,
+                      //         //   ),
+                      //         // ),
+                      //       ],
+                      //     ),
+                      //     Column(
+                      //       crossAxisAlignment: CrossAxisAlignment.start,
+                      //       children: [
+                      //         Text(
+                      //           "Check-out : ${formatTime(item.checkOutTime)}", // Menggunakan formatTime
+                      //           style: TextStyle(
+                      //             color: Colors.black,
+                      //             fontSize: 13.0,
+                      //           ),
+                      //         ),
+                      //       ],
+                      //     ),
+                      //   ],
+                      // )
                     ],
                   ),
                 );

@@ -19,23 +19,33 @@ class _TodayAttandanceState extends State<TodayAttendance> {
   Map<String, dynamic>? _attendanceData;
 
   Future<void> _fetchAttendance() async {
+    if (!mounted)
+      return; // Pastikan widget masih aktif sebelum melakukan setState
     setState(() {
       _isLoading = true;
     });
 
     try {
       final data = await _apiService.fetchAttendanceByDate(widget.selectedDate);
-      setState(() {
-        _attendanceData = data['data'];
-      });
+      if (mounted) {
+        setState(() {
+          _attendanceData = data['data'];
+        });
+      }
     } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("Error fetching attendance: $e")),
-      );
+      if (mounted) {
+        // ScaffoldMessenger.of(context).showSnackBar(
+        //   SnackBar(content: Text("Error fetching attendance: $e")),
+        // );
+
+        print(e);
+      }
     } finally {
-      setState(() {
-        _isLoading = false;
-      });
+      if (mounted) {
+        setState(() {
+          _isLoading = false;
+        });
+      }
     }
   }
 

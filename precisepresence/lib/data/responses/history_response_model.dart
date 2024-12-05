@@ -19,34 +19,28 @@ class HistoryResponseModel {
 class HistoryData {
   int id;
   int idKaryawan;
+  int idJadwalAbsensi;
   String lon;
   String lat;
-  String? fotoCheckin;
-  String? fotoCheckout;
-  String? checkInTime;
-  String? checkOutTime;
-  String status;
-  String? lemburStartTime;
-  String? lemburEndTime;
-  String? durasiLembur;
-  String keterangan;
+  String foto;
+  String waktuAbsensi;
+  String statusAbsen;
+  String statusAbsensi;
+  String catatan;
   String createdAt;
   String updatedAt;
 
   HistoryData({
     required this.id,
     required this.idKaryawan,
+    required this.idJadwalAbsensi,
     required this.lon,
     required this.lat,
-    this.fotoCheckin,
-    this.fotoCheckout,
-    this.checkInTime,
-    this.checkOutTime,
-    required this.status,
-    this.lemburStartTime,
-    this.lemburEndTime,
-    this.durasiLembur,
-    required this.keterangan,
+    required this.foto,
+    required this.waktuAbsensi,
+    required this.statusAbsen,
+    required this.statusAbsensi,
+    required this.catatan,
     required this.createdAt,
     required this.updatedAt,
   });
@@ -55,17 +49,14 @@ class HistoryData {
     return HistoryData(
       id: json['id'],
       idKaryawan: json['id_karyawan'],
+      idJadwalAbsensi: json['id_jadwal_absensi'],
       lon: json['lon'],
       lat: json['lat'],
-      fotoCheckin: json['foto_checkin'],
-      fotoCheckout: json['foto_checkout'],
-      checkInTime: json['check_in_time'],
-      checkOutTime: json['check_out_time'],
-      status: json['status'],
-      lemburStartTime: json['lembur_start_time'],
-      lemburEndTime: json['lembur_end_time'],
-      durasiLembur: json['durasi_lembur'],
-      keterangan: json['keterangan'],
+      foto: json['foto'],
+      waktuAbsensi: formatDate(json['waktu_absensi']),
+      statusAbsen: json['status_absen'],
+      statusAbsensi: json['status_absensi'],
+      catatan: json['catatan'],
       createdAt: formatDate(json['created_at']),
       updatedAt: formatDate(json['updated_at']),
     );
@@ -75,6 +66,6 @@ class HistoryData {
 // Fungsi untuk memformat tanggal
 String formatDate(String dateString) {
   final DateTime dateTime = DateTime.parse(dateString);
-  final DateFormat formatter = DateFormat('dd MMM yyyy');
+  final DateFormat formatter = DateFormat('dd MMM yyyy HH:mm');
   return formatter.format(dateTime);
 }

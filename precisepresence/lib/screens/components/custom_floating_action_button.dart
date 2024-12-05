@@ -41,11 +41,9 @@ class CustomFloatingActionButton extends StatelessWidget {
       if (response.statusCode == 200) {
         final data = json.decode(response.body);
 
-        if (data['message'] == 'sudah check-in, belum checkout') {
+        if (data['message'] == 'success') {
           context.go('/${RootTab.checkout.value}');
-        } else if (data['message'] == 'belum check-in') {
-          context.go('/${RootTab.presensi.value}');
-        } else if (data['message'] == 'sudah checkout.') {
+        } else if (data['message'] == 'no data found') {
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(
                 content: Text('Anda sudah absen masuk dan pulang hari ini')),

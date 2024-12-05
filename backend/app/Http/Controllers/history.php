@@ -18,19 +18,16 @@ class history extends Controller
     {
         $absensi = Absensi::where('id_karyawan', auth()->user()->karyawan->id_karyawan)->get();
 
-
-
-        if ($absensi->count() > 1) {
-            return response()->json([
-                'message' => 'success',
-                'data' => $absensi
-            ]);
-        } else {
+        if (!$absensi) {
             return response()->json([
                 'message' => 'no data found or only one entry',
                 'data' => $absensi
             ]);
         }
+        return response()->json([
+            'message' => 'succes',
+            'data' => $absensi
+        ]);
 
     }
     public function cek(Request $request)
