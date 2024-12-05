@@ -28,6 +28,10 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::post('/cek_perhari', [history::class, 'cek_perhari']);
 
 
+        Route::post('/absensi', [AbsensiController::class, 'store']);
+
+
+
     });
 
 
@@ -38,4 +42,3 @@ Route::middleware('auth:sanctum')->group(function () {
 Route::post('/login', [AuthController::class, 'login']);
 
 Route::post('/validate-face', [FaceRecognitionController::class, 'validateFace']);
-Route::post('/absensi', [AbsensiController::class, 'store']);
