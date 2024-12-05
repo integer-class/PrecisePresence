@@ -26,4 +26,9 @@ class karyawan extends Model
         'id_cabang',
     ];
 
+    public function devisi()
+    {
+        return $this->belongsTo(Divisi::class, 'id_divisi');
+    }
+
 }

@@ -19,41 +19,39 @@ class AuthController extends Controller
         if (!Auth::attempt($request->only("email", "password"))) {
             return response()->json(
                 [
-                    "user" => Null,
+                    "user" => null,
                     "message" => "Invalid login details",
-                    "stus" => "failed",
+                    "status" => "failed",
                 ],
                 401
-
             );
         }
+
         $user = User::where("email", $request["email"])->firstOrFail();
         $karyawan = $user->karyawan;
+
+        $divisi = $karyawan->devisi ? $karyawan->devisi->nama_divisi : null;
+
         $token = $user->createToken("auth_token")->plainTextToken;
 
-        $user_loggedin=[
-            'id_karyawan' => (string)$karyawan->id_karyawan, // Cast to string
+        $user_loggedin = [
+            'id_karyawan' => (string) $karyawan->id_karyawan,
             'email' => $user->email,
             'role' => $user->role,
             'user_token' => $token,
             'token_type' => 'Bearer',
             'verified' => true,
-            'status'=>'loggedin',
+            'status' => 'loggedin',
             'name' => $karyawan->nama,
-            'divisi' => $karyawan->divisi,
+            'divisi' => $divisi,
             'alamat' => $karyawan->alamat,
             'ttl' => $karyawan->ttl,
             'jenis_kelamin' => $karyawan->jenis_kelamin,
             'no_hp' => $karyawan->no_hp,
             'foto' => $karyawan->foto,
-
-
-
-
         ];
-        return response()->json(
-            $user_loggedin,
-            200
-        );
+
+        return response()->json($user_loggedin, 200);
     }
+
 }
