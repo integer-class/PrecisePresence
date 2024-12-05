@@ -17,6 +17,7 @@ return Application::configure(basePath: dirname(__DIR__))
             'check-out',
             'perizinan',
             'login',
+            'absensi',
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
