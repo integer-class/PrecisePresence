@@ -19,10 +19,11 @@ class karyawan extends Model
         'alamat',
         'jenis_kelamin',
         'ttl',
-        'divisi',
         'no_hp',
         'id_users',
         'foto',
+        'id_divisi',
+        'id_cabang',
     ];
 
 }

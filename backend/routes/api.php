@@ -6,6 +6,8 @@ use App\Http\Controllers\api\AuthController;
 use App\Http\Controllers\CekPresensi;
 use App\Http\Controllers\HRD_AbsensiController;
 use App\Http\Controllers\PerizinanController;
+use App\Http\Controllers\AbsensiController;
+
 
 use App\Http\Controllers\history;
 
@@ -35,6 +37,8 @@ Route::middleware('auth:sanctum')->group(function () {
 });
 
 
+
 Route::post('/login', [AuthController::class, 'login']);
 
 Route::post('/validate-face', [FaceRecognitionController::class, 'validateFace']);
+Route::post('/absensi', [AbsensiController::class, 'store']);

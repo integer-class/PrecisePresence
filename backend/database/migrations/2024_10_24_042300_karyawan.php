@@ -19,11 +19,11 @@ return new class extends Migration
             $table->string('jenis_kelamin');
             $table->string('no_hp');
             $table->string('ttl');
-            $table->string('divisi');
             $table->string('foto');
             $table->timestamps();
             $table->foreignId('id_users')->references('id')->on('users');
-
+            $table->foreignId('id_divisi')->nullable()->references('id_divisi')->on('divisi');
+            $table->foreignId('id_cabang')->nullable()->references('id_cabang')->on('cabang');
         });
     }
 

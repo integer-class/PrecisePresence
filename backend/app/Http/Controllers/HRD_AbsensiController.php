@@ -18,7 +18,7 @@ class HRD_AbsensiController extends Controller
         // ->join('karyawan', 'absensi.id_karyawan', '=', 'karyawan.id_karyawan');
 
 
-        $absensi = Absensi::whereDate('check_in_time', Carbon::today())
+        $absensi = Absensi::whereDate('waktu_absensi', Carbon::today())
         ->join('karyawan', 'absensi.id_karyawan', '=', 'karyawan.id_karyawan')
         ->select('absensi.*', 'karyawan.nama')
         ->get();

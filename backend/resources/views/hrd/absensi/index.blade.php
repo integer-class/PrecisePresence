@@ -80,10 +80,10 @@
                         <div class="article-category"><a href="#">
 
                             <div class="bullet"></div> <a href="#">
-                                {{ \Carbon\Carbon::parse($item->check_in_time)->format('H:i:s') }}
+                                {{-- {{ \Carbon\Carbon::parse($item->check_in_time)->format('H:i:s') }} --}}
                             </a>
 
-                        @if ($item->keterangan == 'Terlambat')
+                        {{-- @if ($item->keterangan == 'Terlambat')
                             <span class="badge badge-danger"  data-toggle="tooltip">
                                 Terlambat
                             </span>
@@ -92,7 +92,7 @@
                             >
                             Tepat Waktu
                             </span>
-                        @endif
+                        @endif --}}
 
 
 

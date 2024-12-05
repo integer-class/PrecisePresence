@@ -29,6 +29,27 @@ Route::resource('dashboard', \App\Http\Controllers\HRD_dashboardController::clas
 
 Route::post('/settings', [PengaturanController::class, 'store']);
 
+Route::get('/cabang', [PengaturanController::class, 'cabang'])->name('hrd.pengaturan.cabang');
+Route::get('/cabang/{id}', [PengaturanController::class, 'detailCabang'])->name('hrd.pengaturan.cabang.detail');
+Route::get('/pengaturan/cabang/tambah', [PengaturanController::class, 'buatCabang'])->name('hrd.pengaturan.cabang.tambah');
+Route::post('/save_cabang', [PengaturanController::class, 'saveCabang']);
+
+
+Route::get('/general', [PengaturanController::class, 'general'])->name('hrd.pengaturan.general');
+Route::get('/jenis_absensi', [PengaturanController::class, 'jenis_absensi'])->name('hrd.pengaturan.jenis_absensi');
+
+Route::get('/pengaturan/divisi/tambah', [PengaturanController::class, 'buatDivisi'])->name('hrd.pengaturan.divisi.tambah');
+Route::post('/divisi/simpan', [PengaturanController::class, 'simpanDivisi'])->name('divisi.simpan');
+
+
+Route::post('/pengaturan/jenis_absensi/tambahjenis', [PengaturanController::class, 'tambahjenis'])->name('hrd.pengaturan.jenis_absensi.tambahjenis');
+
+Route::get('/divisi/{id}/edit', [PengaturanController::class, 'editdivisi'])->name('divisi.edit');
+
+
+
+
+
 
 });
 

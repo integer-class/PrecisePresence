@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use RealRashid\SweetAlert\Facades\Alert;
 use App\Models\User;
+use Illuminate\Support\Facades\DB;
 // Model
 use App\Models\Karyawan;
 
@@ -27,8 +28,10 @@ class HRD_karyawanController extends Controller
     public function create()
     {
         $type_menu = 'karyawan-create';
+        $divisi = DB::table('divisi')->get();
+        $cabang = DB::table('cabang')->get();
 
-        return view('hrd.karyawan.tambah', compact('type_menu'));
+        return view('hrd.karyawan.tambah', compact('type_menu', 'divisi', 'cabang'));
     }
 
     /**
@@ -70,7 +73,8 @@ class HRD_karyawanController extends Controller
             'email' => $request->email,
             'alamat' => $request->alamat,
             'jenis_kelamin' => $request->jenis_kelamin,
-            'divisi' => $request->kategori,
+            'id_divisi' => $request->id_divisi,
+            'id_cabang' => $request->id_cabang,
             'ttl' => $request->ttl,
             'no_hp' => $request->no_hp,
             'foto' => $fotoName,

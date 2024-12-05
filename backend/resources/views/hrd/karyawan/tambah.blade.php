@@ -72,18 +72,19 @@
                     <form action="{{ route('hrd_karyawan.store') }}" method="POST" enctype="multipart/form-data">
                         @csrf
                         <div class="card-header">
+
                             <h4>Form</h4>
                         </div>
                         <div class="card-body">
                             <div class="row">
                                 <!-- Nama Lengkap -->
-                                <div class="col-md-10">
+                                <div class="col-md-12">
                                     <div class="form-group">
                                         <label>Nama Lengkap</label>
                                         <input type="text" class="form-control" name="nama" required>
                                     </div>
                                 </div>
-                                <div class="col-md-2">
+                                <div class="col-md-4">
                                     <div class="form-group">
                                         <label>Jenis kelamin </label>
                                         <select class="form-control" name="jenis_kelamin" required>
@@ -94,26 +95,7 @@
                                 </div>
 
                                 <!-- Divisi -->
-                                <div class="col-md-4">
-                                    <div class="form-group">
-                                        <label>Divisi</label>
-                                        <select class="form-control" name="kategori" required>
-                                            <option value="Keuangan">Keuangan</option>
-                                            <option value="Pemasaran">Pemasaran</option>
-                                            <option value="Sumber Daya Manusia">Sumber Daya Manusia</option>
-                                            <option value="Teknologi Informasi">Teknologi Informasi</option>
-                                            <option value="Produksi">Produksi</option>
-                                            <option value="Pengadaan">Pengadaan</option>
-                                            <option value="Penjualan">Penjualan</option>
-                                            <option value="Hukum">Hukum</option>
-                                            <option value="Operasional">Operasional</option>
-                                            <option value="Keamanan">Keamanan</option>
-                                            <option value="Penelitian dan Pengembangan">Penelitian dan Pengembangan</option>
-                                            <option value="Pelanggan">Layanan Pelanggan</option>
-                                        </select>
-                                    </div>
 
-                                </div>
 
                                 <!-- Email -->
                                 <div class="col-md-4">
@@ -136,6 +118,33 @@
                                         <label>Tanggal Lahir</label>
                                         <input type="date" class="form-control" name="ttl" required>
                                     </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Divisi</label>
+                                        <select class="form-control" name="id_cabang" required>
+                                            @foreach ($divisi as $d)
+                                                <option value="{{ $d->id_divisi }}">{{ $d->nama_divisi }}</option>
+                                            @endforeach
+                                        </select>
+
+                                    </div>
+
+                                </div>
+
+
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Cabang</label>
+                                        <select class="form-control" name="id_divisi" required>
+                                            @foreach ($cabang as $c)
+                                                <option value="{{ $c->id_cabang}}">{{ $c->nama_cabang }}</option>
+                                            @endforeach
+                                        </select>
+
+                                    </div>
+
                                 </div>
 
                                 <!-- Foto dengan Preview -->

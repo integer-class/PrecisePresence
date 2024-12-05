@@ -11,15 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('settings', function (Blueprint $table) {
-            $table->id();
-            $table->decimal('latitude', 10, 8); // Latitude
-            $table->decimal('longitude', 11, 8); // Longitude
-            $table->integer('radius'); // Radius
-            $table->time('jam_masuk'); // Jam masuk
-            $table->time('jam_keluar'); // Jam keluar
+        Schema::create('jenis_absensi', function (Blueprint $table) {
+            $table->id('id_jenis_absensi');
+            $table->string('nama_jenis_absensi');
+            $table->string('aturan_waktu');
             $table->timestamps();
         });
+
     }
 
     /**

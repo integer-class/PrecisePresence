@@ -16,21 +16,16 @@ return new class extends Migration
 
         Schema::create('absensi', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('id_karyawan')->references('id_karyawan')->on('karyawan');
+            $table->foreignId('id_karyawan')->constrained('karyawan', 'id_karyawan')->onDelete('cascade');
+            $table->foreignId('id_jadwal_absensi')->constrained('jadwal_absensi', 'id_jadwal_absensi')->onDelete('cascade');
             $table->string('lon');
             $table->string('lat');
-            $table->string('foto_checkin')->nullable();
-            $table->string('foto_checkout')->nullable();
-            $table->timestamp('check_in_time')->nullable();
-            $table->timestamp('check_out_time')->nullable();
-            $table->enum('status', ['checkin', 'checkout'])->default('checkin');
-            $table->timestamp('lembur_start_time')->nullable();
-            $table->timestamp('lembur_end_time')->nullable();
-            $table->integer('durasi_lembur')->nullable();
-            $table->text('keterangan')->nullable();
+            $table->string('foto')->nullable();
+            $table->timestamp('waktu_absensi');
+            $table->enum('status_absen', ['hadir', 'tidak_hadir'])->default('hadir');
+            $table->string('status_absensi');
+            $table->text('catatan')->nullable();
             $table->timestamps();
-
-
         });
     }
 
