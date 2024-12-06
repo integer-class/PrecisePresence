@@ -83,7 +83,7 @@ public function cek_perhari(Request $request)
 
     $absensi = Absensi::where('id_karyawan',auth()->user()->karyawan->id_karyawan)
             ->whereDate('waktu_absensi', $carbonDate)
-            ->first();
+            ->get();
 
     return response()->json([
         'message' => 'success',

@@ -28,6 +28,7 @@ class ApiService {
         body: jsonEncode({"date": date}),
       );
       if (response.statusCode == 200) {
+        print(response.body);
         return jsonDecode(response.body);
       } else {
         throw Exception("Failed to load attendance");

@@ -73,21 +73,20 @@ class _HistoryPageState extends State<HistoryPage> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
-                            item.createdAt,
+                            item.waktuAbsensi,
                             style: TextStyle(
                               color: AppColors.primary,
                               fontSize: 16.0,
                             ),
                           ),
-                          // if (item.keterangan == 'Terlambat')
-                          //   Text(
-                          //     item.keterangan,
-                          //     style: TextStyle(
-                          //       color: Color.fromARGB(143, 255, 0, 0),
-                          //       fontWeight: FontWeight.bold,
-                          //       fontSize: 16.0,
-                          //     ),
-                          //   ),
+                          Text(
+                            item.statusAbsensi,
+                            style: TextStyle(
+                              color: Color.fromARGB(143, 255, 0, 0),
+                              fontWeight: FontWeight.bold,
+                              fontSize: 16.0,
+                            ),
+                          ),
                         ],
                       ),
                       const SizedBox(height: 15),
