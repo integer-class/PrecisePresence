@@ -100,55 +100,56 @@ class _TodayAttandanceState extends State<TodayAttendance> {
                 return Container(
                   width: MediaQuery.of(context).size.width *
                       0.4, // Lebar 40% layar
-                  padding: const EdgeInsets.all(16.0),
                   decoration: BoxDecoration(
                     color: Colors.white,
                     borderRadius: BorderRadius.circular(10.0),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.grey.withOpacity(0.2),
-                        spreadRadius: 2,
-                        blurRadius: 5,
-                      ),
-                    ],
                   ),
+                  padding: const EdgeInsets.all(20.0),
                   child: Column(
                     children: [
-                      Container(
-                        alignment: Alignment.center,
-                        padding: const EdgeInsets.all(5.0),
-                        decoration: BoxDecoration(
-                          color: AppColors.primary,
-                          borderRadius: BorderRadius.circular(5.0),
-                        ),
-                        child: const Icon(
-                          CupertinoIcons.clock,
-                          color: Colors.white,
-                        ),
+                      Row(
+                        children: [
+                          Container(
+                            alignment: Alignment.topLeft,
+                            padding: const EdgeInsets.all(5.0),
+                            decoration: BoxDecoration(
+                              color: AppColors.primary,
+                              borderRadius: BorderRadius.circular(3.0),
+                            ),
+                            child: const Icon(
+                              CupertinoIcons.square_arrow_right,
+                              color: Colors.white,
+                            ),
+                          ),
+                          const SizedBox(width: 10),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                'Check In',
+                                style: const TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 13.0,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
                       ),
                       const SizedBox(height: 10),
                       Text(
-                        namaJenisAbsensi,
-                        style: const TextStyle(
-                          color: Colors.black,
-                          fontSize: 13.0,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      const SizedBox(height: 5),
-                      Text(
-                        waktu, // Menggunakan waktu_absensi
+                        '$namaJenisAbsensi',
                         style: TextStyle(
                           color: AppColors.primary,
                           fontSize: 20.0,
                         ),
                       ),
-                      const SizedBox(height: 5),
+                      const SizedBox(height: 10),
                       Text(
-                        statusAbsensi, // Menampilkan status_absensi
-                        style: const TextStyle(
-                          color: Colors.grey,
-                          fontSize: 12.0,
+                        'Waktu: $waktu',
+                        style: TextStyle(
+                          color: AppColors.primary,
+                          fontSize: 13.0,
                         ),
                       ),
                     ],
