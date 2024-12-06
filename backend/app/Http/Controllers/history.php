@@ -82,7 +82,7 @@ public function cek_perhari(Request $request)
     $carbonDate = Carbon::parse($validated['date']);
 
     $absensi = Absensi::where('id_karyawan',auth()->user()->karyawan->id_karyawan)
-            ->whereDate('check_in_time', $carbonDate)
+            ->whereDate('waktu_absensi', $carbonDate)
             ->first();
 
     return response()->json([

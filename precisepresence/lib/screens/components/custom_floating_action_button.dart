@@ -42,7 +42,7 @@ class CustomFloatingActionButton extends StatelessWidget {
         final data = json.decode(response.body);
 
         if (data['message'] == 'success') {
-          context.go('/${RootTab.checkout.value}');
+          context.go('/${RootTab.presensi.value}');
         } else if (data['message'] == 'no data found') {
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(
