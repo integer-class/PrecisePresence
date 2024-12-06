@@ -26,6 +26,8 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::get('/cek_presensi', [history::class, 'cek']);
 
         Route::post('/cek_perhari', [history::class, 'cek_perhari']);
+        Route::get('/cek_jadwal', [history::class, 'cek_jadwal']);
+
 
 
         Route::post('/absensi', [AbsensiController::class, 'store']);

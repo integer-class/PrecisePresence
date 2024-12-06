@@ -93,6 +93,20 @@ public function cek_perhari(Request $request)
 
 }
 
+public function cek_jadwal()
+{
+    $jadwal = JadwalAbsensi::where('id_divisi', auth()->user()->karyawan->id_divisi)
+        ->orderBy('waktu', 'asc')
+        ->get();
+
+    return response()->json([
+        'message' => 'success',
+        'data' => $jadwal
+    ]);
+
+
+}
+
 
     /**
      * Show the form for creating a new resource.
