@@ -16,36 +16,32 @@ class TodayAttendance extends StatefulWidget {
 class _TodayAttandanceState extends State<TodayAttendance> {
   final ApiService _apiService = ApiService();
   bool _isLoading = false;
-  Map<String, dynamic>? _attendanceData;
+  List<dynamic>? _attendanceData;
+  List<dynamic>? _scheduleData; // Variabel untuk jumlah_jadwal
 
   Future<void> _fetchAttendance() async {
-    if (!mounted)
-      return; // Pastikan widget masih aktif sebelum melakukan setState
     setState(() {
       _isLoading = true;
     });
 
     try {
-      final data = await _apiService.fetchAttendanceByDate(widget.selectedDate);
-      if (mounted) {
-        setState(() {
-          _attendanceData = data['data'];
-        });
-      }
+      final response =
+          await _apiService.fetchAttendanceByDate(widget.selectedDate);
+      setState(() {
+        _attendanceData = response['data']; // Data absensi
+        _scheduleData = response['jumlah_jadwal']; // Data jumlah_jadwal
+      });
     } catch (e) {
       if (mounted) {
-        // ScaffoldMessenger.of(context).showSnackBar(
-        //   SnackBar(content: Text("Error fetching attendance: $e")),
-        // );
-
-        print(e);
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text("Error fetching attendance: $e")),
+        );
+        print("Error: $e");
       }
     } finally {
-      if (mounted) {
-        setState(() {
-          _isLoading = false;
-        });
-      }
+      setState(() {
+        _isLoading = false;
+      });
     }
   }
 
@@ -53,7 +49,7 @@ class _TodayAttandanceState extends State<TodayAttendance> {
   void didUpdateWidget(covariant TodayAttendance oldWidget) {
     super.didUpdateWidget(oldWidget);
     if (oldWidget.selectedDate != widget.selectedDate) {
-      _fetchAttendance(); // Refresh data saat tanggal berubah
+      _fetchAttendance();
     }
   }
 
@@ -65,263 +61,109 @@ class _TodayAttandanceState extends State<TodayAttendance> {
 
   @override
   Widget build(BuildContext context) {
-    bool hasAttendanceData = _attendanceData != null;
-    var attendance = _attendanceData ?? {};
-
-    String formatTime(String? time) {
-      return time != null
-          ? DateFormat.jm().format(DateTime.parse(time))
-          : 'Belum Absen';
-    }
-
     return Container(
       padding: const EdgeInsets.all(20.0),
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: const [
-              Text(
-                "Today's Attendance",
-                style: TextStyle(
-                  color: Colors.black,
-                  fontSize: 15.0,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ],
+          const Text(
+            "Today's Attendance",
+            style: TextStyle(
+              color: Colors.black,
+              fontSize: 15.0,
+              fontWeight: FontWeight.bold,
+            ),
           ),
-          SizedBox(height: 15),
-          Row(
-            children: [
-              Expanded(
-                child: Container(
+          const SizedBox(height: 15),
+          if (_scheduleData != null && _scheduleData!.isNotEmpty)
+            Wrap(
+              spacing: 16.0, // Spasi horizontal antara elemen
+              runSpacing: 16.0, // Spasi vertikal antara elemen
+              children: _scheduleData!.map((schedule) {
+                String namaJenisAbsensi = schedule['jenis_absensi']
+                        ['nama_jenis_absensi'] ??
+                    'Belum Terjadwal';
+
+                // Mencari data absensi berdasarkan id_jadwal_absensi
+                String waktu = 'Belum Terjadwal';
+                String statusAbsensi = 'Status tidak tersedia';
+                for (var attendance in _attendanceData!) {
+                  if (attendance['id_jadwal_absensi'] ==
+                      schedule['id_jadwal_absensi']) {
+                    waktu = attendance['waktu_absensi'] ?? 'Belum Terjadwal';
+                    statusAbsensi =
+                        attendance['status_absensi'] ?? 'Status tidak tersedia';
+                    break;
+                  }
+                }
+
+                return Container(
+                  width: MediaQuery.of(context).size.width *
+                      0.4, // Lebar 40% layar
+                  padding: const EdgeInsets.all(16.0),
                   decoration: BoxDecoration(
                     color: Colors.white,
                     borderRadius: BorderRadius.circular(10.0),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.grey.withOpacity(0.2),
+                        spreadRadius: 2,
+                        blurRadius: 5,
+                      ),
+                    ],
                   ),
-                  padding: const EdgeInsets.all(20.0),
                   child: Column(
                     children: [
-                      Row(
-                        children: [
-                          Container(
-                            alignment: Alignment.topLeft,
-                            padding: const EdgeInsets.all(5.0),
-                            decoration: BoxDecoration(
-                              color: AppColors.primary,
-                              borderRadius: BorderRadius.circular(3.0),
-                            ),
-                            child: const Icon(
-                              CupertinoIcons.square_arrow_right,
-                              color: Colors.white,
-                            ),
-                          ),
-                          const SizedBox(width: 10),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                'Check In',
-                                style: const TextStyle(
-                                  color: Colors.black,
-                                  fontSize: 13.0,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                      const SizedBox(height: 10),
-                      Text(
-                        formatTime(attendance['check_in_time']),
-                        style: TextStyle(
+                      Container(
+                        alignment: Alignment.center,
+                        padding: const EdgeInsets.all(5.0),
+                        decoration: BoxDecoration(
                           color: AppColors.primary,
-                          fontSize: 20.0,
+                          borderRadius: BorderRadius.circular(5.0),
+                        ),
+                        child: const Icon(
+                          CupertinoIcons.clock,
+                          color: Colors.white,
                         ),
                       ),
                       const SizedBox(height: 10),
                       Text(
-                        attendance['keterangan'] ?? 'No comment',
-                        style: TextStyle(
-                          color: AppColors.primary,
+                        namaJenisAbsensi,
+                        style: const TextStyle(
+                          color: Colors.black,
                           fontSize: 13.0,
+                          fontWeight: FontWeight.bold,
                         ),
                       ),
-                    ],
-                  ),
-                ),
-              ),
-              const SizedBox(width: 10),
-              Expanded(
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: const Color.fromARGB(255, 255, 255, 255),
-                    borderRadius: BorderRadius.circular(10.0),
-                  ),
-                  padding: const EdgeInsets.all(20.0),
-                  child: Column(
-                    children: [
-                      Row(
-                        children: [
-                          Container(
-                            alignment: Alignment.topLeft,
-                            padding: const EdgeInsets.all(5.0),
-                            decoration: BoxDecoration(
-                              color: AppColors.primary,
-                              borderRadius: BorderRadius.circular(3.0),
-                            ),
-                            child: const Icon(
-                              CupertinoIcons.square_arrow_left,
-                              color: Colors.white,
-                            ),
-                          ),
-                          const SizedBox(width: 10),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                'Check Out',
-                                style: const TextStyle(
-                                  color: Colors.black,
-                                  fontSize: 13.0,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                      const SizedBox(height: 10),
+                      const SizedBox(height: 5),
                       Text(
-                        formatTime(attendance['check_out_time']),
+                        waktu, // Menggunakan waktu_absensi
                         style: TextStyle(
                           color: AppColors.primary,
                           fontSize: 20.0,
                         ),
                       ),
-                      const SizedBox(height: 10),
+                      const SizedBox(height: 5),
                       Text(
-                        attendance['keterangan'] ?? 'No comment',
-                        style: TextStyle(
-                          color: AppColors.primary,
-                          fontSize: 13.0,
+                        statusAbsensi, // Menampilkan status_absensi
+                        style: const TextStyle(
+                          color: Colors.grey,
+                          fontSize: 12.0,
                         ),
                       ),
                     ],
                   ),
-                ),
+                );
+              }).toList(),
+            )
+          else
+            const Text(
+              'Tidak ada jadwal tersedia.',
+              style: TextStyle(
+                color: Colors.black,
+                fontSize: 13.0,
               ),
-            ],
-          ),
-          SizedBox(height: 10),
-          Row(
-            children: [
-              Expanded(
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(10.0),
-                  ),
-                  padding: const EdgeInsets.all(20.0),
-                  child: Column(
-                    children: [
-                      Row(
-                        children: [
-                          Container(
-                            alignment: Alignment.topLeft,
-                            padding: const EdgeInsets.all(5.0),
-                            decoration: BoxDecoration(
-                              color: AppColors.primary,
-                              borderRadius: BorderRadius.circular(3.0),
-                            ),
-                            child: const Icon(
-                              CupertinoIcons.square_arrow_right,
-                              color: Colors.white,
-                            ),
-                          ),
-                          const SizedBox(width: 10),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                'Overtime In',
-                                style: const TextStyle(
-                                  color: Colors.black,
-                                  fontSize: 13.0,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                      const SizedBox(height: 10),
-                      Text(
-                        formatTime(attendance['lembur_start_time']),
-                        style: TextStyle(
-                          color: AppColors.primary,
-                          fontSize: 20.0,
-                        ),
-                      ),
-                      const SizedBox(height: 10),
-                    ],
-                  ),
-                ),
-              ),
-              const SizedBox(width: 10),
-              Expanded(
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: const Color.fromARGB(255, 255, 255, 255),
-                    borderRadius: BorderRadius.circular(10.0),
-                  ),
-                  padding: const EdgeInsets.all(20.0),
-                  child: Column(
-                    children: [
-                      Row(
-                        children: [
-                          Container(
-                            alignment: Alignment.topLeft,
-                            padding: const EdgeInsets.all(5.0),
-                            decoration: BoxDecoration(
-                              color: AppColors.primary,
-                              borderRadius: BorderRadius.circular(3.0),
-                            ),
-                            child: const Icon(
-                              CupertinoIcons.square_arrow_right,
-                              color: Colors.white,
-                            ),
-                          ),
-                          const SizedBox(width: 10),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                'Overtime Out',
-                                style: const TextStyle(
-                                  color: Colors.black,
-                                  fontSize: 13.0,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                      const SizedBox(height: 10),
-                      Text(
-                        formatTime(attendance['lembur_end_time']),
-                        style: TextStyle(
-                          color: AppColors.primary,
-                          fontSize: 20.0,
-                        ),
-                      ),
-                      const SizedBox(height: 10),
-                    ],
-                  ),
-                ),
-              ),
-            ],
-          ),
-          SizedBox(height: 10),
+            ),
         ],
       ),
     );
