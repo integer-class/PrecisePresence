@@ -19,11 +19,11 @@ class JadwalAbsensi extends Model
         'waktu',
     ];
 
-    // Relasi ke model Divisi
-    public function jadwal()
-{
-    return $this->hasMany(JadwalAbsensi::class, 'id_divisi');
-}
+    // Relasi ke model JenisAbsensi
+    public function jenisAbsensi()
+    {
+        return $this->belongsTo(JenisAbsensi::class, 'id_jenis_absensi', 'id_jenis_absensi');
+    }
 
     // Relasi ke model Absensi
     public function absensi()
@@ -31,5 +31,9 @@ class JadwalAbsensi extends Model
         return $this->hasMany(Absensi::class, 'id_jadwal_absensi');
     }
 
-
+    // Relasi ke model Divisi
+    public function jadwal()
+    {
+        return $this->hasMany(JadwalAbsensi::class, 'id_divisi');
+    }
 }

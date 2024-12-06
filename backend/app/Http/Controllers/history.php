@@ -5,6 +5,8 @@ use App\Models\Absensi;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
 use App\Models\JadwalAbsensi;
+use App\Models\JenisAbsensi;
+
 
 
 use Illuminate\Http\Request;
@@ -96,16 +98,17 @@ public function cek_perhari(Request $request)
 public function cek_jadwal()
 {
     $jadwal = JadwalAbsensi::where('id_divisi', auth()->user()->karyawan->id_divisi)
+        ->with(['jenisAbsensi', 'absensi']) // Memuat relasi jenisAbsensi dan absensi
         ->orderBy('waktu', 'asc')
         ->get();
 
     return response()->json([
         'message' => 'success',
-        'data' => $jadwal
+        'data' => $jadwal,
     ]);
-
-
 }
+
+
 
 
     /**
