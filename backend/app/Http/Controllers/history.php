@@ -79,17 +79,23 @@ public function cek_perhari(Request $request)
     ]);
 
 
+    $jadwal = JadwalAbsensi::where('id_divisi', auth()->user()->karyawan->id_divisi)
+    ->with(['jenisAbsensi']) // Memuat relasi jenisAbsensi dan absensi
+    ->orderBy('waktu', 'asc')
+    ->get();
 
-    // Ubah tanggal menjadi instance Carbon
+
     $carbonDate = Carbon::parse($validated['date']);
 
     $absensi = Absensi::where('id_karyawan',auth()->user()->karyawan->id_karyawan)
+            ->join ('jadwal_absensi','absensi.id_jadwal_absensi','=','jadwal_absensi.id_jadwal_absensi')
             ->whereDate('waktu_absensi', $carbonDate)
             ->get();
 
     return response()->json([
         'message' => 'success',
-        'data' => $absensi
+        'data' => $absensi,
+        'jumlah_jadwal' => $jadwal,
     ]);
 
 
@@ -98,7 +104,7 @@ public function cek_perhari(Request $request)
 public function cek_jadwal()
 {
     $jadwal = JadwalAbsensi::where('id_divisi', auth()->user()->karyawan->id_divisi)
-        ->with(['jenisAbsensi', 'absensi']) // Memuat relasi jenisAbsensi dan absensi
+        ->with(['jenisAbsensi']) // Memuat relasi jenisAbsensi dan absensi
         ->orderBy('waktu', 'asc')
         ->get();
 
