@@ -17,4 +17,7 @@ class RouteConstants {
 
   static const String checkout = 'checkout';
   static const String checkoutPath = '/checkout';
+
+  static const String perizinan = 'perizinan';
+  static const String perizinanPath = '/perizinan';
 }

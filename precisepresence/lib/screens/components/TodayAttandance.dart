@@ -83,10 +83,12 @@ class _TodayAttandanceState extends State<TodayAttendance> {
                 String namaJenisAbsensi = schedule['jenis_absensi']
                         ['nama_jenis_absensi'] ??
                     'Belum Terjadwal';
+                String waktujadwal = schedule['waktu'] ?? 'Belum Terjadwal';
 
                 // Mencari data absensi berdasarkan id_jadwal_absensi
                 String waktu = 'Belum Terjadwal';
                 String statusAbsensi = 'Status tidak tersedia';
+
                 for (var attendance in _attendanceData!) {
                   if (attendance['id_jadwal_absensi'] ==
                       schedule['id_jadwal_absensi']) {
@@ -95,6 +97,13 @@ class _TodayAttandanceState extends State<TodayAttendance> {
                         attendance['status_absensi'] ?? 'Status tidak tersedia';
                     break;
                   }
+                }
+                String jam;
+
+                if (waktu.isNotEmpty && waktu.length >= 16) {
+                  jam = 'Sudah absen ${waktu.substring(11, 16)}';
+                } else {
+                  jam = 'Belum Absen';
                 }
 
                 return Container(
@@ -138,7 +147,7 @@ class _TodayAttandanceState extends State<TodayAttendance> {
                       ),
                       const SizedBox(height: 10),
                       Text(
-                        '$namaJenisAbsensi',
+                        '$waktujadwal',
                         style: TextStyle(
                           color: AppColors.primary,
                           fontSize: 20.0,
@@ -146,7 +155,7 @@ class _TodayAttandanceState extends State<TodayAttendance> {
                       ),
                       const SizedBox(height: 10),
                       Text(
-                        '$waktu',
+                        '$jam',
                         style: TextStyle(
                           color: AppColors.primary,
                           fontSize: 13.0,

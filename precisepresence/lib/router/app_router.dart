@@ -6,6 +6,7 @@ import 'package:precisepresence/screens/home/home.dart';
 import 'package:precisepresence/screens/intro/splash_page.dart';
 import 'package:precisepresence/screens/auth/login.dart';
 import 'package:precisepresence/screens/lokasi/lokasi.dart';
+import 'package:precisepresence/screens/perizinan/izin.dart';
 import 'package:precisepresence/screens/presensi/presensi.dart';
 import 'package:precisepresence/screens/presensi/presensi_checkout.dart';
 import 'package:precisepresence/screens/profile/profile.dart';
@@ -52,6 +53,10 @@ class AppRouter {
             return const HistoryPage();
           }
 
+          if (tab == RootTab.perizinan) {
+            return const LeavesPage();
+          }
+
           if (tab == RootTab.profile) {
             return const Profile();
           }
@@ -66,11 +71,6 @@ class AppRouter {
         name: RouteConstants.presensi,
         path: RouteConstants.presensiPath,
         builder: (context, state) => const Presensi(),
-      ),
-      GoRoute(
-        name: RouteConstants.checkout,
-        path: RouteConstants.checkoutPath,
-        builder: (context, state) => const Checkout(),
       ),
     ],
   );
