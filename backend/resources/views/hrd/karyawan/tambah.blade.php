@@ -123,7 +123,7 @@
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label>Divisi</label>
-                                        <select class="form-control" name="id_cabang" required>
+                                        <select class="form-control" name="id_divisi" required>
                                             @foreach ($divisi as $d)
                                                 <option value="{{ $d->id_divisi }}">{{ $d->nama_divisi }}</option>
                                             @endforeach
@@ -137,7 +137,7 @@
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label>Cabang</label>
-                                        <select class="form-control" name="id_divisi" required>
+                                        <select class="form-control" name="id_cabang" required>
                                             @foreach ($cabang as $c)
                                                 <option value="{{ $c->id_cabang}}">{{ $c->nama_cabang }}</option>
                                             @endforeach

@@ -126,7 +126,7 @@ class _TodayAttandanceState extends State<TodayAttendance> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                'Check In',
+                                '$namaJenisAbsensi',
                                 style: const TextStyle(
                                   color: Colors.black,
                                   fontSize: 13.0,
@@ -146,7 +146,7 @@ class _TodayAttandanceState extends State<TodayAttendance> {
                       ),
                       const SizedBox(height: 10),
                       Text(
-                        'Waktu: $waktu',
+                        '$waktu',
                         style: TextStyle(
                           color: AppColors.primary,
                           fontSize: 13.0,
