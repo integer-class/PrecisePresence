@@ -5,7 +5,6 @@ import 'package:precisepresence/screens/history/history.dart';
 import 'package:precisepresence/screens/home/home.dart';
 import 'package:precisepresence/screens/intro/splash_page.dart';
 import 'package:precisepresence/screens/auth/login.dart';
-import 'package:precisepresence/screens/lokasi/lokasi.dart';
 import 'package:precisepresence/screens/perizinan/izin.dart';
 import 'package:precisepresence/screens/presensi/presensi.dart';
 import 'package:precisepresence/screens/presensi/presensi_checkout.dart';

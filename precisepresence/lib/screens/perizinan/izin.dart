@@ -191,11 +191,13 @@ class _LeavesPageState extends State<LeavesPage> {
                                         bottom: 0,
                                         right: 0,
                                         child: Padding(
-                                          padding:
-                                              const EdgeInsets.only(bottom: 10),
-                                          child: SvgPicture.asset(
-                                              "assets/images/calendar.svg"),
-                                        ),
+                                            padding: const EdgeInsets.only(
+                                                bottom: 10),
+                                            child: SvgPicture.asset(
+                                              "assets/images/calendar.svg",
+                                              width: 20,
+                                              height: 20,
+                                            )),
                                       ),
                                     ],
                                   ),
@@ -250,7 +252,10 @@ class _LeavesPageState extends State<LeavesPage> {
                                           padding:
                                               const EdgeInsets.only(bottom: 10),
                                           child: SvgPicture.asset(
-                                              "assets/images/calendar.svg"),
+                                            "assets/images/calendar.svg",
+                                            width: 20,
+                                            height: 20,
+                                          ),
                                         ),
                                       ),
                                     ],
@@ -316,7 +321,10 @@ class _LeavesPageState extends State<LeavesPage> {
                                                 ),
                                               )
                                             : SvgPicture.asset(
-                                                "assets/images/document.svg")),
+                                                "assets/images/document.svg",
+                                                width: 50,
+                                                height: 50,
+                                              )),
                                   ),
                                 ),
                               ],
@@ -612,7 +620,7 @@ class _LeavesPageState extends State<LeavesPage> {
         onPressed: () {},
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      bottomNavigationBar: const CustomBottomAppBar(currentTab: RootTab.home),
+      bottomNavigationBar: CustomBottomAppBar(currentTab: RootTab.perizinan),
     );
   }
 }
