@@ -1,3 +1,4 @@
+// leave_request_remote_datasource.dart
 import 'dart:convert';
 import 'dart:io';
 import 'package:dartz/dartz.dart';
@@ -5,6 +6,7 @@ import 'package:http/http.dart' as http;
 import 'package:geolocator/geolocator.dart';
 import 'package:precisepresence/data/datasource/auth_local_datasource.dart';
 import 'package:precisepresence/data/responses/auth_response_model.dart';
+import 'package:precisepresence/data/responses/perizinan_reponse_model.dart';
 
 class LeaveRequestRemoteDatasource {
   Future<Either<String, String>> submitLeaveRequest({
@@ -22,7 +24,6 @@ class LeaveRequestRemoteDatasource {
         return Left('User data not found');
       }
 
-      String idKaryawan = authData.idKaryawan ?? '1';
       String userToken = authData.userToken;
 
       final headers = {
@@ -69,6 +70,38 @@ class LeaveRequestRemoteDatasource {
         return Left(errorData['message'] ?? 'Validation Error');
       } else {
         return Left('Failed to submit leave request: ${response.reasonPhrase}');
+      }
+    } catch (e) {
+      return Left('Error occurred: $e');
+    }
+  }
+
+  Future<Either<String, List<LeaveRequest>>> getLeaveRequests() async {
+    try {
+      AuthLocalDatasource authLocalDatasource = AuthLocalDatasource();
+      AuthResponseModel? authData = await authLocalDatasource.getAuthData();
+
+      if (authData == null) {
+        return Left('User data not found');
+      }
+
+      String userToken = authData.userToken;
+      final headers = {
+        'Authorization': 'Bearer $userToken',
+      };
+
+      final url = Uri.parse('https://precisepresence.me/api/user/perizinan');
+
+      final response = await http.get(url, headers: headers);
+
+      if (response.statusCode == 200) {
+        final responseBody = json.decode(response.body);
+        List<dynamic> data = responseBody;
+        List<LeaveRequest> leaveRequests =
+            data.map((item) => LeaveRequest.fromJson(item)).toList();
+        return Right(leaveRequests);
+      } else {
+        return Left('Failed to fetch leave requests: ${response.reasonPhrase}');
       }
     } catch (e) {
       return Left('Error occurred: $e');
