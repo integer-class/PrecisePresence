@@ -258,20 +258,20 @@ class _RequestLeavePageState extends State<RequestLeavePage> {
                       width: MediaQuery.of(context).size.width,
                       height: 65,
                       child: Center(
-                        child: _selectedFile != null
-                            ? Text(
-                                _selectedFile!.path.split('/').last,
-                                style: const TextStyle(
-                                  fontSize: 13,
-                                  fontWeight: FontWeight.w300,
-                                ),
-                              )
-                            : SvgPicture.asset(
-                                "assets/images/document.svg",
-                                width: 50,
-                                height: 50,
-                              ),
-                      ),
+                          child: _selectedFile != null
+                              ? Text(
+                                  _selectedFile!.path.split('/').last,
+                                  style: const TextStyle(
+                                    fontSize: 13,
+                                    fontWeight: FontWeight.w300,
+                                  ),
+                                )
+                              : SvgPicture.asset(
+                                  "assets/images/document.svg",
+                                  width: 40,
+                                  height: 40,
+                                  color: Colors.black.withOpacity(0.5),
+                                )),
                     ),
                   ),
                 ],
