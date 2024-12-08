@@ -29,6 +29,24 @@ class PerizinanController extends Controller
     }
 
 
+
+
+    public function getperizinan()
+    {
+        // Get id_karyawan from the authenticated user
+        $idKaryawan = auth()->user()->karyawan->id_karyawan;
+
+        $perizinan = Perizinan::where('id_karyawan', $idKaryawan)->get();
+
+        return response()->json($perizinan);
+
+        return response()->json([
+            'message' => 'success',
+            'data' => $perizinan,
+        ], 200);
+    }
+
+
     public function create()
     {
         //

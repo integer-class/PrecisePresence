@@ -31,6 +31,8 @@ Route::middleware('auth:sanctum')->group(function () {
 
 
         Route::post('/absensi', [AbsensiController::class, 'store']);
+        Route::get('/perizinan', [PerizinanController::class, 'getperizinan']);
+
 
 
 
