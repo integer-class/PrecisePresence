@@ -19,7 +19,6 @@ class _LeavesPageState extends State<LeavesPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
       appBar: AppBar(
         title: const Text(
           "My Leaves",

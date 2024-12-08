@@ -68,13 +68,13 @@ class _HistoryPerizinanState extends State<HistoryPerizinan> {
                             decoration: BoxDecoration(
                               color: Colors.white,
                               borderRadius: BorderRadius.circular(10),
-                              boxShadow: const [
-                                BoxShadow(
-                                  color: Color.fromRGBO(0, 0, 0, 0.25),
-                                  offset: Offset(0, 4),
-                                  blurRadius: 4,
-                                ),
-                              ],
+                              // boxShadow: const [
+                              //   BoxShadow(
+                              //     color: Color.fromRGBO(0, 0, 0, 0.25),
+                              //     offset: Offset(0, 4),
+                              //     blurRadius: 4,
+                              //   ),
+                              // ],
                             ),
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,

@@ -168,6 +168,7 @@ class _RequestLeavePageState extends State<RequestLeavePage> {
       decoration: BoxDecoration(
         border: Border.all(color: const Color.fromRGBO(11, 62, 131, 1)),
         borderRadius: BorderRadius.circular(5),
+        color: Colors.white,
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
