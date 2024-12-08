@@ -66,12 +66,15 @@ class _TodayAttandanceState extends State<TodayAttendance> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text(
-            "Today's Attendance",
-            style: TextStyle(
-              color: Colors.black,
-              fontSize: 15.0,
-              fontWeight: FontWeight.bold,
+          Container(
+            alignment: Alignment.topLeft,
+            child: Text(
+              "Today's Attendance",
+              style: TextStyle(
+                color: Colors.black,
+                fontSize: 15.0,
+                fontWeight: FontWeight.bold,
+              ),
             ),
           ),
           const SizedBox(height: 15),
