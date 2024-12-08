@@ -33,7 +33,7 @@ class LeaveRequestRemoteDatasource {
       double lon = position.longitude;
       double lat = position.latitude;
 
-      final url = Uri.parse('https://your-laravel-api.com/api/user/perizinan');
+      final url = Uri.parse('https://precisepresence.me/api/user/perizinan');
 
       var request = http.MultipartRequest('POST', url);
       request.headers.addAll(headers);

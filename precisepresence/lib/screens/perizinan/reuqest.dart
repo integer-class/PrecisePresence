@@ -38,7 +38,7 @@ class _RequestLeavePageState extends State<RequestLeavePage> {
   Future<void> _selectFile() async {
     final result = await FilePicker.platform.pickFiles(
       type: FileType.custom,
-      allowedExtensions: ['pdf', 'doc', 'docx'],
+      allowedExtensions: ['pdf', 'doc', 'docx', 'jpg', 'png'],
     );
 
     if (result != null && result.files.single.path != null) {
