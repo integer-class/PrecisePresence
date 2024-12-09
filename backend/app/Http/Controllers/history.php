@@ -35,23 +35,19 @@ class history extends Controller
 
     }
     public function cek(Request $request)
-    {
-        // Pastikan pengguna memiliki karyawan terkait
-        $karyawan = auth()->user()->karyawan;
+{
+    // Pastikan pengguna memiliki karyawan terkait
+    $karyawan = auth()->user()->karyawan;
 
-        if (!$karyawan) {
-            return response()->json([
-                'message' => 'Karyawan tidak ditemukan untuk pengguna ini.',
-                'data' => null,
-            ], 404);
-        }
+    if (!$karyawan) {
+        return response()->json([
+            'message' => 'Karyawan tidak ditemukan untuk pengguna ini.',
+            'data' => null,
+        ], 404);
+    }
 
-
-
-
-
-
-        $activePermits = Perizinan::where('id_karyawan', auth()->user()->karyawan->id_karyawan)
+    // Cek apakah ada izin aktif
+    $activePermits = Perizinan::where('id_karyawan', $karyawan->id_karyawan)
         ->where('status', 'approved')
         ->where('is_active', true)
         ->where(function ($query) {
@@ -60,52 +56,48 @@ class history extends Controller
         })
         ->exists();
 
-        if ($activePermits && !$request->input('force_checkin')) {
-            return response()->json(['message' => 'Anda memiliki izin aktif. Apakah Anda ingin menghentikan perizinan dan melanjutkan check-in?', 'require_confirmation' => true], 400);
-        }
-
-
-          // Jika force_checkin diaktifkan, update status perizinan menjadi "cancelled"
-          if ($activePermits && $request->input('force_checkin')) {
-            Perizinan::where('id_karyawan', auth()->user()->karyawan->id_karyawan)
+    // Handle izin aktif dan force_checkin
+    if ($activePermits) {
+        if ($request->input('force_checkin')) {
+            // Update perizinan menjadi tidak aktif
+            Perizinan::where('id_karyawan', $karyawan->id_karyawan)
                 ->where('status', 'approved')
-                ->where('is_active', 1)
-                ->where(function ($query) {
-                    $query->whereDate('tanggal_mulai', '<=', Carbon::now())
-                          ->whereDate('tanggal_selesai', '>=', Carbon::now());
-                })
-                ->update(['is_active' => 0]);
-        }
-
-
-
-
-
-
-        // Cari jadwal berikutnya
-        $jadwalBerikutnya = JadwalAbsensi::where('id_divisi', $karyawan->id_divisi)
-            ->whereNotIn('id_jadwal_absensi', function ($query) use ($karyawan) {
-                $query->select('id_jadwal_absensi')
-                    ->from('absensi')
-                    ->where('id_karyawan', $karyawan->id_karyawan)
-                    ->whereDate('waktu_absensi', now()->toDateString());
-            })
-            ->orderBy('waktu', 'asc')
-            ->first();
-
-        // Kembalikan respons
-        if ($jadwalBerikutnya) {
+                ->where('is_active', true)
+                ->update(['is_active' => false]);
+        } else {
+            // Jika force_checkin tidak diaktifkan, minta konfirmasi
             return response()->json([
-                'message' => 'success',
-                'data' => $jadwalBerikutnya,
-            ]);
+                'message' => 'Anda memiliki izin aktif. Apakah Anda ingin menghentikan perizinan dan melanjutkan check-in?',
+                'require_confirmation' => true,
+            ], 200);
         }
+    }
 
+    // Cari jadwal berikutnya
+    $jadwalBerikutnya = JadwalAbsensi::where('id_divisi', $karyawan->id_divisi)
+        ->whereNotIn('id_jadwal_absensi', function ($query) use ($karyawan) {
+            $query->select('id_jadwal_absensi')
+                ->from('absensi')
+                ->where('id_karyawan', $karyawan->id_karyawan)
+                ->whereDate('waktu_absensi', now()->toDateString());
+        })
+        ->orderBy('waktu', 'asc')
+        ->first();
+
+    // Kembalikan respons berdasarkan jadwal
+    if ($jadwalBerikutnya) {
         return response()->json([
-            'message' => 'no data found',
-            'data' => null,
+            'message' => 'success',
+            'data' => $jadwalBerikutnya,
         ]);
     }
+
+    return response()->json([
+        'message' => 'no data found',
+        'data' => null,
+    ]);
+}
+
 
 
 
