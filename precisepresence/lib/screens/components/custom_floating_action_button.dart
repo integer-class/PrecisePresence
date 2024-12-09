@@ -38,10 +38,56 @@ class CustomFloatingActionButton extends StatelessWidget {
     try {
       final response = await http.get(url, headers: headers);
 
+      print('response: ${response.body}'); // Debug respons server
+
       if (response.statusCode == 200) {
         final data = json.decode(response.body);
 
-        if (data['message'] == 'success') {
+        if (data['require_confirmation'] == true) {
+          // Tampilkan dialog konfirmasi
+          bool? confirm = await showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return AlertDialog(
+                title: const Text('Konfirmasi'),
+                content: Text(data['message'] ?? 'Anda memiliki izin aktif.'),
+                actions: [
+                  TextButton(
+                    onPressed: () {
+                      Navigator.pop(context, false); // Batalkan
+                    },
+                    child: const Text('Batal'),
+                  ),
+                  TextButton(
+                    onPressed: () {
+                      Navigator.pop(context, true); // Lanjutkan
+                    },
+                    child: const Text('Lanjutkan'),
+                  ),
+                ],
+              );
+            },
+          );
+
+          if (confirm == true) {
+            // Kirim GET request untuk check-in paksa
+            final forceCheckInUrl = Uri.parse(
+                'https://precisepresence.me/api/user/cek_presensi?id_karyawan=$idKaryawan&force_checkin=true');
+            final forceCheckInResponse =
+                await http.get(forceCheckInUrl, headers: headers);
+
+            if (forceCheckInResponse.statusCode == 200) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(content: Text('Check-in berhasil')),
+              );
+              context.go('/${RootTab.presensi.value}');
+            } else {
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(content: Text('Gagal melakukan check-in')),
+              );
+            }
+          }
+        } else if (data['message'] == 'success') {
           context.go('/${RootTab.presensi.value}');
         } else if (data['message'] == 'no data found') {
           ScaffoldMessenger.of(context).showSnackBar(
@@ -54,11 +100,15 @@ class CustomFloatingActionButton extends StatelessWidget {
           );
         }
       } else {
+        // Tangani kegagalan dengan status selain 200
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Failed to fetch data from server')),
+          SnackBar(
+              content: Text(
+                  'Failed to fetch data from server: ${response.statusCode}')),
         );
       }
     } catch (e) {
+      // Tangani error jaringan atau parsing
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Error: $e')),
       );
