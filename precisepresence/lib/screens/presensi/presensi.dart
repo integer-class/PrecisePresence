@@ -160,7 +160,7 @@ class _PresensiState extends State<Presensi> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Presensi Kedatangan"),
+        title: const Text("Presensi"),
         centerTitle: true,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),

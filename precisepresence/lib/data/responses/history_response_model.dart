@@ -26,6 +26,7 @@ class HistoryData {
   String waktuAbsensi;
   String statusAbsen;
   String statusAbsensi;
+  String nama_jenis_absensi;
   String catatan;
   String createdAt;
   String updatedAt;
@@ -38,6 +39,7 @@ class HistoryData {
     required this.lat,
     required this.foto,
     required this.waktuAbsensi,
+    required this.nama_jenis_absensi,
     required this.statusAbsen,
     required this.statusAbsensi,
     required this.catatan,
@@ -55,6 +57,7 @@ class HistoryData {
       foto: json['foto'],
       waktuAbsensi: formatDate(json['waktu_absensi']),
       statusAbsen: json['status_absen'],
+      nama_jenis_absensi: json['nama_jenis_absensi'],
       statusAbsensi: json['status_absensi'],
       catatan: json['catatan'],
       createdAt: formatDate(json['created_at']),

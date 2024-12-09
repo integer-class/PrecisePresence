@@ -7,6 +7,8 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\JadwalAbsensi;
 use App\Models\JenisAbsensi;
 use App\Models\Perizinan;
+use Illuminate\Support\Facades\DB;
+
 
 
 
@@ -20,18 +22,27 @@ class history extends Controller
      */
     public function index()
     {
-        $absensi = Absensi::where('id_karyawan', auth()->user()->karyawan->id_karyawan)->get();
+        $absensi = DB::table('absensi')
+        ->join('jadwal_absensi', 'absensi.id_jadwal_absensi', '=', 'jadwal_absensi.id_jadwal_absensi')
+        ->join('jenis_absensi', 'jadwal_absensi.id_jenis_absensi', '=', 'jenis_absensi.id_jenis_absensi')
+        ->where('absensi.id_karyawan', auth()->user()->karyawan->id_karyawan)
+        ->select(
+            'absensi.*',
+            'jenis_absensi.nama_jenis_absensi'
+        )
+        ->get();
 
-        if (!$absensi) {
-            return response()->json([
-                'message' => 'no data found or only one entry',
-                'data' => $absensi
-            ]);
-        }
+    if ($absensi->isEmpty()) {
         return response()->json([
-            'message' => 'succes',
+            'message' => 'No data found or only one entry',
             'data' => $absensi
         ]);
+    }
+
+    return response()->json([
+        'message' => 'Success',
+        'data' => $absensi
+    ]);
 
     }
     public function cek(Request $request)
