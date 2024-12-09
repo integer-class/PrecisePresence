@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:precisepresence/constants/colors.dart';
 import 'package:precisepresence/data/datasource/history_remote_datasource.dart';
 import 'package:precisepresence/data/responses/history_response_model.dart';
+import 'package:precisepresence/router/app_router.dart';
 
 class Activity extends StatefulWidget {
   const Activity({Key? key}) : super(key: key);
@@ -42,7 +44,7 @@ class _ActivityState extends State<Activity> {
           padding: const EdgeInsets.all(15.0),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: const [
+            children: [
               Text(
                 "Your activity",
                 style: TextStyle(
@@ -51,11 +53,16 @@ class _ActivityState extends State<Activity> {
                   fontWeight: FontWeight.bold,
                 ),
               ),
-              Text(
-                "View All",
-                style: TextStyle(
-                  color: AppColors.primary,
-                  fontSize: 14.0,
+              InkWell(
+                onTap: () {
+                  context.go('/${RootTab.history.value}');
+                },
+                child: Text(
+                  "View All",
+                  style: TextStyle(
+                    color: AppColors.primary,
+                    fontSize: 14.0,
+                  ),
                 ),
               ),
             ],
@@ -110,7 +117,7 @@ class _ActivityState extends State<Activity> {
                                 Row(
                                   children: [
                                     Text(
-                                      "Successfully Took Attendance",
+                                      'Successfully attendance ${item.nama_jenis_absensi}',
                                       style: TextStyle(
                                         color: Color(0xFFED7D2B),
                                         fontWeight: FontWeight.bold,
@@ -123,20 +130,13 @@ class _ActivityState extends State<Activity> {
                                 Row(
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,
-                                  children: const [
-                                    Column(
+                                  children: [
+                                    const Column(
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
                                       children: [
                                         Text(
-                                          "check-in : 08:00 AM",
-                                          style: TextStyle(
-                                            color: Colors.black,
-                                            fontSize: 13.0,
-                                          ),
-                                        ),
-                                        Text(
-                                          "Late : 00.00",
+                                          "Attandace Status",
                                           style: TextStyle(
                                             color: Colors.black,
                                             fontSize: 13.0,
@@ -149,15 +149,8 @@ class _ActivityState extends State<Activity> {
                                           CrossAxisAlignment.start,
                                       children: [
                                         Text(
-                                          "check-out : 08:00 AM",
-                                          style: TextStyle(
-                                            color: Colors.black,
-                                            fontSize: 13.0,
-                                          ),
-                                        ),
-                                        Text(
-                                          "Late : 00:00 PM",
-                                          style: TextStyle(
+                                          item.statusAbsensi,
+                                          style: const TextStyle(
                                             color: Colors.black,
                                             fontSize: 13.0,
                                           ),

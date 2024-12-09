@@ -95,8 +95,19 @@ class _HomepageState extends State<Homepage> {
         child: SingleChildScrollView(
           child: Column(
             children: [
-              DateComponent(
-                  onDateSelected: onDateSelected), // Pass the callback here
+              DateComponent(onDateSelected: onDateSelected),
+              Container(
+                alignment: Alignment.centerLeft,
+                padding: const EdgeInsets.only(left: 20.0, top: 20.0),
+                child: Text(
+                  "Today's Attendance",
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontSize: 15.0,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
               TodayAttendance(
                 selectedDate: selectedDate,
               ),

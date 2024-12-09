@@ -93,11 +93,11 @@ class _HistoryPageState extends State<HistoryPage> {
                       Row(
                         children: [
                           Text(
-                            'Successfully took attendance ',
+                            'Successfully attendance ${item.nama_jenis_absensi}',
                             style: TextStyle(
                               color: Color(0xFFED7D2B),
                               fontWeight: FontWeight.bold,
-                              fontSize: 20.0,
+                              fontSize: 19.0,
                             ),
                           ),
 

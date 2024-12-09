@@ -66,14 +66,6 @@ class _TodayAttandanceState extends State<TodayAttendance> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            "Today's Attendance",
-            style: TextStyle(
-              color: Colors.black,
-              fontSize: 15.0,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
           const SizedBox(height: 15),
           if (_scheduleData != null && _scheduleData!.isNotEmpty)
             Wrap(
@@ -101,9 +93,9 @@ class _TodayAttandanceState extends State<TodayAttendance> {
                 String jam;
 
                 if (waktu.isNotEmpty && waktu.length >= 16) {
-                  jam = 'Sudah absen ${waktu.substring(11, 16)}';
+                  jam = 'Alredy attendance ${waktu.substring(11, 16)}';
                 } else {
-                  jam = 'Belum Absen';
+                  jam = 'Not yet attended';
                 }
 
                 return Container(
@@ -138,7 +130,7 @@ class _TodayAttandanceState extends State<TodayAttendance> {
                                 '$namaJenisAbsensi',
                                 style: const TextStyle(
                                   color: Colors.black,
-                                  fontSize: 13.0,
+                                  fontSize: 15.0,
                                 ),
                               ),
                             ],
@@ -150,7 +142,7 @@ class _TodayAttandanceState extends State<TodayAttendance> {
                         '$waktujadwal',
                         style: TextStyle(
                           color: AppColors.primary,
-                          fontSize: 20.0,
+                          fontSize: 25.0,
                         ),
                       ),
                       const SizedBox(height: 10),
