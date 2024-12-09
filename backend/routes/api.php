@@ -28,6 +28,8 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::post('/cek_perhari', [history::class, 'cek_perhari']);
         Route::get('/cek_jadwal', [history::class, 'cek_jadwal']);
 
+        //detail karayawan with id
+
 
 
         Route::post('/absensi', [AbsensiController::class, 'store']);

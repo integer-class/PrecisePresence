@@ -46,6 +46,9 @@ Route::post('/pengaturan/jenis_absensi/tambahjenis', [PengaturanController::clas
 
 Route::get('/divisi/{id}/edit', [PengaturanController::class, 'editdivisi'])->name('divisi.edit');
 
+Route::get('/detailkaryawan/{id}', [HRD_karyawanController::class, 'detail'])->name('detailkaryawan');
+
+
 
 
 

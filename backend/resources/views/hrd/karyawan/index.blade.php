@@ -50,8 +50,10 @@
                                 {{-- <p>Duis aute irure dolor in reprehenderit in voluptate velit esse
                                     cillum dolore eu fugiat nulla pariatur. </p> --}}
                                 <div class="article-cta">
-                                    <a href="#">Read More <i class="fas fa-chevron-right"></i></a>
+                                    <a href="{{ route('detailkaryawan',$k->id_karyawan) }}">Profile <i class="fas fa-chevron-right"></i></a>
                                 </div>
+
+                                {{-- {{ route('penduduk.arsip', $p->nik) }} --}}
                             </div>
                         </article>
                     </div>

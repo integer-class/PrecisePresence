@@ -22,6 +22,26 @@ class HRD_karyawanController extends Controller
         return view('hrd.karyawan.index', compact('karyawan', 'type_menu'));
     }
 
+
+    public function detail($id)
+    {
+        $type_menu = 'karyawan';
+        $karyawan = karyawan::join('divisi', 'karyawan.id_divisi', '=', 'divisi.id_divisi')
+            ->where('karyawan.id_karyawan', $id)
+            ->select('karyawan.*', 'divisi.nama_divisi')
+            ->first();
+
+            $aktivitas = karyawan::join('absensi', 'karyawan.id_karyawan', '=', 'absensi.id_karyawan')
+            ->join('perizinan', 'karyawan.id_karyawan', '=', 'perizinan.id_karyawan')
+            ->limit(5) // Menambahkan limit
+            ->get();
+
+
+
+        return view('hrd.karyawan.detail', compact('karyawan', 'type_menu', 'aktivitas'));
+
+    }
+
     /**
      * Show the form for creating a new resource.
      */
