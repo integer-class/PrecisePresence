@@ -76,6 +76,7 @@ class PerizinanController extends Controller
         $izin = Perizinan::where('id_karyawan', $idKaryawan)
             ->where('tanggal_mulai', '<=', $request->tanggal_selesai)
             ->where('tanggal_selesai', '>=', $request->tanggal_mulai)
+            ->where('status', 'pending')
             ->first();
 
         if ($izin) {
