@@ -6,6 +6,8 @@ use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
 use App\Models\JadwalAbsensi;
 use App\Models\JenisAbsensi;
+use App\Models\Perizinan;
+
 
 
 
@@ -43,6 +45,42 @@ class history extends Controller
                 'data' => null,
             ], 404);
         }
+
+
+
+
+
+
+        $activePermits = Perizinan::where('id_karyawan', auth()->user()->karyawan->id_karyawan)
+        ->where('status', 'approved')
+        ->where('is_active', true)
+        ->where(function ($query) {
+            $query->whereDate('tanggal_mulai', '<=', Carbon::now())
+                  ->whereDate('tanggal_selesai', '>=', Carbon::now());
+        })
+        ->exists();
+
+        if ($activePermits && !$request->input('force_checkin')) {
+            return response()->json(['message' => 'Anda memiliki izin aktif. Apakah Anda ingin menghentikan perizinan dan melanjutkan check-in?', 'require_confirmation' => true], 400);
+        }
+
+
+          // Jika force_checkin diaktifkan, update status perizinan menjadi "cancelled"
+          if ($activePermits && $request->input('force_checkin')) {
+            Perizinan::where('id_karyawan', auth()->user()->karyawan->id_karyawan)
+                ->where('status', 'approved')
+                ->where('is_active', 1)
+                ->where(function ($query) {
+                    $query->whereDate('tanggal_mulai', '<=', Carbon::now())
+                          ->whereDate('tanggal_selesai', '>=', Carbon::now());
+                })
+                ->update(['is_active' => 0]);
+        }
+
+
+
+
+
 
         // Cari jadwal berikutnya
         $jadwalBerikutnya = JadwalAbsensi::where('id_divisi', $karyawan->id_divisi)
