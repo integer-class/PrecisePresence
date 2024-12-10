@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Perizinan;
 //validator
+use App\Models\Karyawan;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 
 class PerizinanController extends Controller
@@ -192,7 +194,51 @@ class PerizinanController extends Controller
      */
     public function show(string $id)
     {
-        //
+
+        $type_menu = 'perizinan';
+        $perizinan = Perizinan::where('id', $id)->first();
+
+
+        $id_karyawan = $perizinan->id_karyawan;
+
+
+        $karyawan = karyawan::join('divisi', 'karyawan.id_divisi', '=', 'divisi.id_divisi')
+        ->where('karyawan.id_karyawan', $id_karyawan)
+        ->select('karyawan.*', 'divisi.nama_divisi')
+        ->first();
+
+        $aktivitas = DB::table('karyawan')
+        ->join('absensi', 'karyawan.id_karyawan', '=', 'absensi.id_karyawan')
+        ->select('karyawan.nama', 'absensi.catatan AS aktivitas', 'absensi.created_at AS tanggal', DB::raw("'Absensi' AS jenis"))
+        ->where('karyawan.id_karyawan', $id_karyawan)
+        ->union(
+            DB::table('karyawan')
+                ->join('perizinan', 'karyawan.id_karyawan', '=', 'perizinan.id_karyawan')
+                ->select('karyawan.nama', 'perizinan.keterangan AS aktivitas', 'perizinan.created_at AS tanggal', DB::raw("'Perizinan' AS jenis"))
+                ->where('karyawan.id_karyawan', $id_karyawan)
+        )
+        ->orderBy('tanggal', 'desc')
+        ->limit(5)
+        ->get();
+
+
+
+        //hitung jumlah absen
+        $jumlah_absen = DB::table('absensi')
+        ->where('id_karyawan', $id_karyawan)
+        ->count();
+
+        //hitung jumlah izin
+        $jumlah_izin = DB::table('perizinan')
+        ->where('id_karyawan', $id_karyawan)
+        ->count();
+
+
+
+
+
+        return view('hrd.perizinan.detail', compact('type_menu', 'perizinan','karyawan', 'aktivitas', 'jumlah_absen', 'jumlah_izin'));
+
     }
 
     /**
