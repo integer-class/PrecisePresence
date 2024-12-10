@@ -33,6 +33,7 @@ class HRD_karyawanController extends Controller
 
             $aktivitas = karyawan::join('absensi', 'karyawan.id_karyawan', '=', 'absensi.id_karyawan')
             ->join('perizinan', 'karyawan.id_karyawan', '=', 'perizinan.id_karyawan')
+            ->where('karyawan.id_karyawan', $id)
             ->limit(5) // Menambahkan limit
             ->get();
 
