@@ -156,17 +156,19 @@
                                     <ul class="list-unstyled list-unstyled-border">
                                         @foreach ($aktivitas as $a)
                                         <li class="media">
-                                            <img alt="image" class="rounded-circle mr-3" width="50" src="{{ asset('penduduk/' . $karyawan->foto) }}">
+                                            <img alt="image" class="rounded-circle mr-3" width="50"
+                                                src="{{ asset('images/' . $karyawan->foto) }}">
                                             <div class="media-body">
                                                 <div class="font-weight-bold mt-0 mb-1">
-                                                    <a style="color: black" href="">Absensi</a>
+                                                    <a style="color: black" href="">{{ $a->jenis }}</a>
                                                 </div>
-
+                                                <p>{{ $a->nama }} melakukan {{ $a->jenis }}: {{ $a->aktivitas }}</p>
+                                                <p class="text-muted">{{ $a->tanggal }}</p>
                                             </div>
                                         </li>
                                         @endforeach
-
                                     </ul>
+
                                 </div>
                             </div>
                         </div>

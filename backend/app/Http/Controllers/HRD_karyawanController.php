@@ -31,11 +31,21 @@ class HRD_karyawanController extends Controller
             ->select('karyawan.*', 'divisi.nama_divisi')
             ->first();
 
-            $aktivitas = karyawan::join('absensi', 'karyawan.id_karyawan', '=', 'absensi.id_karyawan')
-            ->join('perizinan', 'karyawan.id_karyawan', '=', 'perizinan.id_karyawan')
+            $aktivitas = DB::table('karyawan')
+            ->join('absensi', 'karyawan.id_karyawan', '=', 'absensi.id_karyawan')
+            ->select('karyawan.nama', 'absensi.catatan AS aktivitas', 'absensi.created_at AS tanggal', DB::raw("'Absensi' AS jenis"))
             ->where('karyawan.id_karyawan', $id)
-            ->limit(5) // Menambahkan limit
+            ->union(
+                DB::table('karyawan')
+                    ->join('perizinan', 'karyawan.id_karyawan', '=', 'perizinan.id_karyawan')
+                    ->select('karyawan.nama', 'perizinan.keterangan AS aktivitas', 'perizinan.created_at AS tanggal', DB::raw("'Perizinan' AS jenis"))
+                    ->where('karyawan.id_karyawan', $id)
+            )
+            ->orderBy('tanggal', 'desc')
+            ->limit(5)
             ->get();
+
+
 
             //hitung jumlah absen
             $jumlah_absen = DB::table('absensi')
