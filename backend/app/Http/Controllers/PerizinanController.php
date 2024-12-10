@@ -19,11 +19,18 @@ class PerizinanController extends Controller
 
         //hitung jumlah data
         $jumlah_data = Perizinan::count();
-        //ambil data perizinan
+        $jumlah_data_pending = Perizinan::where('status', 'pending')->count();
+        $jumlah_data_diterima = Perizinan::where('status', 'approved')->count();
+        $jumlah_data_ditolak = Perizinan::where('status', 'rejected')->count();
+
+
+
+
+
         $perizinan = Perizinan::select('perizinan.*', 'karyawan.nama')
         ->join ('karyawan', 'perizinan.id_karyawan', '=', 'karyawan.id_karyawan')
         ->get();
-        return view('hrd.perizinan.index', compact('type_menu', 'jumlah_data', 'perizinan'));
+        return view('hrd.perizinan.index', compact('type_menu', 'jumlah_data', 'perizinan', 'jumlah_data_pending', 'jumlah_data_diterima', 'jumlah_data_ditolak'));
 
 
     }
@@ -111,6 +118,71 @@ class PerizinanController extends Controller
             'message' => 'Perizinan berhasil ditambahkan.',
             'data' => $perizinan,
         ], 201);
+    }
+
+
+    public function diterima()
+    {
+        $type_menu = 'perizinan';
+
+
+        //hitung jumlah data
+        $jumlah_data = Perizinan::count();
+        $jumlah_data_pending = Perizinan::where('status', 'pending')->count();
+        $jumlah_data_diterima = Perizinan::where('status', 'approved')->count();
+        $jumlah_data_ditolak = Perizinan::where('status', 'rejected')->count();
+
+
+
+
+
+        $perizinan = Perizinan::select('perizinan.*', 'karyawan.nama')
+        ->join ('karyawan', 'perizinan.id_karyawan', '=', 'karyawan.id_karyawan')
+        ->where('status', 'approved')
+        ->get();
+        return view('hrd.perizinan.diterima', compact('type_menu', 'jumlah_data', 'perizinan', 'jumlah_data_pending', 'jumlah_data_diterima', 'jumlah_data_ditolak'));
+    }
+    public function pending()
+    {
+        $type_menu = 'perizinan';
+
+
+        //hitung jumlah data
+        $jumlah_data = Perizinan::count();
+        $jumlah_data_pending = Perizinan::where('status', 'pending')->count();
+        $jumlah_data_diterima = Perizinan::where('status', 'approved')->count();
+        $jumlah_data_ditolak = Perizinan::where('status', 'rejected')->count();
+
+
+
+
+
+        $perizinan = Perizinan::select('perizinan.*', 'karyawan.nama')
+        ->join ('karyawan', 'perizinan.id_karyawan', '=', 'karyawan.id_karyawan')
+        ->where('status', 'pending')
+        ->get();
+        return view('hrd.perizinan.pending', compact('type_menu', 'jumlah_data', 'perizinan', 'jumlah_data_pending', 'jumlah_data_diterima', 'jumlah_data_ditolak'));
+    }
+    public function ditolak()
+    {
+        $type_menu = 'perizinan';
+
+
+        //hitung jumlah data
+        $jumlah_data = Perizinan::count();
+        $jumlah_data_pending = Perizinan::where('status', 'pending')->count();
+        $jumlah_data_diterima = Perizinan::where('status', 'approved')->count();
+        $jumlah_data_ditolak = Perizinan::where('status', 'rejected')->count();
+
+
+
+
+
+        $perizinan = Perizinan::select('perizinan.*', 'karyawan.nama')
+        ->join ('karyawan', 'perizinan.id_karyawan', '=', 'karyawan.id_karyawan')
+        ->where('status', 'rejected')
+        ->get();
+        return view('hrd.perizinan.ditolak', compact('type_menu', 'jumlah_data', 'perizinan', 'jumlah_data_pending', 'jumlah_data_diterima', 'jumlah_data_ditolak'));
     }
 
 

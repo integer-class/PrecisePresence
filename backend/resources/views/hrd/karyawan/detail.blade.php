@@ -164,7 +164,7 @@
                                             <li class="media">
                                                 <img alt="image" class="rounded-circle mr-3"
                                                     style="border-radius: 50%; width: 50px; height: 50px; object-fit: cover;"
-                                                    src="{{ asset('penduduk/' . $karyawan->foto) }}">
+                                                    src="{{ asset('images/' . $karyawan->foto) }}">
                                                 <div class="media-body">
                                                     <div class="font-weight-bold mt-0 mb-1">
                                                         <a style="color: black" href="">{{ $a->jenis }}</a>

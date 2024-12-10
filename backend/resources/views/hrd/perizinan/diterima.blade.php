@@ -35,14 +35,14 @@
                             <div class="card-body">
                                 <ul class="nav nav-pills">
                                     <li class="nav-item">
-                                        <a class="nav-link active"
-                                            href="{{ route('perizinan.index')  }}">Semua Perizinan <span class="badge badge-white">
+                                        <a class="nav-link "
+                                            href="{{ route('perizinan.index')  }}">Semua Perizinan <span class="badge badge-primary">
                                                 {{ $jumlah_data}}
                                                  </span></a>
                                     </li>
                                     <li class="nav-item">
-                                        <a class="nav-link" href="{{ route('diterima') }}">
-                                            Diterima <span class="badge badge-primary">
+                                        <a class="nav-link active" href="{{ route('diterima') }}">
+                                            Diterima <span class="badge badge-white">
                                                 {{ $jumlah_data_diterima}}
                                             </span>
                                         </a>

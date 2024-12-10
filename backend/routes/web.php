@@ -48,6 +48,16 @@ Route::get('/divisi/{id}/edit', [PengaturanController::class, 'editdivisi'])->na
 
 Route::get('/detailkaryawan/{id}', [HRD_karyawanController::class, 'detail'])->name('detailkaryawan');
 
+Route::get('/diterima', [PerizinanController::class, 'diterima'])->name('diterima');
+
+Route::get('/pending', [PerizinanController::class, 'pending'])->name('pending');
+Route::get('/ditolak', [PerizinanController::class, 'ditolak'])->name('ditolak');
+Route::get('/perizinan/{id}', [PerizinanController::class, 'show'])->name('show');
+
+
+
+
+
 
 
 
