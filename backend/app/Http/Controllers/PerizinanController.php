@@ -123,6 +123,27 @@ class PerizinanController extends Controller
     }
 
 
+       public function approve($id)
+       {
+           $perizinan = Perizinan::findOrFail($id);
+
+           $perizinan->status = 'approved';
+           $perizinan->save();
+
+           return redirect()->back()->with('success', 'Request approved successfully.');
+       }
+
+       public function reject($id)
+       {
+           $perizinan = Perizinan::findOrFail($id);
+
+           $perizinan->status = 'rejected';
+           $perizinan->save();
+
+           return redirect()->back()->with('error', 'Request rejected.');
+       }
+
+
     public function diterima()
     {
         $type_menu = 'perizinan';

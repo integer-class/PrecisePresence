@@ -54,6 +54,9 @@ Route::get('/pending', [PerizinanController::class, 'pending'])->name('pending')
 Route::get('/ditolak', [PerizinanController::class, 'ditolak'])->name('ditolak');
 Route::get('/perizinan/{id}', [PerizinanController::class, 'show'])->name('show');
 
+Route::post('perizinan/approve/{id}', [PerizinanController::class, 'approve'])->name('perizinan.approve');
+Route::post('perizinan/reject/{id}', [PerizinanController::class, 'reject'])->name('perizinan.reject');
+
 
 
 
