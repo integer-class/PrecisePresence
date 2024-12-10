@@ -29,7 +29,7 @@
 
 
             <div class="section-body">
-                <a style="width:130px; height:38px" href="" class="btn btn-lg btn-primary">Kembali</a>
+                <a style="width:130px; height:38px; margin-bottom:50px" href="{{ route('hrd_karyawan.index') }}" class="btn btn-lg btn-primary">Kembali</a>
 
                 <div class="">
                     <div class="row">
@@ -72,10 +72,15 @@
                                         </div>
                                         <div class="card-wrap">
                                             <div class="card-header">
-                                                <h4>Total Perizinan</h4>
+                                                <h4>
+                                                    Total Perizinan
+
+                                                </h4>
                                             </div>
                                             <div class="card-body">
-                                                {{-- { $komplain; } --}}
+                                                {{
+                                                    $jumlah_izin
+                                                }}
                                             </div>
                                         </div>
                                     </div>
@@ -90,7 +95,7 @@
                                                 <h4>Total Presensi</h4>
                                             </div>
                                             <div class="card-body">
-                                                {{-- { $jumlah_anggota_keluarga; } --}}
+                                                {{ $jumlah_absen }}
                                             </div>
                                         </div>
                                     </div>

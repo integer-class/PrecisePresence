@@ -37,9 +37,20 @@ class HRD_karyawanController extends Controller
             ->limit(5) // Menambahkan limit
             ->get();
 
+            //hitung jumlah absen
+            $jumlah_absen = DB::table('absensi')
+            ->where('id_karyawan', $id)
+            ->count();
+
+            //hitung jumlah izin
+            $jumlah_izin = DB::table('perizinan')
+            ->where('id_karyawan', $id)
+            ->count();
 
 
-        return view('hrd.karyawan.detail', compact('karyawan', 'type_menu', 'aktivitas'));
+
+
+        return view('hrd.karyawan.detail', compact('karyawan', 'type_menu', 'aktivitas', 'jumlah_absen', 'jumlah_izin'));
 
     }
 
