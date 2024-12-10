@@ -107,6 +107,7 @@ class _TodayAttandanceState extends State<TodayAttendance> {
                   ),
                   padding: const EdgeInsets.all(20.0),
                   child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Row(
                         children: [
@@ -123,17 +124,17 @@ class _TodayAttandanceState extends State<TodayAttendance> {
                             ),
                           ),
                           const SizedBox(width: 10),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                '$namaJenisAbsensi',
-                                style: const TextStyle(
-                                  color: Colors.black,
-                                  fontSize: 15.0,
-                                ),
+                          Expanded(
+                            child: Text(
+                              '$namaJenisAbsensi',
+                              style: const TextStyle(
+                                color: Colors.black,
+                                fontSize: 15.0,
                               ),
-                            ],
+                              maxLines: 2, // Maksimal 2 baris
+                              overflow: TextOverflow
+                                  .ellipsis, // Potong teks dengan ellipsis jika terlalu panjang
+                            ),
                           ),
                         ],
                       ),

@@ -76,7 +76,7 @@ class _HistoryPageState extends State<HistoryPage> {
                             item.waktuAbsensi,
                             style: TextStyle(
                               color: AppColors.primary,
-                              fontSize: 16.0,
+                              fontSize: 15.0,
                             ),
                           ),
                           Text(
@@ -92,18 +92,22 @@ class _HistoryPageState extends State<HistoryPage> {
                       const SizedBox(height: 15),
                       Row(
                         children: [
-                          Text(
-                            'Successfully attendance ${item.nama_jenis_absensi}',
-                            style: TextStyle(
-                              color: Color(0xFFED7D2B),
-                              fontWeight: FontWeight.bold,
-                              fontSize: 19.0,
+                          Expanded(
+                            child: Text(
+                              'Successfully attendance ${item.nama_jenis_absensi}',
+                              style: const TextStyle(
+                                color: Color(0xFFED7D2B),
+                                fontWeight: FontWeight.bold,
+                                fontSize: 19.0,
+                              ),
+                              maxLines: 2, // Maksimal 2 baris
+                              overflow: TextOverflow
+                                  .ellipsis, // Potong teks dengan ellipsis jika terlalu panjang
                             ),
                           ),
-
-                          //percabangan untuk menampilkan status lembur
                         ],
                       ),
+
                       const SizedBox(height: 10),
                       // Row(
                       //   mainAxisAlignment: MainAxisAlignment.spaceBetween,

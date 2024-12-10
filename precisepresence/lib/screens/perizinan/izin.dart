@@ -19,6 +19,7 @@ class _LeavesPageState extends State<LeavesPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: true, // Pastikan ini diaktifkan
       appBar: AppBar(
         title: const Text(
           "My Leaves",
@@ -35,19 +36,23 @@ class _LeavesPageState extends State<LeavesPage> {
         elevation: 0.0,
         surfaceTintColor: Colors.transparent,
       ),
-      body: Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 28, vertical: 8),
-            child: RequestLeavePage(),
-          ),
-          Expanded(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 28),
-              child: HistoryPerizinan(),
+      body: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 28, vertical: 8),
+              child: RequestLeavePage(),
             ),
-          ),
-        ],
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 28),
+              child: SizedBox(
+                height: MediaQuery.of(context).size.height * 0.5,
+                child: HistoryPerizinan(),
+              ),
+            ),
+          ],
+        ),
       ),
       floatingActionButton: CustomFloatingActionButton(
         onPressed: () {},
