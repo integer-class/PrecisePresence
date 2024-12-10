@@ -29,17 +29,20 @@
 
 
             <div class="section-body">
-                <a style="width:130px; height:38px; margin-bottom:50px" href="{{ route('hrd_karyawan.index') }}" class="btn btn-lg btn-primary">Kembali</a>
+                <a style="width:130px; height:38px; margin-bottom:50px" href="{{ route('hrd_karyawan.index') }}"
+                    class="btn btn-lg btn-primary">Kembali</a>
 
                 <div class="">
                     <div class="row">
                         <!-- Kolom Kiri -->
                         <div class="col-md-3">
                             <div class="">
-                                <img style="border-radius:50px;" src="{{ asset('images/' . $karyawan->foto) }}" alt="profile" class="img-fluid">
+                                <img style="border-radius:50px;" src="{{ asset('images/' . $karyawan->foto) }}"
+                                    alt="profile" class="img-fluid">
                             </div>
                             <div class="" style="margin-top: 20px;">
-                                <div style="border-radius: 100px; border: 2px solid blue; height: 55px; padding: 10px; text-align: center; overflow: visible;" class="card">
+                                <div style="border-radius: 100px; border: 2px solid blue; height: 55px; padding: 10px; text-align: center; overflow: visible;"
+                                    class="card">
                                     <div class="card-body" style="margin: 0;">
                                         <h4 style="margin: -10px; white-space: nowrap; text-overflow: ellipsis;">
                                             {{ $karyawan->nama }}
@@ -78,9 +81,7 @@
                                                 </h4>
                                             </div>
                                             <div class="card-body">
-                                                {{
-                                                    $jumlah_izin
-                                                }}
+                                                {{ $jumlah_izin }}
                                             </div>
                                         </div>
                                     </div>
@@ -107,31 +108,36 @@
                                     <div class="row mb-3">
                                         <label for="nik" class="col-sm-4 col-form-label">Nama</label>
                                         <div class="col-sm-8">
-                                            <input type="text" class="form-control" id="nik" value="{{ $karyawan->nama }}" readonly>
+                                            <input type="text" class="form-control" id="nik"
+                                                value="{{ $karyawan->nama }}" readonly>
                                         </div>
                                     </div>
                                     <div class="row mb-3">
                                         <label for="jenis_kelamin" class="col-sm-4 col-form-label">Jenis Kelamin</label>
                                         <div class="col-sm-8">
-                                            <input type="text" class="form-control" id="jenis_kelamin" value="{{ $karyawan->jenis_kelamin }}" readonly>
+                                            <input type="text" class="form-control" id="jenis_kelamin"
+                                                value="{{ $karyawan->jenis_kelamin }}" readonly>
                                         </div>
                                     </div>
                                     <div class="row mb-3">
                                         <label for="golongan_darah" class="col-sm-4 col-form-label">Email</label>
                                         <div class="col-sm-8">
-                                            <input type="text" class="form-control" id="golongan_darah" value="{{ $karyawan->email }}" readonly>
+                                            <input type="text" class="form-control" id="golongan_darah"
+                                                value="{{ $karyawan->email }}" readonly>
                                         </div>
                                     </div>
                                     <div class="row mb-3">
                                         <label for="tanggal_lahir" class="col-sm-4 col-form-label">Nomor Telepon</label>
                                         <div class="col-sm-8">
-                                            <input type="text" class="form-control" id="tanggal_lahir" value="{{ $karyawan->no_hp }}" readonly>
+                                            <input type="text" class="form-control" id="tanggal_lahir"
+                                                value="{{ $karyawan->no_hp }}" readonly>
                                         </div>
                                     </div>
                                     <div class="row mb-3">
                                         <label for="agama" class="col-sm-4 col-form-label">Tanggal Lahir</label>
                                         <div class="col-sm-8">
-                                            <input type="text" class="form-control" id="agama" value="{{ $karyawan->ttl }}" readonly>
+                                            <input type="text" class="form-control" id="agama"
+                                                value="{{ $karyawan->ttl }}" readonly>
                                         </div>
                                     </div>
                                 </div>
@@ -155,17 +161,19 @@
                                 <div class="card-body">
                                     <ul class="list-unstyled list-unstyled-border">
                                         @foreach ($aktivitas as $a)
-                                        <li class="media">
-                                            <img alt="image" class="rounded-circle mr-3" width="50"
-                                                src="{{ asset('images/' . $karyawan->foto) }}">
-                                            <div class="media-body">
-                                                <div class="font-weight-bold mt-0 mb-1">
-                                                    <a style="color: black" href="">{{ $a->jenis }}</a>
+                                            <li class="media">
+                                                <img alt="image" class="rounded-circle mr-3"
+                                                    style="border-radius: 50%; width: 50px; height: 50px; object-fit: cover;"
+                                                    src="{{ asset('penduduk/' . $karyawan->foto) }}">
+                                                <div class="media-body">
+                                                    <div class="font-weight-bold mt-0 mb-1">
+                                                        <a style="color: black" href="">{{ $a->jenis }}</a>
+                                                    </div>
+                                                    <p>{{ $a->nama }} melakukan {{ $a->jenis }}:
+                                                        {{ $a->aktivitas }}</p>
+                                                    <p class="text-muted">{{ $a->tanggal }}</p>
                                                 </div>
-                                                <p>{{ $a->nama }} melakukan {{ $a->jenis }}: {{ $a->aktivitas }}</p>
-                                                <p class="text-muted">{{ $a->tanggal }}</p>
-                                            </div>
-                                        </li>
+                                            </li>
                                         @endforeach
                                     </ul>
 
