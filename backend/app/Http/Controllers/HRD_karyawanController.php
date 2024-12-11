@@ -46,6 +46,14 @@ class HRD_karyawanController extends Controller
             ->get();
 
 
+            //get divisi
+            $divisi = DB::table('divisi')->get();
+
+
+            //get cabang
+            $cabang = DB::table('cabang')->get();
+
+
 
             //hitung jumlah absen
             $jumlah_absen = DB::table('absensi')
@@ -60,7 +68,7 @@ class HRD_karyawanController extends Controller
 
 
 
-        return view('hrd.karyawan.detail', compact('karyawan', 'type_menu', 'aktivitas', 'jumlah_absen', 'jumlah_izin'));
+        return view('hrd.karyawan.detail', compact('karyawan', 'type_menu', 'aktivitas', 'jumlah_absen', 'jumlah_izin', 'divisi', 'cabang'));
 
     }
 

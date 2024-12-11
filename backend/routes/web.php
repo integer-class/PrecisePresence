@@ -57,6 +57,7 @@ Route::get('/perizinan/{id}', [PerizinanController::class, 'show'])->name('show'
 Route::post('perizinan/approve/{id}', [PerizinanController::class, 'approve'])->name('perizinan.approve');
 Route::post('perizinan/reject/{id}', [PerizinanController::class, 'reject'])->name('perizinan.reject');
 
+Route::post('perizinan/editcabang/{id}', [HRD_karyawanController::class, 'editcabang'])->name('hrd_karyawan.editcabang');
 
 
 

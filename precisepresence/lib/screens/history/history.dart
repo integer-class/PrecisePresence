@@ -100,51 +100,13 @@ class _HistoryPageState extends State<HistoryPage> {
                                 fontWeight: FontWeight.bold,
                                 fontSize: 19.0,
                               ),
-                              maxLines: 2, // Maksimal 2 baris
-                              overflow: TextOverflow
-                                  .ellipsis, // Potong teks dengan ellipsis jika terlalu panjang
+                              maxLines: 2,
+                              overflow: TextOverflow.ellipsis,
                             ),
                           ),
                         ],
                       ),
-
                       const SizedBox(height: 10),
-                      // Row(
-                      //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      //   children: [
-                      //     Column(
-                      //       crossAxisAlignment: CrossAxisAlignment.start,
-                      //       children: [
-                      //         Text(
-                      //           "Check-in : ${formatTime(item.checkInTime)}", // Menggunakan formatTime
-                      //           style: TextStyle(
-                      //             color: Colors.black,
-                      //             fontSize: 13.0,
-                      //           ),
-                      //         ),
-                      //         // Text(
-                      //         //   "Late : ${formatTime(item.lemburStartTime)}", // Menggunakan formatTime
-                      //         //   style: TextStyle(
-                      //         //     color: Colors.black,
-                      //         //     fontSize: 13.0,
-                      //         //   ),
-                      //         // ),
-                      //       ],
-                      //     ),
-                      //     Column(
-                      //       crossAxisAlignment: CrossAxisAlignment.start,
-                      //       children: [
-                      //         Text(
-                      //           "Check-out : ${formatTime(item.checkOutTime)}", // Menggunakan formatTime
-                      //           style: TextStyle(
-                      //             color: Colors.black,
-                      //             fontSize: 13.0,
-                      //           ),
-                      //         ),
-                      //       ],
-                      //     ),
-                      //   ],
-                      // )
                     ],
                   ),
                 );
