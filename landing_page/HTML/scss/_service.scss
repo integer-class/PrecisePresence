@@ -1,0 +1,53 @@
+//
+// service.scss
+//
+
+.service {
+    .service-box {
+        padding: 20px;
+        border-radius: 20px;
+        transition: all 0.3s;
+
+        a {
+            color: $dark;
+            transition: all 0.3s;
+        }
+
+        .service-icon {
+            i {
+                position: relative;
+                top: 10px;
+            }
+        }
+
+        &:hover {
+            box-shadow: $box-shadow-lg;
+            transition: all 0.3s;
+
+            a {
+                color: $primary;
+            }
+        }
+    }
+}
+
+.home2-service {
+    padding-top: 250px;
+}
+
+body[data-bs-theme="dark"] {
+    .service {
+        background-color: $body-dark-bg !important;
+        color: $white;
+
+        .service-box {
+            h5 {
+                color: $white;
+            }
+            &:hover {
+                background-color: #343f4b;
+                box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !important;
+            }
+        }
+    }
+}
