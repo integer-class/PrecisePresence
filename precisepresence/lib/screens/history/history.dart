@@ -84,7 +84,7 @@ class _HistoryPageState extends State<HistoryPage> {
                             style: TextStyle(
                               color: Color.fromARGB(143, 255, 0, 0),
                               fontWeight: FontWeight.bold,
-                              fontSize: 16.0,
+                              fontSize: 15.0,
                             ),
                           ),
                         ],

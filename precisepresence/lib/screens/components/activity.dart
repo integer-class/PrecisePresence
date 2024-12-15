@@ -114,14 +114,30 @@ class _ActivityState extends State<Activity> {
                                   ],
                                 ),
                                 const SizedBox(height: 10),
+                                // Row(
+                                //   children: [
+                                //     Text(
+                                //       'Successfully attendance ${item.nama_jenis_absensi}',
+                                //       style: TextStyle(
+                                //         color: Color(0xFFED7D2B),
+                                //         fontWeight: FontWeight.bold,
+                                //         fontSize: 16.0,
+                                //       ),
+                                //     ),
+                                //   ],
+                                // ),
                                 Row(
                                   children: [
-                                    Text(
-                                      'Successfully attendance ${item.nama_jenis_absensi}',
-                                      style: TextStyle(
-                                        color: Color(0xFFED7D2B),
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 16.0,
+                                    Expanded(
+                                      child: Text(
+                                        'Successfully attendance ${item.nama_jenis_absensi}',
+                                        style: const TextStyle(
+                                          color: Color(0xFFED7D2B),
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 16.0,
+                                        ),
+                                        maxLines: 2,
+                                        overflow: TextOverflow.ellipsis,
                                       ),
                                     ),
                                   ],
