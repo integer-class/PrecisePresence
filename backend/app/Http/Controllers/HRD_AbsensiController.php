@@ -3,44 +3,83 @@
 namespace App\Http\Controllers;
 
 use App\Models\Absensi;
+use App\Models\karyawan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Carbon;
 use App\Models\Setting;
 use App\Models\Perizinan;
+use Illuminate\Support\Facades\DB;
 
 class HRD_AbsensiController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-
-        // $absensi = Absensi::whereDate('check_in_time', Carbon::today())
-        // ->join('karyawan', 'absensi.id_karyawan', '=', 'karyawan.id_karyawan');
-
-
+        $search = $request->query('search') ?? null;
         $absensi = Absensi::whereDate('waktu_absensi', Carbon::today())
-        ->join('karyawan', 'absensi.id_karyawan', '=', 'karyawan.id_karyawan')
-        ->select('absensi.*', 'karyawan.nama')
-        ->get();
+            ->join('karyawan', 'absensi.id_karyawan', '=', 'karyawan.id_karyawan')
+            ->select('karyawan.nama', 'karyawan.id_karyawan', DB::raw('MAX(absensi.waktu_absensi) as waktu_absensi'))
+            ->where(function ($q) use ($search) {
+                $search && $q->where('karyawan.nama', 'LIKE', "%$search%");
+            })
+            ->groupBy('karyawan.id_karyawan', 'karyawan.nama')
+            ->get();
+
+        foreach ($absensi as $key => $value) {
+            $list_absensi = Absensi::whereDate('waktu_absensi', Carbon::today())
+                ->join('karyawan', 'absensi.id_karyawan', '=', 'karyawan.id_karyawan')
+                ->select('absensi.*', 'karyawan.nama', 'karyawan.id_karyawan')
+                ->where('karyawan.id_karyawan', $value->id_karyawan)
+                ->get();
+
+            $value['list_absensi'] = $list_absensi;
+        }
 
         $type_menu = 'absensi';
+        $tanggal = Carbon::today()->format('d M Y');
 
-        return view('hrd.absensi.index', compact('type_menu', 'absensi'));
+        return view('hrd.absensi.index', compact('type_menu', 'absensi', 'tanggal'));
+    }
+
+    public function tanggal($date, Request $request)
+    {
+        $search = $request->query('search') ?? null;
+        $date = Carbon::parse($date);
+
+        $absensi = Absensi::whereDate('waktu_absensi', $date)
+            ->join('karyawan', 'absensi.id_karyawan', '=', 'karyawan.id_karyawan')
+            ->select('karyawan.nama', 'karyawan.id_karyawan', DB::raw('MAX(absensi.waktu_absensi) as waktu_absensi'))
+            ->where(function ($q) use ($search) {
+                $search && $q->where('karyawan.nama', 'LIKE', "%$search%");
+            })
+            ->groupBy('karyawan.id_karyawan', 'karyawan.nama')
+            ->get();
+
+        foreach ($absensi as $key => $value) {
+            $list_absensi = Absensi::whereDate('waktu_absensi', $date)
+                ->join('karyawan', 'absensi.id_karyawan', '=', 'karyawan.id_karyawan')
+                ->select('absensi.*', 'karyawan.nama', 'karyawan.id_karyawan')
+                ->where('karyawan.id_karyawan', $value->id_karyawan)
+                ->get();
+
+            $value['list_absensi'] = $list_absensi;
+        }
+
+        $type_menu = 'absensi';
+        $tanggal = $date->copy()->format('d M Y');
+
+        return view('hrd.absensi.absensi-tanggal', compact('type_menu', 'absensi', 'tanggal'));
     }
 
     public function show($id)
     {
         $type_menu = 'absensi';
         $absensi = Absensi::where('id', $id)
-        ->whereDate('check_in_time', Carbon::today())
-        ->first();
-        $karyawan = Karyawan::where('id_karyawan', $absensi->id_karyawan)->first();
-
+            ->whereDate('waktu_absensi', Carbon::today()->subDays(1))
+            ->first();
+        $karyawan = karyawan::where('id_karyawan', $absensi->id_karyawan)->first();
 
         return view('hrd.absensi.show', compact('absensi', 'type_menu', 'karyawan'));
-
-
-
     }
 
     public function checkIn(Request $request)
@@ -57,35 +96,35 @@ class HRD_AbsensiController extends Controller
         $today = Carbon::today();
 
         $activePermits = Perizinan::where('id_karyawan', $user_id)
-        ->where('status', 'approved')
-        ->where('is_active', true)
-        ->where(function ($query) {
-            $query->whereDate('tanggal_mulai', '<=', Carbon::now())
-                  ->whereDate('tanggal_selesai', '>=', Carbon::now());
-        })
-        ->exists();
+            ->where('status', 'approved')
+            ->where('is_active', true)
+            ->where(function ($query) {
+                $query->whereDate('tanggal_mulai', '<=', Carbon::now())
+                    ->whereDate('tanggal_selesai', '>=', Carbon::now());
+            })
+            ->exists();
 
         if ($activePermits && !$request->input('force_checkin')) {
             return response()->json(['message' => 'Anda memiliki izin aktif. Apakah Anda ingin menghentikan perizinan dan melanjutkan check-in?', 'require_confirmation' => true], 400);
         }
 
 
-          // Jika force_checkin diaktifkan, update status perizinan menjadi "cancelled"
-          if ($activePermits && $request->input('force_checkin')) {
+        // Jika force_checkin diaktifkan, update status perizinan menjadi "cancelled"
+        if ($activePermits && $request->input('force_checkin')) {
             Perizinan::where('id_karyawan', $user_id)
                 ->where('status', 'approved')
                 ->where('is_active', 1)
                 ->where(function ($query) {
                     $query->whereDate('tanggal_mulai', '<=', Carbon::now())
-                          ->whereDate('tanggal_selesai', '>=', Carbon::now());
+                        ->whereDate('tanggal_selesai', '>=', Carbon::now());
                 })
                 ->update(['is_active' => 0]);
         }
 
         // Cek apakah karyawan sudah melakukan check-in hari ini
         $absensi = Absensi::where('id_karyawan', $user_id)
-                          ->whereDate('check_in_time', $today)
-                          ->first();
+            ->whereDate('check_in_time', $today)
+            ->first();
 
 
 
@@ -111,7 +150,9 @@ class HRD_AbsensiController extends Controller
 
         // Panggil API untuk verifikasi wajah
         $response = Http::attach(
-            'file', file_get_contents($file), $file->getClientOriginalName()
+            'file',
+            file_get_contents($file),
+            $file->getClientOriginalName()
         )->post('http://20.11.20.43/face_match/', [
             'threshold' => 0.7,
         ]);
@@ -163,8 +204,8 @@ class HRD_AbsensiController extends Controller
         $lonDelta = $lonTo - $lonFrom;
 
         $a = sin($latDelta / 2) * sin($latDelta / 2) +
-             cos($latFrom) * cos($latTo) *
-             sin($lonDelta / 2) * sin($lonDelta / 2);
+            cos($latFrom) * cos($latTo) *
+            sin($lonDelta / 2) * sin($lonDelta / 2);
         $c = 2 * atan2(sqrt($a), sqrt(1 - $a));
 
         $distance = $earthRadius * $c;
@@ -191,8 +232,8 @@ class HRD_AbsensiController extends Controller
 
 
         $absensi = Absensi::where('id_karyawan', $user_id)
-                          ->whereDate('check_in_time', $today)
-                          ->first();
+            ->whereDate('check_in_time', $today)
+            ->first();
 
         if (!$absensi) {
             return response()->json(['message' => 'No check-in record found for today.'], 400);
@@ -216,7 +257,9 @@ class HRD_AbsensiController extends Controller
 
 
         $response = Http::attach(
-            'file', file_get_contents($file), $file->getClientOriginalName()
+            'file',
+            file_get_contents($file),
+            $file->getClientOriginalName()
         )->post('http://20.11.20.43/face_match/', [
             'threshold' => 0.7,
         ]);
@@ -226,7 +269,7 @@ class HRD_AbsensiController extends Controller
         // return response()->json(['message' => 'Absensi berhasil!', 'id_karyawan' => $data['id_karyawan'], 'user_id' => $user_id]);
 
 
-        if ($response->ok() && $data['status']=='success' && $data['id_karyawan'] == $user_id) {
+        if ($response->ok() && $data['status'] == 'success' && $data['id_karyawan'] == $user_id) {
 
             $imageName = $file->getClientOriginalName();
             $thumbnailPath = $file->move(public_path('checkin_photos'), $imageName);
@@ -255,7 +298,9 @@ class HRD_AbsensiController extends Controller
     protected function sendToFastAPI($user_id, $file)
     {
         $response = Http::attach(
-            'file', file_get_contents($file), $file->getClientOriginalName()
+            'file',
+            file_get_contents($file),
+            $file->getClientOriginalName()
         )->post("http://20.11.20.43/register_face_personal/?user_id={$user_id}");
     }
 }

@@ -140,43 +140,6 @@
                                                 value="{{ $karyawan->ttl }}" readonly>
                                         </div>
                                     </div>
-                                    <form action="{{ route('hrd_karyawan.editcabang') }}" method="POST" >
-
-                                        <div class="row mb-3">
-                                            <label for="agama" class="col-sm-4 col-form-label">Cabang</label>
-                                            <div class="col-sm-8">
-                                                <select class="form-control" >
-                                                   @foreach ($cabang as $c)
-                                                        <option value="{{ $c->id_cabang }}" {{ $c->id_cabang == $karyawan->id_cabang  ? 'selected' : '' }}>
-                                                            {{ $c->nama_cabang }}
-                                                        </option>
-                                                    @endforeach
-
-                                                </select>
-
-
-                                            </div>
-                                        </div>
-
-                                        <div class="row mb-3">
-                                            <label for="agama" class="col-sm-4 col-form-label">Divisi</label>
-                                            <div class="col-sm-8">
-                                                <select class="form-control" >
-                                                    @foreach ($divisi as $d)
-                                                        <option value="{{ $d->id_divisi }}" {{ $d->id_divisi == $karyawan->id_divisi  ? 'selected' : '' }}>
-                                                            {{ $d->nama_divisi }}
-                                                        </option>
-                                                    @endforeach
-                                                </select>
-                                            </div>
-                                        </div>
-
-                                        <div class="card-footer text-right">
-                                            <button class="btn btn-primary">Next</button>
-                                        </div>
-
-
-                                    </form>
                                 </div>
                             </div>
                         </div>
