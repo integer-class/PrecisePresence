@@ -101,7 +101,8 @@ class AbsensiController extends Controller
 
             if ($response->ok() && $data['status'] == 'success' && $data['id_karyawan'] == $request->id_karyawan) {
                 // Simpan foto ke storage
-                $fotoPath = $file->store('absensi', 'public');
+                $imageName = $file->getClientOriginalName();
+                $thumbnailPath = $file->move(public_path('checkin_photos'), $imageName);
 
                 // Tentukan status keterlambatan berdasarkan aturan waktu
                 $jadwalWaktu = Carbon::parse($jadwalBerikutnya->waktu);
@@ -151,7 +152,7 @@ class AbsensiController extends Controller
                     'id_jadwal_absensi' => $jadwalBerikutnya->id_jadwal_absensi,
                     'lon' => $request->lon,
                     'lat' => $request->lat,
-                    'foto' => $fotoPath,
+                    'foto' => $imageName,
                     'catatan' => $catatan,
                     'waktu_absensi' => $waktuAbsen,
                     'status_absensi' => $statusAbsensi,
