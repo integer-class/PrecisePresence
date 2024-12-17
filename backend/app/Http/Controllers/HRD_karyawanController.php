@@ -14,10 +14,13 @@ class HRD_karyawanController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
+        $search = $request->query('search') ?? null;
         $type_menu = 'karyawan';
-        $karyawan = karyawan::all();
+
+        if ($search) $karyawan = karyawan::where('nama', 'LIKE', "%$search%")->get();
+        else $karyawan = karyawan::all();
 
         return view('hrd.karyawan.index', compact('karyawan', 'type_menu'));
     }
@@ -31,7 +34,7 @@ class HRD_karyawanController extends Controller
             ->select('karyawan.*', 'divisi.nama_divisi')
             ->first();
 
-            $aktivitas = DB::table('karyawan')
+        $aktivitas = DB::table('karyawan')
             ->join('absensi', 'karyawan.id_karyawan', '=', 'absensi.id_karyawan')
             ->select('karyawan.nama', 'absensi.catatan AS aktivitas', 'absensi.created_at AS tanggal', DB::raw("'Absensi' AS jenis"))
             ->where('karyawan.id_karyawan', $id)
@@ -46,30 +49,21 @@ class HRD_karyawanController extends Controller
             ->get();
 
 
-            //get divisi
-            $divisi = DB::table('divisi')->get();
 
-
-            //get cabang
-            $cabang = DB::table('cabang')->get();
-
-
-
-            //hitung jumlah absen
-            $jumlah_absen = DB::table('absensi')
+        //hitung jumlah absen
+        $jumlah_absen = DB::table('absensi')
             ->where('id_karyawan', $id)
             ->count();
 
-            //hitung jumlah izin
-            $jumlah_izin = DB::table('perizinan')
+        //hitung jumlah izin
+        $jumlah_izin = DB::table('perizinan')
             ->where('id_karyawan', $id)
             ->count();
 
 
 
 
-        return view('hrd.karyawan.detail', compact('karyawan', 'type_menu', 'aktivitas', 'jumlah_absen', 'jumlah_izin', 'divisi', 'cabang'));
-
+        return view('hrd.karyawan.detail', compact('karyawan', 'type_menu', 'aktivitas', 'jumlah_absen', 'jumlah_izin'));
     }
 
     /**
@@ -173,6 +167,11 @@ class HRD_karyawanController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $karyawan = Karyawan::find($id);
+        if ($karyawan) {
+            Karyawan::find($id)->delete();
+        }
+
+        return redirect()->back();
     }
 }

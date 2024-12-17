@@ -57,7 +57,7 @@
 
         <div class="row">
             @foreach ($absensi as $item)
-            <div class="col-12 col-md-3 col-lg-3" data-bs-toggle="modal" data-bs-target="#absensiModal">
+            <div class="col-12 col-md-3 col-lg-3" data-bs-toggle="modal" data-bs-target="#absensiModal{{ $item->id_karyawan }}">
                 <article class="article article-style-c">
                     <div class="article-header">
                         <a href="#">
@@ -67,24 +67,6 @@
                         </a>
                     </div>
                     <div class="article-details">
-                        <!-- <div class="article-category">
-                            <div class="d-flex flex-column">
-                                <div class="bullet"></div>
-                                <a href="#">
-                                    {{ \Carbon\Carbon::parse($item->waktu_absensi)->format('H:i:s') }} - {{ $item->status_absensi }}
-                                </a>
-
-                                @if ($item->status_absen == 'hadir')
-                                <span class="badge badge-success" data-toggle="tooltip">
-                                    Hadir
-                                </span>
-                                @else
-                                <span class="badge badge-danger" data-toggle="tooltip">
-                                    Tidak Hadir
-                                </span>
-                                @endif
-                            </div>
-                        </div> -->
                         <div class="article-user">
                             <img
                                 alt="Foto Karyawan"
@@ -115,22 +97,71 @@
     </section>
 </div>
 
+@foreach ($absensi as $item)
 <!-- Absensi Modal -->
-<div class="modal fade" id="absensiModal" tabindex="-1" aria-labelledby="absensiModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
+<div class="modal fade" id="absensiModal{{ $item->id_karyawan }}" tabindex="-1" aria-labelledby="absensiModal{{ $item->id_karyawan }}Label" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <!-- Modal Header -->
             <div class="modal-header">
-                <h5 class="modal-title" id="absensiModalLabel">Modal Title</h5>
+                <h5 class="modal-title" id="absensiModal{{ $item->id_karyawan }}Label">List Absensi</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <!-- Modal Body -->
-            <div class="modal-body">
-                This is the modal body content.
+            <div class="modal-body" style="max-height: 500px; overflow-y: auto;">
+                <div class="d-flex flex-wrap gap-3">
+                    @foreach($item->list_absensi as $item_list)
+                    <article class="article article-style-c" style="flex: 1 1 calc(33.33% - 1rem); min-width: 200px;">
+                        <div class="article-header">
+                            <a href="{{ route('hrd_absensi.show', $item_list->id) }}">
+                                <div class="article-image"
+                                    style="background-image: url('{{ asset('checkin_photos/'.$item_list->foto) }}'); height: 150px; background-size: cover; background-position: center;">
+                                </div>
+                            </a>
+                        </div>
+                        <div class="article-details">
+                            <div class="article-category">
+                                <div class="d-flex flex-column">
+                                    <a href="{{ route('hrd_absensi.show', $item_list->id) }}">
+                                        {{ \Carbon\Carbon::parse($item_list->waktu_absensi)->format('H:i:s') }} - {{ $item_list->status_absensi }}
+                                    </a>
+                                    @if ($item_list->status_absen == 'hadir')
+                                    <span class="badge badge-success" data-toggle="tooltip">Hadir</span>
+                                    @else
+                                    <span class="badge badge-danger" data-toggle="tooltip">Tidak Hadir</span>
+                                    @endif
+                                </div>
+                            </div>
+                            <div class="article-user">
+                                <img
+                                    alt="Foto Karyawan"
+                                    src="{{ asset('images/'.$item_list->karyawan->foto) }}"
+                                    class="rounded-circle"
+                                    width="40"
+                                    height="40"
+                                    style="object-fit: cover;"
+                                    title="Foto Karyawan">
+                                <div class="article-user-details">
+                                    <div class="user-detail-name">
+                                        <a href="{{ route('hrd_absensi.show', $item_list->id) }}">
+                                            {{ $item_list->karyawan->nama }}
+                                        </a>
+                                    </div>
+                                    <div class="text-job">
+                                        {{ $item_list->karyawan->divisi }}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+                    @endforeach
+                </div>
             </div>
         </div>
     </div>
 </div>
+@endforeach
+
 @endsection
 
 @push('scripts')
@@ -144,9 +175,9 @@
         });
 
         $('#filter-btn').click(() => {
-            const baseURL = `${window.location.origin}${window.location.pathname}` // Get the base URL
+            const baseURL = `${window.location.origin}${window.location.pathname.slice(0, window.location.pathname.lastIndexOf('/'))}` // Get the base URL
             const datePicker = $('#datepicker').val()
-            const newURL = `${baseURL}/tanggal/${datePicker}`
+            const newURL = `${baseURL}/${datePicker}`
             window.location.href = newURL // Redirect to the new URL
         })
     })
