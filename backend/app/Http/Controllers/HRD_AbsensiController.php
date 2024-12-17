@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Absensi;
-use App\Models\karyawan;
+use App\Models\Karyawan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Carbon;
