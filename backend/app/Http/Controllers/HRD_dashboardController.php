@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Absensi;
 use App\Models\Cabang;
-use App\Models\karyawan;
+use App\Models\Karyawan;
 use App\Models\Perizinan;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
