@@ -27,6 +27,11 @@ class AuthenticatedSessionController extends Controller
         $request->authenticate();
 
         $request->session()->regenerate();
+        session([
+            "user_id" => Auth::user()->id,
+            "name" => Auth::user()->name,
+            "role" => Auth::user()->role,
+        ]);
 
         // Mengarahkan ke route dashboard.index yang ada dalam resource route
         return redirect()->route('dashboard.index');

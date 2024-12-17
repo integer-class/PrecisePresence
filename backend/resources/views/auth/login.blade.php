@@ -42,8 +42,7 @@
                         class="col-12 col-sm-8 offset-sm-2 col-md-6 offset-md-3 col-lg-6 offset-lg-3 col-xl-4 offset-xl-4">
                         <!-- Footer -->
                         <div class="login-brand">
-                            <img src="http://laravel-stisla.test/img/stisla-fill.svg" alt="logo" width="100"
-                                class="shadow-light rounded-circle">
+                            <img src="{{ asset('img/logo.png') }}" alt="logo" width="200" class="img-responsive">
                         </div>
 
                         <!-- Content -->
@@ -57,7 +56,7 @@
                                 <div class="mb-4 text-sm text-green-600">
                                     {{ session('status') }}
                                 </div>
-                            @endif
+                                @endif
                                 <form method="POST"
                                     action="{{ route('login') }}"
                                     class="needs-validation"
@@ -71,8 +70,8 @@
                                             tabindex="1"
                                             required
                                             autofocus>
-                                            @error('email')
-                                            <span class="text-red-500 text-sm mt-2">{{ $message }}</span>
+                                        @error('email')
+                                        <span class="text-red-500 text-sm mt-2">{{ $message }}</span>
                                         @enderror
                                         <div class="invalid-feedback">
                                             Please fill in your email
@@ -91,8 +90,8 @@
                                             name="password"
                                             tabindex="2"
                                             required>
-                                            @error('password')
-                                            <span class="text-red-500 text-sm mt-2">{{ $message }}</span>
+                                        @error('password')
+                                        <span class="text-red-500 text-sm mt-2">{{ $message }}</span>
                                         @enderror
                                         <div class="invalid-feedback">
                                             please fill in your password
@@ -117,7 +116,7 @@
 
                         <!-- Footer -->
                         <div class="simple-footer">
-                            Copyright &copy; Stisla 2018
+                            Copyright &copy; Stisla {{ Carbon\Carbon::now()->year }}
                         </div>
                     </div>
                 </div>
