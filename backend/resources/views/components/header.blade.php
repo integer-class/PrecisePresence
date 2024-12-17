@@ -1,6 +1,6 @@
 <div class="navbar-bg"></div>
 <nav class="navbar navbar-expand-lg main-navbar">
-    <form class="form-inline mr-auto">
+    <form class="form-inline mr-auto" id="header-search-form">
         <ul class="navbar-nav mr-3">
             <li><a href="#"
                     data-toggle="sidebar"
@@ -11,6 +11,7 @@
         </ul>
         <div class="search-element">
             <input class="form-control"
+                id="header-search-input"
                 type="search"
                 placeholder="Search"
                 aria-label="Search"
@@ -183,6 +184,19 @@
                     </div>
                 </div>
                 <div class="dropdown-list-content dropdown-list-icons">
+                    @foreach(Session::get('absensi_terbaru') != null ? json_decode(Session::get('absensi_terbaru')) : [] as $at)
+                    <a href="#"
+                        class="dropdown-item">
+                        <div class="dropdown-item-icon bg-info text-white">
+                            <i class="far fa-user"></i>
+                        </div>
+                        <div class="dropdown-item-desc">
+                            <b>{{ $at->karyawan->nama }}</b> telah melakukan absensi pada {{ $at->waktu_absensi }}.
+                            <div class="time">{{ str_replace('from now', 'ago', \Carbon\Carbon::parse($at->waktu_absensi)->addHours(7)->diffForHumans()) }}</div>
+                        </div>
+                    </a>
+                    @endforeach
+                    <!--                     
                     <a href="#"
                         class="dropdown-item dropdown-item-unread">
                         <div class="dropdown-item-icon bg-primary text-white">
@@ -232,10 +246,10 @@
                             Welcome to Stisla template!
                             <div class="time">Yesterday</div>
                         </div>
-                    </a>
+                    </a> -->
                 </div>
                 <div class="dropdown-footer text-center">
-                    <a href="#">View All <i class="fas fa-chevron-right"></i></a>
+                    <a href="{{ route('hrd_absensi.index') }}">View All <i class="fas fa-chevron-right"></i></a>
                 </div>
             </div>
         </li>
@@ -245,7 +259,7 @@
                 <img alt="image"
                     src="{{ asset('img/avatar/avatar-1.png') }}"
                     class="rounded-circle mr-1">
-                <div class="d-sm-none d-lg-inline-block">Hi, Ujang Maman</div>
+                <div class="d-sm-none d-lg-inline-block">Hi, {{ Session::get('name') ?? Admin }}</div>
             </a>
             <div class="dropdown-menu dropdown-menu-right">
                 <div class="dropdown-title">Logged in 5 min ago</div>
@@ -262,7 +276,7 @@
                     <i class="fas fa-cog"></i> Settings
                 </a>
                 <div class="dropdown-divider"></div>
-                <a href="#"
+                <a href="/logout"
                     class="dropdown-item has-icon text-danger">
                     <i class="fas fa-sign-out-alt"></i> Logout
                 </a>
