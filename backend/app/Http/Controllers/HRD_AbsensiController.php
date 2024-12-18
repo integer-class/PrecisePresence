@@ -78,11 +78,14 @@ class HRD_AbsensiController extends Controller
     {
         $type_menu = 'absensi';
         $absensi = Absensi::where('id', $id)
-            ->whereDate('waktu_absensi', Carbon::today()->subDays(1))
+            ->whereDate('waktu_absensi', Carbon::today())
             ->first();
         $karyawan = karyawan::where('id_karyawan', $absensi->id_karyawan)->first();
 
         return view('hrd.absensi.show', compact('absensi', 'type_menu', 'karyawan'));
+
+
+        // dd($absensi);
     }
 
     public function checkIn(Request $request)

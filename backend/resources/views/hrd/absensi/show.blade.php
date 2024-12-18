@@ -33,11 +33,18 @@
                                 <p><strong>Status Absensi:</strong> {{ $absensi->status_absensi ?? '-' }}</p>
                                 <p><strong>Catatan:</strong> {{ $absensi->catatan ?? '-' }}</p>
 
-                                @if ($absensi->lat && $absensi->lon)
-                                    <div id="map"></div>
-                                @else
-                                    <p><strong>Lokasi:</strong> Tidak tersedia</p>
-                                @endif
+                                <img src="{{ asset('checkin_photos/'.$absensi->foto) }}" alt="Image" class="img-fluid">
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-6">
+                        <div class="card">
+                            <div class="card-header">
+                                <h4>Lokasi Presensi</h4>
+                            </div>
+                            <div class="card-body">
+                                <div id="map"></div>
                             </div>
                         </div>
                     </div>
