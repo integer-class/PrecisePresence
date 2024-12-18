@@ -22,10 +22,11 @@
             </div>
             <div class="section-body">
                 <div class="row">
+                    <!-- Informasi Absensi -->
                     <div class="col-12 col-md-6">
                         <div class="card">
-                            <div class="card-header">
-                                <h4>Informasi Absensi</h4>
+                            <div class="card-header bg-primary text-white">
+                                <h4 class="mb-0">Informasi Absensi</h4>
                             </div>
                             <div class="card-body">
                                 <p><strong>Nama Karyawan:</strong> {{ $karyawan->nama }}</p>
@@ -33,23 +34,30 @@
                                 <p><strong>Status Absensi:</strong> {{ $absensi->status_absensi ?? '-' }}</p>
                                 <p><strong>Catatan:</strong> {{ $absensi->catatan ?? '-' }}</p>
 
-                                <img height="200" src="{{ asset('checkin_photos/'.$absensi->foto) }}" alt="Image" class="img-fluid">
-
+                                <!-- Tambahkan height pada gambar -->
+                                <img src="{{ asset('checkin_photos/'.$absensi->foto) }}"
+                                     alt="Foto Absensi"
+                                     class="img-fluid rounded shadow-sm"
+                                     style="height: 300px; object-fit: cover;">
                             </div>
                         </div>
                     </div>
+
+                    <!-- Lokasi Presensi -->
                     <div class="col-12 col-md-6">
                         <div class="card">
-                            <div class="card-header">
-                                <h4>Lokasi Presensi</h4>
+                            <div class="card-header bg-success text-white">
+                                <h4 class="mb-0">Lokasi Presensi</h4>
                             </div>
                             <div class="card-body">
-                                <div id="map"></div>
+                                <!-- Map container -->
+                                <div id="map" style="height: 300px; border: 1px solid #ddd; border-radius: 5px;"></div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
+
         </section>
     </div>
 @endsection
