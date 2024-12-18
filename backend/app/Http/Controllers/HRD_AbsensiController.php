@@ -14,32 +14,35 @@ use Illuminate\Support\Facades\DB;
 class HRD_AbsensiController extends Controller
 {
     public function index(Request $request)
-    {
-        $search = $request->query('search') ?? null;
-        $absensi = Absensi::whereDate('waktu_absensi', Carbon::today())
+{
+    $search = $request->query('search') ?? null;
+    $date = Carbon::today(); // Menggunakan Carbon untuk mendapatkan tanggal hari ini
+
+    $absensi = Absensi::whereDate('waktu_absensi', $date)
+        ->join('karyawan', 'absensi.id_karyawan', '=', 'karyawan.id_karyawan')
+        ->select('karyawan.nama', 'karyawan.id_karyawan', DB::raw('MAX(absensi.waktu_absensi) as waktu_absensi'))
+        ->where(function ($q) use ($search) {
+            $search && $q->where('karyawan.nama', 'LIKE', "%$search%");
+        })
+        ->groupBy('karyawan.id_karyawan', 'karyawan.nama')
+        ->get();
+
+    foreach ($absensi as $key => $value) {
+        $list_absensi = Absensi::whereDate('waktu_absensi', $date)
             ->join('karyawan', 'absensi.id_karyawan', '=', 'karyawan.id_karyawan')
-            ->select('karyawan.nama', 'karyawan.id_karyawan', DB::raw('MAX(absensi.waktu_absensi) as waktu_absensi'))
-            ->where(function ($q) use ($search) {
-                $search && $q->where('karyawan.nama', 'LIKE', "%$search%");
-            })
-            ->groupBy('karyawan.id_karyawan', 'karyawan.nama')
+            ->select('absensi.*', 'karyawan.nama', 'karyawan.id_karyawan')
+            ->where('karyawan.id_karyawan', $value->id_karyawan)
             ->get();
 
-        foreach ($absensi as $key => $value) {
-            $list_absensi = Absensi::whereDate('waktu_absensi', Carbon::today())
-                ->join('karyawan', 'absensi.id_karyawan', '=', 'karyawan.id_karyawan')
-                ->select('absensi.*', 'karyawan.nama', 'karyawan.id_karyawan')
-                ->where('karyawan.id_karyawan', $value->id_karyawan)
-                ->get();
-
-            $value['list_absensi'] = $list_absensi;
-        }
-
-        $type_menu = 'absensi';
-        $tanggal = Carbon::today()->format('d M Y');
-
-        return view('hrd.absensi.index', compact('type_menu', 'absensi', 'tanggal'));
+        $value['list_absensi'] = $list_absensi;
     }
+
+    $type_menu = 'absensi';
+    $tanggal = $date->copy()->format('d M Y'); // Format tanggal untuk ditampilkan
+
+    return view('hrd.absensi.index', compact('type_menu', 'absensi', 'tanggal'));
+}
+
 
     public function tanggal($date, Request $request)
     {

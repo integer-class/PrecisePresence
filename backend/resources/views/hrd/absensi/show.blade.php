@@ -58,7 +58,7 @@
             }).addTo(map);
 
             L.marker([{{ $absensi->lat }}, {{ $absensi->lon }}]).addTo(map)
-                .bindPopup("<b>Lokasi Check-in/Check-out</b><br />Lat: {{ $absensi->lat }}, Lon: {{ $absensi->lon }}")
+                .bindPopup("<b>Lokasi Presensi</b><br />Lat: {{ $absensi->lat }}, Lon: {{ $absensi->lon }}")
                 .openPopup();
         @endif
     </script>
