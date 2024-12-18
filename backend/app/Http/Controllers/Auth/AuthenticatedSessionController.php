@@ -33,8 +33,21 @@ class AuthenticatedSessionController extends Controller
             "role" => Auth::user()->role,
         ]);
 
-        // Mengarahkan ke route dashboard.index yang ada dalam resource route
-        return redirect()->route('dashboard.index');
+        // // Mengarahkan ke route dashboard.index yang ada dalam resource route
+        // return redirect()->route('dashboard.index');
+
+
+
+        if (Auth::user()->role == 'admin') {
+         return redirect()->route('dashboard.index');
+    } else {
+        Auth::guard('web')->logout();
+        $request->session()->invalidate();
+
+        $request->session()->regenerateToken();
+
+        return redirect('/');
+        }
     }
 
 
