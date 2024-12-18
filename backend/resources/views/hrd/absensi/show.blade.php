@@ -33,7 +33,7 @@
                                 <p><strong>Status Absensi:</strong> {{ $absensi->status_absensi ?? '-' }}</p>
                                 <p><strong>Catatan:</strong> {{ $absensi->catatan ?? '-' }}</p>
 
-                                <img src="{{ asset('checkin_photos/'.$absensi->foto) }}" alt="Image" class="img-fluid">
+                                <img height="200" src="{{ asset('checkin_photos/'.$absensi->foto) }}" alt="Image" class="img-fluid">
 
                             </div>
                         </div>
