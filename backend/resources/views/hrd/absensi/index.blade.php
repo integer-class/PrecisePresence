@@ -57,7 +57,7 @@
 
         <div class="row">
             @foreach ($absensi as $item)
-            <div class="col-12 col-md-3 col-lg-3" data-bs-toggle="modal" data-bs-target="#absensiModal">
+            <div class="col-12 col-md-3 col-lg-3" data-bs-toggle="modal" data-bs-target="#absensiModal{{ $item->id_karyawan }}">
                 <article class="article article-style-c">
                     <div class="article-header">
                         <a href="#">
