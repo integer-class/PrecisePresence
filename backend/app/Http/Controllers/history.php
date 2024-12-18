@@ -30,6 +30,7 @@ class history extends Controller
             'absensi.*',
             'jenis_absensi.nama_jenis_absensi'
         )
+        ->orderBy('absensi.created_at', 'desc')
         ->get();
 
     if ($absensi->isEmpty()) {
@@ -43,6 +44,7 @@ class history extends Controller
         'message' => 'Success',
         'data' => $absensi
     ]);
+
 
     }
     public function cek(Request $request)

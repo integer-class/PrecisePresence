@@ -121,7 +121,7 @@ class _PresensiState extends State<Presensi> {
               builder: (BuildContext context) {
                 return AlertDialog(
                   title: const Text('Berhasil'),
-                  content: const Text('Berhasil Absen Masuk'),
+                  content: const Text('Berhasil Presensi'),
                   actions: [
                     TextButton(
                       onPressed: () {
