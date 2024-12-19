@@ -54,8 +54,8 @@ class PengaturanController extends Controller
     }
 
     public function simpanDivisi(Request $request)
-    {
-       // Validasi input
+{
+    // Validasi input
     $validated = $request->validate([
         'nama_divisi' => 'required|string|max:255',
         'jenis_absensi' => 'required|array',
@@ -65,15 +65,15 @@ class PengaturanController extends Controller
     ]);
 
     try {
-        // Mulai transaksi database
+        // Memulai transaksi
         DB::beginTransaction();
 
-        // Simpan divisi
+        // Simpan data divisi
         $divisi = Divisi::create([
             'nama_divisi' => $validated['nama_divisi'],
         ]);
 
-        // Simpan jadwal absensi
+        // Simpan jadwal absensi untuk divisi
         foreach ($validated['jenis_absensi'] as $key => $idJenisAbsensi) {
             JadwalAbsensi::create([
                 'id_divisi' => $divisi->id_divisi,
@@ -82,52 +82,53 @@ class PengaturanController extends Controller
             ]);
         }
 
-        // Commit transaksi jika semua berhasil
+        // Commit transaksi
         DB::commit();
 
-        return redirect()->back()->with('success', 'Data berhasil disimpan!');
+        // Redirect dengan pesan sukses
+        return redirect()->route('hrd.pengaturan.general')->with('success', 'Divisi berhasil disimpan!');
     } catch (\Exception $e) {
-        // Rollback jika terjadi kesalahan
+        // Rollback transaksi jika terjadi kesalahan
         DB::rollBack();
 
         return redirect()->back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
     }
-    }
-
-    public function saveCabang(Request $request)
-{
-    // Validasi data yang diterima
-    $validated = $request->validate([
-        'latitude' => 'required|numeric',
-        'longitude' => 'required|numeric',
-        'radius' => 'required|integer',
-        'nama_cabang' => 'required|string|max:255',
-        'alamat_cabang' => 'required|string|max:255',
-        'foto_cabang' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048', // Validasi foto
-    ]);
-
-    // Simpan data cabang baru ke database
-    $cabang = new Cabang();
-    $cabang->latitude = $validated['latitude'];
-    $cabang->longitude = $validated['longitude'];
-    $cabang->radius = $validated['radius'];
-    $cabang->nama_cabang = $validated['nama_cabang'];
-    $cabang->alamat_cabang = $validated['alamat_cabang'];
-
-    // Check if a file is uploaded
-    if ($request->hasFile('foto_cabang')) {
-        $fotoCabang = time() . '_' . $request->file('foto_cabang')->getClientOriginalName();
-        $request->file('foto_cabang')->move(public_path('images'), $fotoCabang);
-        $cabang->foto_cabang = 'images/' . $fotoCabang; // Store the path in the database
-    }
-
-    $cabang->save();
-
-    // Response berhasil
-    return response()->json([
-        'message' => 'Cabang berhasil disimpan!'
-    ]);
 }
+    public function saveCabang(Request $request)
+    {
+        // Validasi data yang diterima
+        $validated = $request->validate([
+            'latitude' => 'required|numeric',
+            'longitude' => 'required|numeric',
+            'radius' => 'required|integer',
+            'nama_cabang' => 'required|string|max:255',
+            'alamat_cabang' => 'required|string|max:255',
+            'foto_cabang' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048', // Validasi foto
+        ]);
+
+        // Simpan data cabang baru ke database
+        $cabang = new Cabang();
+        $cabang->latitude = $validated['latitude'];
+        $cabang->longitude = $validated['longitude'];
+        $cabang->radius = $validated['radius'];
+        $cabang->nama_cabang = $validated['nama_cabang'];
+        $cabang->alamat_cabang = $validated['alamat_cabang'];
+
+        // Check if a file is uploaded
+        if ($request->hasFile('foto_cabang')) {
+            $fotoCabang = time() . '_' . $request->file('foto_cabang')->getClientOriginalName();
+            $request->file('foto_cabang')->move(public_path('images'), $fotoCabang);
+            $cabang->foto_cabang = 'images/' . $fotoCabang; // Store the path in the database
+        }
+
+        $cabang->save();
+
+        // Response berhasil
+        return response()->json([
+            'message' => 'Cabang berhasil disimpan!'
+        ]);
+    }
+
 
 
 public function general()
@@ -150,14 +151,27 @@ public function tambahjenis(Request $request)
     $validated = $request->validate([
         'nama_jenis_absensi' => 'required|string|max:255',
         'aturan_waktu' => 'required|string|max:2',
-
     ]);
 
-    JenisAbsensi::create($validated);
+    try {
+        // Simpan jenis absensi baru
+        JenisAbsensi::create($validated);
 
-    return redirect()->route('hrd.pengaturan.jenis_absensi')->with('success', 'Jenis Absensi berhasil ditambahkan.');
-
+        // Jika berhasil, kirim respons JSON
+        return response()->json([
+            'success' => true,
+            'message' => 'Jenis Absensi berhasil ditambahkan.'
+        ]);
+    } catch (\Exception $e) {
+        // Jika terjadi error, kirim respons JSON error
+        return response()->json([
+            'success' => false,
+            'message' => 'Terjadi kesalahan saat menambahkan jenis absensi.'
+        ]);
+    }
 }
+
+
 
     public function editdivisi($id)
         {

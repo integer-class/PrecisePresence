@@ -1,5 +1,6 @@
 @extends('layouts.app')
 @section('title', 'Pengaturan Lokasi dan Jam Kerja')
+
 @push('style')
     <!-- CSS Libraries -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/leaflet.css" />
@@ -28,6 +29,7 @@
         }
     </style>
 @endpush
+
 @section('main')
     <div class="main-content">
         <section class="section">
@@ -51,7 +53,7 @@
                             @csrf
                             <div class="form-group">
                                 <label for="latitude">Nama Cabang:</label>
-                                <input type="text" id="nama_cabang"  class="form-control">
+                                <input type="text" id="nama_cabang" class="form-control">
                             </div>
                             <div class="form-group">
                                 <label for="latitude">Alamat Cabang</label>
@@ -85,15 +87,21 @@
         </section>
     </div>
 @endsection
+
 @push('scripts')
+    <!-- SweetAlert2 Library -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
     <!-- JS Libraries -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/leaflet.js"></script>
     <script src="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.js"></script>
+
     <script>
         let map;
         let marker;
         let radiusCircle;
         const geocoder = L.Control.Geocoder.nominatim();
+
         // Initialize the map
         function initMap() {
             map = L.map('map').setView([-6.1751, 106.8650], 13); // Default to Jakarta coordinates
@@ -119,6 +127,7 @@
                 updateRadius(); // Update radius position
             });
         }
+
         // Update radius based on the input
         function updateRadius() {
             const radius = parseInt(document.getElementById('radius').value);
@@ -126,80 +135,92 @@
             radiusCircle.setLatLng(marker.getLatLng()); // Update circle position to marker
             document.getElementById('radiusValue').innerText = radius; // Update displayed radius value
         }
+
         // Save settings
         function saveSetting() {
-        const formData = new FormData();
-        formData.append('latitude', marker.getLatLng().lat);
-        formData.append('longitude', marker.getLatLng().lng);
-        formData.append('radius', parseInt(document.getElementById('radius').value));
-        formData.append('nama_cabang', document.getElementById('nama_cabang').value);
-        formData.append('alamat_cabang', document.getElementById('alamat_cabang').value);
-        formData.append('foto_cabang', document.getElementById('foto_cabang').files[0]); // Ambil file gambar
-        fetch('/save_cabang', {
-            method: 'POST',
-            headers: {
-                'X-CSRF-TOKEN': '{{ csrf_token() }}'
-            },
-            body: formData // Menggunakan FormData untuk mengirim file
-        })
-        .then(response => response.json())
-        .then(data => {
-            alert(data.message);
-        })
-        .catch((error) => {
-            console.error('Error:', error);
-        });
+            const formData = new FormData();
+            formData.append('latitude', marker.getLatLng().lat);
+            formData.append('longitude', marker.getLatLng().lng);
+            formData.append('radius', parseInt(document.getElementById('radius').value));
+            formData.append('nama_cabang', document.getElementById('nama_cabang').value);
+            formData.append('alamat_cabang', document.getElementById('alamat_cabang').value);
+            formData.append('foto_cabang', document.getElementById('foto_cabang').files[0]); // Ambil file gambar
+            
+            fetch('/save_cabang', {
+                method: 'POST',
+                headers: {
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                },
+                body: formData // Menggunakan FormData untuk mengirim file
+            })
+            .then(response => response.json())
+            .then(data => {
+                // Trigger SweetAlert on success
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Berhasil',
+                    text: data.message,
+                    confirmButtonText: 'OK'
+                }).then(() => {
+                    // Optionally redirect to the cabang list page after success
+                    window.location.href = '/cabang';
+                });
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+            });
         }
+
         // Search location with autocomplete
         document.getElementById('search').addEventListener('input', function() {
-    const query = this.value;
-    if (query.length > 2) { // Minimal 3 karakter untuk mulai pencarian
-        fetch(`https://nominatim.openstreetmap.org/search?q=${query}&limit=5&format=json&addressdetails=1`)
-            .then(response => response.json())
-            .then(data => showRecommendations(data))
-            .catch(error => console.error('Error fetching data:', error));
-    } else {
-        clearRecommendations();
-    }
-});
-
-function showRecommendations(data) {
-    const recommendationsDiv = document.getElementById('recommendations');
-    recommendationsDiv.innerHTML = ''; // Bersihkan daftar sebelumnya
-
-    data.forEach(item => {
-        const div = document.createElement('div');
-        div.classList.add('recommendation-item');
-        div.textContent = item.display_name;
-        div.addEventListener('click', function() {
-            selectLocation(item);
+            const query = this.value;
+            if (query.length > 2) { // Minimal 3 karakter untuk mulai pencarian
+                fetch(`https://nominatim.openstreetmap.org/search?q=${query}&limit=5&format=json&addressdetails=1`)
+                    .then(response => response.json())
+                    .then(data => showRecommendations(data))
+                    .catch(error => console.error('Error fetching data:', error));
+            } else {
+                clearRecommendations();
+            }
         });
-        recommendationsDiv.appendChild(div);
-    });
-}
 
-function clearRecommendations() {
-    document.getElementById('recommendations').innerHTML = '';
-}
+        function showRecommendations(data) {
+            const recommendationsDiv = document.getElementById('recommendations');
+            recommendationsDiv.innerHTML = ''; // Bersihkan daftar sebelumnya
 
-function selectLocation(item) {
-    // Atur marker dan map berdasarkan hasil pilihan
-    const lat = parseFloat(item.lat);
-    const lon = parseFloat(item.lon);
-    map.setView([lat, lon], 13);
-    marker.setLatLng([lat, lon]);
-    radiusCircle.setLatLng([lat, lon]);
+            data.forEach(item => {
+                const div = document.createElement('div');
+                div.classList.add('recommendation-item');
+                div.textContent = item.display_name;
+                div.addEventListener('click', function() {
+                    selectLocation(item);
+                });
+                recommendationsDiv.appendChild(div);
+            });
+        }
 
-    // Isi input tersembunyi latitude dan longitude
-    document.getElementById('latitude').value = lat;
-    document.getElementById('longitude').value = lon;
+        function clearRecommendations() {
+            document.getElementById('recommendations').innerHTML = '';
+        }
 
-    // Bersihkan rekomendasi
-    clearRecommendations();
+        function selectLocation(item) {
+            // Atur marker dan map berdasarkan hasil pilihan
+            const lat = parseFloat(item.lat);
+            const lon = parseFloat(item.lon);
+            map.setView([lat, lon], 13);
+            marker.setLatLng([lat, lon]);
+            radiusCircle.setLatLng([lat, lon]);
 
-    // Isi field alamat jika ada
-    document.getElementById('alamat_cabang').value = item.display_name;
-}
+            // Isi input tersembunyi latitude dan longitude
+            document.getElementById('latitude').value = lat;
+            document.getElementById('longitude').value = lon;
+
+            // Bersihkan rekomendasi
+            clearRecommendations();
+
+            // Isi field alamat jika ada
+            document.getElementById('alamat_cabang').value = item.display_name;
+        }
 
         // Initialize the map when the document is ready
         document.addEventListener('DOMContentLoaded', initMap);

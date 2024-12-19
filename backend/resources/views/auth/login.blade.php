@@ -116,7 +116,7 @@
 
                         <!-- Footer -->
                         <div class="simple-footer">
-                            Copyright &copy; Stisla {{ Carbon\Carbon::now()->year }}
+                            Copyright &copy; PrecisePresence {{ Carbon\Carbon::now()->year }}
                         </div>
                     </div>
                 </div>

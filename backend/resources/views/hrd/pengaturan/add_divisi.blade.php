@@ -95,6 +95,7 @@
 @endsection
 
 @push('scripts')
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
     document.addEventListener('DOMContentLoaded', function () {
         // Data jenis absensi yang diambil dari controller dan diteruskan ke view
@@ -140,6 +141,16 @@
                 e.target.parentElement.remove();
             }
         });
+
+        // Menampilkan SweetAlert setelah form berhasil disubmit
+        @if(session('success'))
+            Swal.fire({
+                icon: 'success',
+                title: 'Divisi Berhasil Ditambahkan',
+                text: '{{ session('success') }}',  // Menampilkan pesan sukses dari session
+                showConfirmButton: true
+            });
+        @endif
     });
 </script>
 @endpush

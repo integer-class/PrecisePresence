@@ -75,27 +75,18 @@
                                                             ($j->aturan_waktu == '<=' ? 'Lebih Awal atau Tepat Baik' : ''))))
                                                         }}
                                                     </td>
-
-
                                                 </tr>
                                             @endforeach
-
-
                                         </table>
                                     </div>
                                 </div>
-
-
-
                             </div>
-
                         </form>
                     </div>
                 </div>
             </div>
-
-
         </section>
+
         <!-- Modal -->
         <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog" role="document">
@@ -108,7 +99,7 @@
                     </div>
                     <div class="modal-body">
                         <!-- Form Input Jenis Absensi -->
-                        <form action="{{ route('hrd.pengaturan.jenis_absensi.tambahjenis') }}" method="POST">
+                        <form action="{{ route('hrd.pengaturan.jenis_absensi.tambahjenis') }}" method="POST" id="tambahJenisAbsensiForm">
                             @csrf
                             <div class="form-group">
                                 <label for="nama_jenis_absensi">Nama Jenis Absensi</label>
@@ -133,8 +124,6 @@
                 </div>
             </div>
         </div>
-
-
     </div>
 @endsection
 
@@ -144,4 +133,67 @@
 
     <!-- Page Specific JS File -->
     <script src="{{ asset('js/page/bootstrap-modal.js') }}"></script>
+
+    <!-- SweetAlert2 Library -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <script>
+        // Cek apakah ada pesan sukses setelah form disubmit
+        @if(session('success'))
+            Swal.fire({
+                icon: 'success',
+                title: 'Berhasil!',
+                text: '{{ session('success') }}',
+                confirmButtonText: 'OK'
+            });
+        @endif
+
+        // Menangani form submit untuk menampilkan SweetAlert2
+        document.getElementById('tambahJenisAbsensiForm').addEventListener('submit', function(e) {
+            e.preventDefault(); // Mencegah form dikirim langsung
+
+            const formData = new FormData(this);
+
+            // Mengirim data form menggunakan fetch
+            fetch(this.action, {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                // Jika berhasil, tampilkan SweetAlert
+                if (data.success) {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Berhasil Menambahkan Jenis Absensi!',
+                        text: data.message,
+                        confirmButtonText: 'OK'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            window.location.reload(); // Muat ulang halaman untuk melihat perubahan
+                        }
+                    });
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Gagal!',
+                        text: data.message,
+                        confirmButtonText: 'Coba Lagi'
+                    });
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Gagal!',
+                    text: 'Terjadi kesalahan saat mengirim data.',
+                    confirmButtonText: 'Coba Lagi'
+                });
+            });
+        });
+    </script>
 @endpush
