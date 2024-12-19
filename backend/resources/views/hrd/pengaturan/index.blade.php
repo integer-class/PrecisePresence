@@ -33,7 +33,7 @@
                             <i class="fas fa-cog"></i>
                         </div>
                         <div class="card-body">
-                            <h4>Devisi</h4>
+                            <h4>Divisi</h4>
                             <!-- <p>General settings such as, site title, site description, address and so on.</p> -->
                             <a href="{{ route('hrd.pengaturan.general') }}"
                                 class="card-cta">Change Setting <i class="fas fa-chevron-right"></i></a>
