@@ -32,7 +32,11 @@
     <div class="main-content">
         <section class="section">
             <div class="section-header">
+                <div class="section-header-back">
+                    <a href="/cabang" onclick="history.back();" class="btn btn-icon"><i class="fas fa-arrow-left"></i></a>
+                </div>
                 <h1>Tambah Cabang</h1>
+                
                 <div class="section-header-breadcrumb">
                     <div class="breadcrumb-item active"><a href="#">Dashboard</a></div>
                     <div class="breadcrumb-item"><a href="#">Pengaturan</a></div>
@@ -63,7 +67,6 @@
                             <div class="form-group">
                                 <input type="hidden" id="longitude" class="form-control" readonly>
                             </div>
-                            <button type="button" id="save-button" class="btn btn-primary" onclick="saveSetting()">Simpan Pengaturan</button>
                         </form>
                     </div>
                 </div>
@@ -77,6 +80,7 @@
                     <label for="radius">Radius (meter): <span id="radiusValue">100</span> m</label>
                     <input type="range" id="radius" class="form-control-range" min="1" max="500" value="100" onchange="updateRadius()">
                 </div>
+                <button type="button" id="save-button" class="btn btn-primary" onclick="saveSetting()">Simpan Pengaturan</button>
             </div>
         </section>
     </div>

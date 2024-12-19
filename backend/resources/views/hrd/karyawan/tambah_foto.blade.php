@@ -18,6 +18,9 @@
     <div class="main-content">
         <section class="section">
             <div class="section-header">
+                <div class="section-header-back">
+                    <a href="{{ route('hrd_karyawan.index') }}" onclick="history.back();" class="btn btn-icon"><i class="fas fa-arrow-left"></i></a>
+                </div>
                 <h1>Tambah foto dokumentasi</h1>
                 <div class="section-header-breadcrumb">
                     <div class="breadcrumb-item active"><a href="#">Dashboard</a></div>
@@ -27,18 +30,8 @@
             </div>
 
             <div class="section-body">
-                <h2 class="section">
-                    <a style="width:130px; height:38px; margin-bottom:20px" href="{{ route('hrd_karyawan.index') }}" class="btn btn-lg btn-primary">Kembali</a>
-                </h2>
 
                 <div class="row">
-                    <div class="col-12">
-                        <div class="card">
-                            <div class="card-body">
-                                <!-- Your content here -->
-                            </div>
-                        </div>
-                    </div>
 
                     <div class="col-12">
                         <div class="card">

@@ -15,7 +15,7 @@
     <section class="section">
         <div class="section-header">
             <div class="section-header-back">
-                <a href="javascript:void(0);" onclick="history.back();" class="btn btn-icon"><i class="fas fa-arrow-left"></i></a>
+                <a href="/pengaturan" onclick="history.back();" class="btn btn-icon"><i class="fas fa-arrow-left"></i></a>
             </div>
             <h1>General Settings</h1>
             <div class="section-header-breadcrumb">
@@ -53,7 +53,7 @@
                         <div class="card"
                             id="settings-card">
                             <div class="card-header">
-                                <h4>General Settings</h4>
+                                <h4>Manage Devisi</h4>
                                 <div class="section-header-button">
                                     <a href="{{ route('hrd.pengaturan.divisi.tambah') }}" class="btn btn-primary">Tambah Divisi</a>
                                 </div>

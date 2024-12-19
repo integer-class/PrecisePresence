@@ -10,9 +10,6 @@
                 <a href="javascript:void(0);" onclick="history.back();" class="btn btn-icon"><i class="fas fa-arrow-left"></i></a>
             </div>
             <h1>Settings</h1>
-            <div class="section-header-button">
-                <a href="{{ route('hrd.pengaturan.cabang.tambah') }}" class="btn btn-primary">Tambah Cabang</a>
-            </div>
 
             <div class="section-header-breadcrumb">
                 <div class="breadcrumb-item active"><a href="#">Dashboard</a></div>
@@ -22,6 +19,10 @@
         </div>
 
         <div class="section-body">
+            <div class="mb-4">
+                <a href="{{ route('hrd.pengaturan.cabang.tambah') }}" class="btn btn-primary">Tambah Cabang</a>
+            </div>
+
             <div class="row">
 
                 @foreach ($cabang as $c)
@@ -44,7 +45,7 @@
                             </p>
                             <div class="article-cta">
                                 <a href="{{ route('hrd.pengaturan.cabang.detail', $c->id_cabang) }}"
-                                    class="btn btn-primary">Read More</a>
+                                    class="btn btn-primary">Detail</a>
                             </div>
                         </div>
                     </article>

@@ -13,7 +13,7 @@
         <section class="section">
             <div class="section-header">
                 <div class="section-header-back">
-                    <a href="features-settings.html" class="btn btn-icon"><i class="fas fa-arrow-left"></i></a>
+                    <a href="/pengaturan" class="btn btn-icon"><i class="fas fa-arrow-left"></i></a>
                 </div>
                 <h1>General Settings</h1>
                 <div class="section-header-breadcrumb">
@@ -50,13 +50,13 @@
                         <form id="setting-form">
                             <div class="card" id="settings-card">
                                 <div class="card-header">
-                                    <h4>General Settings</h4>
+                                    <h4>Manage Jenis Absensi</h4>
 
                                 </div>
                                 <div class="card-body">
                                     <button type="button" class="btn btn-primary" data-toggle="modal"
                                         data-target="#exampleModal">
-                                        Launch demo modal
+                                        Tambah Jenis Absensi
                                     </button>
                                     <div class="table-responsive">
                                         <table class="table-bordered table-md table">
