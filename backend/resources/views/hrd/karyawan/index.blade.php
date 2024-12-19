@@ -13,11 +13,11 @@
             <div class="section-header-back">
                 <a href="/hrd_karyawan" onclick="history.back();" class="btn btn-icon"><i class="fas fa-arrow-left"></i></a>
             </div>
-            <h1>Data Karyawan</h1>
+            <h1>List Karyawan</h1>
             <div class="section-header-breadcrumb">
                 <div class="breadcrumb-item active"><a href="#">Dashboard</a></div>
-                <div class="breadcrumb-item"><a href="#">Components</a></div>
-                <div class="breadcrumb-item">Data Karyawan</div>
+                <div class="breadcrumb-item"><a href="#">Karyawan</a></div>
+                <div class="breadcrumb-item">List Karyawan</div>
             </div>
         </div>
         <div class="section-body">

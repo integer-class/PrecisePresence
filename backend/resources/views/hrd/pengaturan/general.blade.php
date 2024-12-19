@@ -17,20 +17,16 @@
             <div class="section-header-back">
                 <a href="/pengaturan" onclick="history.back();" class="btn btn-icon"><i class="fas fa-arrow-left"></i></a>
             </div>
-            <h1>General Settings</h1>
+            <h1>Pengaturan</h1>
             <div class="section-header-breadcrumb">
                 <div class="breadcrumb-item active"><a href="#">Dashboard</a></div>
-                <div class="breadcrumb-item active"><a href="#">Settings</a></div>
-                <div class="breadcrumb-item">General Settings</div>
+                <div class="breadcrumb-item active"><a href="#">Pengaturan</a></div>
+                <div class="breadcrumb-item">Divisi</div>
             </div>
         </div>
 
         <div class="section-body">
-            <h2 class="section-title">All About General Settings</h2>
-            <p class="section-lead">
-                You can adjust all general settings here
-            </p>
-
+           
             <div id="output-status"></div>
             <div class="row">
                 <div class="col-md-4">

@@ -13,10 +13,10 @@
             <div class="section-header-back">
                 <a href="javascript:void(0);" onclick="history.back();" class="btn btn-icon"><i class="fas fa-arrow-left"></i></a>
             </div>
-            <h1>Settings</h1>
+            <h1>Pengaturan</h1>
             <div class="section-header-breadcrumb">
                 <div class="breadcrumb-item active"><a href="#">Dashboard</a></div>
-                <div class="breadcrumb-item">Settings</div>
+                <div class="breadcrumb-item">Pengaturan</div>
             </div>
         </div>
 
