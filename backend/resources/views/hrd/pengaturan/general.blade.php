@@ -26,7 +26,7 @@
         </div>
 
         <div class="section-body">
-           
+
             <div id="output-status"></div>
             <div class="row">
                 <div class="col-md-4">
@@ -50,11 +50,12 @@
                             id="settings-card">
                             <div class="card-header">
                                 <h4>Manage Divisi</h4>
+
+                            </div>
+                            <div class="card-body">
                                 <div class="section-header-button">
                                     <a href="{{ route('hrd.pengaturan.divisi.tambah') }}" class="btn btn-primary">Tambah Divisi</a>
                                 </div>
-                            </div>
-                            <div class="card-body">
                                 <div class="table-responsive">
                                     <table class="table-bordered table-md table">
                                         <tr>
