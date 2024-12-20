@@ -12,8 +12,15 @@ use App\Http\Controllers\PerizinanController;
 use App\Http\Controllers\PengaturanController;
 
 
+
+Route::get('/', function () {
+    return view('welcome');
+});
+
+
 Route::middleware('auth')->group(function () {
-    Route::get('/', [HRD_dashboardController::class, 'index'])->name('index');
+    Route::get('/index', [HRD_dashboardController::class, 'index'])->name('index');
+
     Route::resource('hrd_karyawan', \App\Http\Controllers\HRD_karyawanController::class);
 
     Route::get('/upload', [FaceController::class, 'showUploadForm'])->name('upload.form');
