@@ -17,26 +17,23 @@
                 <div class="section-header-back">
                     <a href="features-settings.html" class="btn btn-icon"><i class="fas fa-arrow-left"></i></a>
                 </div>
-                <h1>General Settings</h1>
+                <h1>Tambah Divisi</h1>
                 <div class="section-header-breadcrumb">
                     <div class="breadcrumb-item active"><a href="#">Dashboard</a></div>
                     <div class="breadcrumb-item active"><a href="#">Settings</a></div>
-                    <div class="breadcrumb-item">General Settings</div>
+                    <div class="breadcrumb-item">Tambah Divisi</div>
                 </div>
             </div>
 
             <div class="section-body">
-                <h2 class="section-title">All About General Settings</h2>
-                <p class="section-lead">
-                    You can adjust all general settings here
-                </p>
+
 
                 <div id="output-status"></div>
                 <div class="row">
                     <div class="col-md-4">
                         <div class="card">
                             <div class="card-header">
-                                <h4>Jump To</h4>
+                                <h4>Pengaturan Divisi</h4>
                             </div>
                             <div class="card-body">
                                 <ul class="nav nav-pills flex-column">
